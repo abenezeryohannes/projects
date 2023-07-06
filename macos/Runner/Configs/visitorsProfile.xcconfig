@@ -1,0 +1,7 @@
+#include "../../Flutter/visitorsProfile.xcconfig"
+#include "Warnings.xcconfig"
+
+FLUTTER_TARGET=lib/main_visitors.dart
+ASSET_PREFIX=visitors
+BUNDLE_NAME=RNG Supra Avenue management
+BUNDLE_DISPLAY_NAME=RNG Supra Avenue management

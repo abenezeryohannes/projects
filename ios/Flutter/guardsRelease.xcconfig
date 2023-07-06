@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main/guards.dart
+ASSET_PREFIX=guards
+BUNDLE_NAME=RNG security
+BUNDLE_DISPLAY_NAME=RNG security

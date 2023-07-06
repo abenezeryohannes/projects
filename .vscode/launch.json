@@ -1,0 +1,56 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [ 
+        {
+            "name": "Visitors",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--flavor", "visitors"],
+            "program": "lib/main/visitors.dart"
+        },
+        {
+            "name": "Visitors (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": ["--flavor", "visitors"],
+            "program": "lib/main/visitors.dart"
+        },
+        {
+            "name": "Visitors (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": ["--flavor", "visitors"],
+            "program": "lib/main/visitors.dart"
+        }, 
+        {
+            "name": "Guards",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--flavor", "guards"],
+            "program": "lib/main/guards.dart"
+        },
+        {
+            "name": "Guards (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": ["--flavor", "guards"],
+            "program": "lib/main/guards.dart"
+        },
+        {
+            "name": "Guards (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": ["--flavor", "guards"],
+            "program": "lib/main/guards.dart"
+        }, 
+    ]
+}

@@ -1,0 +1,406 @@
+{
+    "guests":[ 
+        {
+            "avatar":"assets/img/person.jpeg",
+            "fullName": "Guard Alazar",
+            "position":"Delivery",
+            "phoneNumber": "+251910406268"
+        }
+    ],
+    "staffs": [ 
+        {
+            "avatar":"assets/img/person.jpeg",
+            "fullName": "Guard Alazar",
+            "position":"Guard",
+            "phoneNumber": "+251910406268"
+        }
+    ],
+    "actions": [
+        {
+            "name": "Enter",
+            "color": "0xFF607D8B",
+            "icon": "assets/icon/enter.png"
+        },{
+            "name": "Leave",
+            "color": "0xFFF9A825",
+            "icon": "assets/icon/exit.png"
+        }
+    ],
+    "activity_types":[
+        {
+            "name": "Delivery",
+            "icon": "assets/icon/delivery.png",
+            "color": "0xFFFF7043",
+            "NeedApproval": true
+        },{
+            "name": "Cab",
+            "icon": "assets/icon/cab.png",
+            "color": "0xFF039BE5",
+            "NeedApproval": true
+        },{
+            "name": "Guest",
+            "icon": "assets/icon/guest.png",
+            "color": "0xFF26A69A",
+            "NeedApproval": true
+        },{
+            "name": "Visiting Help",
+            "icon": "assets/icon/home_service.png",
+            "color": "0xFF5C6BC0",
+            "NeedApproval": true
+        },{
+            "name": "Attendance",
+            "icon": "assets/icon/calendar.png",
+            "color": "0xFF90A4AE",
+            "NeedApproval": false
+        },{
+            "name": "Note",
+            "icon": "assets/icon/note.png",
+            "color": "0xFFFBC02D",
+            "NeedApproval": false
+        }
+    ],
+    "payrolls": [
+        {
+           
+    "id": 1,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title 1",
+    "body": "Test Body 1", 
+    "created": "2023-02-02"
+
+        },
+        {
+           
+    "id": 2,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title 2",
+    "body": "Test Body 2", 
+    "created": "2023-04-02"
+
+        },
+        {
+           
+    "id": 3,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title 3",
+    "body": "Test Body 3", 
+    "created": "2023-04-02"
+
+        },
+        {
+           
+    "id": 4,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title 4",
+    "body": "Test Body 4", 
+    "created": "2023-05-02"
+
+        },
+        {
+           
+    "id": 5,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title 5",
+    "body": "Test Body 5", 
+    "created": "2023-05-02"
+        },
+        {
+           
+    "id": 4,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title 6",
+    "body": "Test Body 4", 
+    "created": "2023-06-02"
+
+        },
+        {
+           
+    "id": 5,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title 7",
+    "body": "Test Body 7", 
+    "created": "2023-06-02"
+        }
+    ],
+
+    "staffActivities": [
+        {
+            "Action":
+            {
+                "name": "Enter",
+                "color": "0xFF607D8B",
+                "icon": "assets/icon/enter.png"
+            },
+            "ActivityType": {
+                "name": "Delivery",
+                "icon": "assets/icon/delivery.png",
+                "color": "0xFFFF7043",
+                "NeedApproval": true
+            },
+            "User":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Kibru Demeke",
+                "position":"Delivery",
+                "phoneNumber": "+251910406268"
+            },
+            "Publisher":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Guard Alazar",
+                "position":"Guard",
+                "phoneNumber": "+251910406268"
+            },
+            "approval": {
+                "approver": {
+                    "avatar":"assets/img/person.jpeg",
+                    "fullName": "Abdul Nazeer",
+                    "position":"renter",
+                    "phoneNumber": "+25193432352"},
+                "type":"on-spot",
+                "status":-1
+            },
+            "created": "2023-02-02"
+        },
+        {
+            "Action": {
+                "name": "Notice",
+                "color": "0xFFFBC02D",
+                "icon": "assets/icon/note.png"
+            }, 
+            "ActivityType": {
+                "name": "Note",
+                "icon": "assets/icon/note.png",
+                "color": "FBC02D",
+                "NeedApproval": false
+            },
+            "Notice": {
+                "noticeFor": null,
+                "text": "Cleaning of OHT domestice watter, Lorem Ipsum is simply dummy text of the printing and typesetting industry!"
+            },
+            "Publisher":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Guard Alazar",
+                "position":"Guard",
+                "phoneNumber": "+251910406268"
+            },
+            "created": "2023-02-02"
+        }
+    ],
+    "guestActivities": [
+        {
+            "Action": 
+            {
+                "name": "Enter",
+                "color": "0xFF607D8B",
+                "icon": "assets/icon/enter.png"
+            },
+            "ActivityType": {
+                "name": "Delivery",
+                "icon": "assets/icon/delivery.png",
+                "color": "0xFFFF7043",
+                "NeedApproval": true
+            },
+            "User":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Alazar Nomadw",
+                "position":"House Owner",
+                "phoneNumber": "+251910406268"
+            },
+            "Publisher":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Guard Alazar",
+                "position":"Guard",
+                "phoneNumber": "+251910406268"
+            }, 
+            "Approval": {
+                "approver": {
+                    "avatar":"assets/img/person.jpeg",
+                    "fullName": "Abdul Nazeer",
+                    "position":"renter",
+                    "phoneNumber": "+25193432352"},
+                "type":"on-spot",
+                "status":0
+            },
+            "created": "2023-02-02"
+        },
+        {
+            "Action": {
+                "name": "Leave",
+                "color": "0xFFE65100",
+                "icon": "assets/icon/exit.png"
+            },
+            "ActivityType": {
+                "name": "Cab",
+                "icon": "assets/icon/cab.png",
+                "color": "0xFF039BE5",
+                "NeedApproval": true
+            },
+            "User":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "M Ramulamma",
+                "position":"Maid",
+                "phoneNumber": "+251910406268"
+            },
+            "Publisher":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Guard Alazar",
+                "position":"Guard",
+                "phoneNumber": "+251910406268"
+            },
+            "Approval": {
+                "approver": {
+                    "avatar":"assets/img/person.jpeg",
+                    "fullName": "Abdul Nazeer",
+                    "position":"renter",
+                    "phoneNumber": "+25193432352"},
+                "type":"pre",
+                "status":-1
+            },
+            "created": "2023-02-02"
+        },
+        {
+            "Action": 
+            {
+                "name": "Enter",
+                "color": "0xFF607D8B",
+                "icon": "assets/icon/enter.png"
+            },
+            "ActivityType": {
+                "name": "Guest",
+                "icon": "assets/icon/guest.png",
+                "color": "0xFF26A69A",
+                "NeedApproval": true
+            },
+            "User":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Alazar Nomadw",
+                "position":"House Owner",
+                "phoneNumber": "+251910406268"
+            },
+            "Publisher":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Guard Alazar",
+                "position":"Guard",
+                "phoneNumber": "+251910406268"
+            }, 
+
+            "Approval": {
+                "approver": {
+                    "avatar":"assets/img/person.jpeg",
+                    "fullName": "Abdul Nazeer",
+                    "position":"renter",
+                    "phoneNumber": "+25193432352"},
+                "type":"on-spot",
+                "status":0
+            },
+            "created": "2023-02-02"
+        },
+        {
+            "Action": {
+                "name": "Leave",
+                "color": "0xFFF9A825",
+                "icon": "assets/icon/exit.png"
+            },
+            "ActivityType": {
+                "name": "Visiting Help",
+                "icon": "assets/icon/home_service.png",
+                "color": "0xFF5C6BC0",
+                "NeedApproval": true
+            },
+            "User":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Alazar Nomadw",
+                "position":"House Owner",
+                "phoneNumber": "+251910406268"
+            },
+            "Publisher":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Guard Alazar",
+                "position":"Guard",
+                "phoneNumber": "+251910406268"
+            }, 
+
+            "Approval": {
+                "approver": {
+                    "avatar":"assets/img/person.jpeg",
+                    "fullName": "Abdul Nazeer",
+                    "position":"renter",
+                    "phoneNumber": "+25193432352"},
+                "type":"pre",
+                "status":1
+            },
+            "created": "2023-02-02"
+        },
+        {
+            "Action":  {
+                "name": "Leave",
+                "color": "0xFFF9A825",
+                "icon": "assets/icon/exit.png"
+            },
+            "ActivityType": {
+                "name": "Attendance",
+                "icon": "assets/icon/calendar.png",
+                "color": "0xFF90A4AE",
+                "NeedApproval": false
+            },
+            "User":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Alazar Nomadw",
+                "position":"House Owner",
+                "phoneNumber": "+251910406268"
+            },
+            "Publisher":{
+                "avatar":"assets/img/person.jpeg",
+                "fullName": "Guard Alazar",
+                "position":"Guard",
+                "phoneNumber": "+251910406268"
+            }, 
+
+            "Approval": {
+                "approver": {
+                    "avatar":"assets/img/person.jpeg",
+                    "fullName": "Abdul Nazeer",
+                    "position":"renter",
+                    "phoneNumber": "+25193432352"},
+                "type":"pre",
+                "status":-1
+            },
+            "created": "2023-02-02"
+        }
+
+    ]
+}

@@ -1,0 +1,7 @@
+#include "../../Flutter/guardsRelease.xcconfig"
+#include "Warnings.xcconfig"
+
+FLUTTER_TARGET=lib/main_guards.dart
+ASSET_PREFIX=guards
+BUNDLE_NAME=RNG Supra Avenue security
+BUNDLE_DISPLAY_NAME=RNG Supra Avenue security

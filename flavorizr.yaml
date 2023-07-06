@@ -1,0 +1,38 @@
+flavors:
+  visitors:
+    app:
+      name: "RNG management"
+      icon: "assets/icon/logo.png"
+
+    android:
+      applicationId: "com.technikh.rnginfra.visitors"  
+      # firebase:
+      #   config: "./lib/firebase/visitors/google-services.json"
+      
+    ios:
+      bundleId: "com.technikh.rnginfra.visitors"  
+      # firebase:
+      #   config: "./lib/firebase/visitors/GoogleService-Info.plist"
+
+    # macos:
+    #   bundleId: "com.technikh.rnginfra.visitors"  
+      # firebase:
+      #   config: "./lib/firebase/visitors/GoogleService-Info.plist"
+  
+  guards:
+    app:
+      name: "RNG security" 
+      icon: "assets/icon/logo.png"
+  
+    android:
+      applicationId: "com.technikh.rnginfra.guards"
+      firebase:
+        config: "./lib/firebase/guards/google-services.json"
+    ios:
+      bundleId: "com.technikh.rnginfra.guards"
+      firebase:
+        config: "./lib/firebase/guards/GoogleService-Info.plist"
+    # macos:
+    #   bundleId: "com.technikh.rnginfra.guards"
+      # firebase:
+      #   config: "./lib/firebase/guards/GoogleService-Info.plist"

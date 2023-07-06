@@ -1,0 +1,15 @@
+
+{
+
+    "id": 1,
+    "scanned_qr_code_id": 123.0,
+    "scanned_qr_code_gps_lat": 0.0,
+    "scanned_qr_code_gps_lng": 0.0,
+    "qr_code_gps_lat": 5.6345345,
+    "qr_code_gps_lng": 6.3453453,
+    "qr_code_id": 2452543, 
+    "title": "Test Title",
+    "body": "Test Body", 
+    "created": "2023-02-02"
+
+}
