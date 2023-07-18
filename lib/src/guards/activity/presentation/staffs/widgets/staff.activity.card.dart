@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/staff.activity.entity.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../../core/widgets/custom.shimmer.dart';
 
 class StaffActivityCard extends StatefulWidget {
-  const StaffActivityCard({super.key, this.activity, this.showDate = true});
-  final ActivityEntity? activity;
+  const StaffActivityCard({super.key, this.attendance, this.showDate = true});
+  final StaffActivityEntity? attendance;
   final bool showDate;
 
   @override
@@ -21,13 +21,14 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.activity != null && widget.showDate)
+          if (widget.attendance != null && widget.showDate)
             Padding(
               padding: const EdgeInsets.only(left: 10, bottom: 10, top: 20),
               child: CustomShimmer(
-                show: widget.activity == null,
+                show: widget.attendance == null,
                 child: Text(
-                  (DateFormat('yyyy-MM-dd')).format(widget.activity!.created),
+                  (DateFormat('yyyy-MM-dd'))
+                      .format(widget.attendance?.created ?? DateTime.now()),
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -52,11 +53,11 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                           Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: CustomShimmer(
-                              show: widget.activity == null,
+                              show: widget.attendance == null,
                               child: CircleAvatar(
                                 radius: 20,
                                 backgroundImage: AssetImage(
-                                  widget.activity?.User?.avatar ??
+                                  widget.attendance?.user?.avatar ??
                                       'assets/img/person.jpeg',
                                 ),
                               ),
@@ -71,16 +72,16 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     CustomShimmer(
-                                      show: widget.activity == null,
+                                      show: widget.attendance == null,
                                       child: Text(
-                                        widget.activity?.User?.fullName ??
+                                        widget.attendance?.user?.name ??
                                             '----------------',
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
                                             .copyWith(
                                                 backgroundColor:
-                                                    widget.activity == null
+                                                    widget.attendance == null
                                                         ? Theme.of(context)
                                                             .colorScheme
                                                             .onBackground
@@ -91,7 +92,7 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                       width: 10,
                                     ),
                                     CustomShimmer(
-                                      show: widget.activity == null,
+                                      show: widget.attendance == null,
                                       child: CircleAvatar(
                                         backgroundColor: Theme.of(context)
                                             .colorScheme
@@ -103,16 +104,16 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                       width: 5,
                                     ),
                                     CustomShimmer(
-                                      show: widget.activity == null,
+                                      show: widget.attendance == null,
                                       child: Text(
-                                        widget.activity?.User?.position ??
+                                        widget.attendance?.user?.position ??
                                             'House Owner',
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
                                             .copyWith(
                                                 backgroundColor:
-                                                    widget.activity == null
+                                                    widget.attendance == null
                                                         ? Theme.of(context)
                                                             .hintColor
                                                         : null,
@@ -128,7 +129,7 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                   child: Row(
                                     children: [
                                       CustomShimmer(
-                                        show: widget.activity == null,
+                                        show: widget.attendance == null,
                                         child: Material(
                                           color: Colors.grey,
                                           shape: const RoundedRectangleBorder(
@@ -141,9 +142,7 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Image.asset(
-                                                  widget.activity?.Action
-                                                          ?.icon ??
-                                                      'assets/icon/exit.png',
+                                                  'assets/icon/exit.png',
                                                   width: 12,
                                                   height: 12,
                                                   color: Colors.white,
@@ -152,15 +151,13 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                                   width: 4,
                                                 ),
                                                 Text(
-                                                  widget.activity?.Action
-                                                          ?.name ??
-                                                      'Left',
+                                                  'Left',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyMedium!
                                                       .copyWith(
                                                           backgroundColor: widget
-                                                                      .activity ==
+                                                                      .attendance ==
                                                                   null
                                                               ? Theme.of(
                                                                       context)
@@ -177,19 +174,20 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                         width: 10,
                                       ),
                                       CustomShimmer(
-                                        show: widget.activity == null,
+                                        show: widget.attendance == null,
                                         child: Text(
-                                          widget.activity != null
-                                              ? (widget.activity!.created
+                                          widget.attendance?.created != null
+                                              ? (widget.attendance!.created!
                                                           .difference(
                                                               DateTime.now())
                                                           .inDays !=
                                                       0
                                                   ? (DateFormat.yMMMMEEEEd()
-                                                      .format(widget
-                                                          .activity!.created))
+                                                      .format(widget.attendance!
+                                                          .created!))
                                                   : timeago.format(
-                                                      widget.activity!.created,
+                                                      widget
+                                                          .attendance!.created!,
                                                     ))
                                               : '...................',
                                           style: Theme.of(context)
@@ -197,7 +195,7 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                               .bodyMedium!
                                               .copyWith(
                                                   backgroundColor:
-                                                      widget.activity == null
+                                                      widget.attendance == null
                                                           ? Theme.of(context)
                                                               .hintColor
                                                           : null,
@@ -221,7 +219,7 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                         InkWell(
                           onTap: () {},
                           child: CustomShimmer(
-                            show: widget.activity == null,
+                            show: widget.attendance == null,
                             child: Container(
                               height: 50,
                               padding:
@@ -259,7 +257,7 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CustomShimmer(
-                                    show: widget.activity == null,
+                                    show: widget.attendance == null,
                                     child: Icon(
                                       Icons.calendar_today_rounded,
                                       size: 20,
@@ -272,16 +270,15 @@ class _StaffActivityCardState extends State<StaffActivityCard> {
                                     width: 10,
                                   ),
                                   CustomShimmer(
-                                    show: widget.activity == null,
+                                    show: widget.attendance == null,
                                     child: Text(
-                                      widget.activity?.ActivityType?.name ??
-                                          'Attendance',
+                                      'Attendance',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
                                           .copyWith(
                                               backgroundColor:
-                                                  widget.activity == null
+                                                  widget.attendance == null
                                                       ? Theme.of(context)
                                                           .colorScheme
                                                           .onBackground

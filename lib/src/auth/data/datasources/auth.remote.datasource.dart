@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart';
 
 import '../../domain/entities/i.firebase.entity.dart';
 

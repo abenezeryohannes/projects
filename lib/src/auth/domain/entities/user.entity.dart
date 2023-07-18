@@ -5,20 +5,22 @@ part 'user.entity.g.dart';
 
 @JsonSerializable()
 class UserEntity extends Equatable {
-  final String fullName;
+  final String name;
+  final String uid;
   final String? avatar;
-  final String phoneNumber;
+  final String? phoneNumber;
   final String? position;
-
+  final String? url;
   const UserEntity(
-      {required this.fullName,
+      {this.url,
+      required this.name,
+      required this.uid,
       this.avatar,
-      required this.phoneNumber,
+      this.phoneNumber,
       this.position});
 
   @override
-  List<Object?> get props =>
-      [this.fullName, this.avatar, this.phoneNumber, this.position];
+  List<Object?> get props => [name, avatar, phoneNumber, position, url];
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
       _$UserEntityFromJson(json);
@@ -28,7 +30,7 @@ class UserEntity extends Equatable {
   dynamic get(String propName) {
     switch (propName) {
       default:
-        return fullName;
+        return name;
     }
   }
 

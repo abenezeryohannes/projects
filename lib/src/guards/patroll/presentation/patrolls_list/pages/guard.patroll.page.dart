@@ -26,8 +26,11 @@ class _GuardPatrollPageState extends State<GuardPatrollPage> {
     patrollBloc = getIt<PatrollBloc>();
 
     patrollBloc.pagingController.addPageRequestListener((pageKey) {
-      patrollBloc
-          .add(OnLoadPatrollEvent(page: pageKey, limit: patrollBloc.pageLimit));
+      patrollBloc.add(OnLoadPatrollEvent(
+          page: pageKey,
+          startTime: patrollBloc.selectedDay,
+          endTime: patrollBloc.selectedDay?.add(const Duration(days: 1)),
+          limit: patrollBloc.pageLimit));
     });
     super.initState();
   }
@@ -52,13 +55,7 @@ class _GuardPatrollPageState extends State<GuardPatrollPage> {
                           date: patrollBloc.selectedDay ?? DateTime.now(),
                           onDatePicked: (DateTime date) {
                             patrollBloc.selectedDay = date;
-
-                            patrollBloc.add(OnLoadPatrollEvent(
-                                page: 0,
-                                limit: patrollBloc.pageLimit,
-                                startTime: patrollBloc.selectedDay,
-                                endTime: patrollBloc.selectedDay!
-                                    .add(const Duration(days: 1))));
+                            patrollBloc.pagingController.refresh();
                             Future.delayed(const Duration(milliseconds: 100),
                                 () {
                               Navigator.maybePop(context);

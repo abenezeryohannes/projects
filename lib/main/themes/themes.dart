@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+//#C7D8D3
+//#94B3AA
+//#3F7566
+//#044331
+//#013425
+
 ThemeData lightDriverThemeData = ThemeData(
     primaryColor: const Color(0xFF59705C),
     textTheme: const TextTheme(labelLarge: TextStyle(color: Colors.white70)),

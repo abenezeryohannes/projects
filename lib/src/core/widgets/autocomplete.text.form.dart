@@ -20,6 +20,7 @@ class AutoCompleteTextForm extends StatefulWidget {
     this.focusedBorderWidth,
     this.focusedBorderColor,
     this.prefixIcon,
+    this.rightMargin = 60,
     this.suffixIcon,
     this.obscureText = false,
     this.keybardType,
@@ -43,6 +44,7 @@ class AutoCompleteTextForm extends StatefulWidget {
   final bool obscureText;
   final double radius;
   final double elevation;
+  final double rightMargin;
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
   final FloatingLabelBehavior floatingLabelBehavior;
@@ -89,56 +91,69 @@ class _AutoCompleteTextFormState extends State<AutoCompleteTextForm> {
           TextEditingController textEditingController,
           FocusNode focusNode,
           VoidCallback onFieldSubmitted) {
-        return TextField(
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+        return Material(
+          elevation: widget.elevation,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(widget.radius))),
+          child: TextField(
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            onChanged: (value) {
+              widget.onChanged(value);
+            },
+            keyboardType: widget.keybardType ?? TextInputType.multiline,
+            minLines: widget.minLines,
+            focusNode: focusNode,
+            maxLines: widget.maxLines,
+            enabled: widget.enabled,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.start,
+            textInputAction: widget.textInputAction ??
+                (widget.maxLines > 1
+                    ? TextInputAction.newline
+                    : TextInputAction.done),
+            decoration: InputDecoration(
+              focusColor: Colors.grey.shade800,
+              hintText: widget.placeholder,
+              suffixText: widget.suffixText,
+              errorMaxLines: 3,
+              prefixIcon: widget.prefixIcon,
+              suffixIcon: widget.suffixIcon,
+              // constraints: BoxConstraints(maxHeight: 42),
+              filled: true, fillColor: widget.fillColor ?? Colors.transparent,
+              labelText: widget.label,
+              labelStyle: TextStyle(color: Colors.grey.shade700),
+              floatingLabelBehavior: widget.floatingLabelBehavior,
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: widget.focusedBorderWidth ?? 0.3,
+                      color: widget.focusedBorderColor ?? Colors.grey.shade300),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(widget.radius))),
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: Colors.grey.shade400),
+              enabledBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 0.3, color: Colors.grey.shade300),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(widget.radius))),
+              border: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 0.3, color: Colors.grey.shade300),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(widget.radius))),
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: 10, vertical: (widget.maxLines > 1) ? 14 : 0),
+              // errorText:     !validCode ? widget.tr('field_required') : null,
+            ),
+            controller: textEditingController,
+            onSubmitted: (String value) {
+              widget.onSelected(value);
+            },
           ),
-          keyboardType: widget.keybardType ?? TextInputType.multiline,
-          minLines: widget.minLines,
-          focusNode: focusNode,
-          maxLines: widget.maxLines,
-          enabled: widget.enabled,
-          textDirection: TextDirection.ltr,
-          textAlign: TextAlign.start,
-          textInputAction: widget.textInputAction ??
-              (widget.maxLines > 1
-                  ? TextInputAction.newline
-                  : TextInputAction.done),
-          decoration: InputDecoration(
-            focusColor: Colors.grey.shade800,
-            hintText: widget.placeholder,
-            suffixText: widget.suffixText,
-            errorMaxLines: 3,
-            prefixIcon: widget.prefixIcon,
-            suffixIcon: widget.suffixIcon,
-            // constraints: BoxConstraints(maxHeight: 42),
-            filled: true, fillColor: widget.fillColor ?? Colors.transparent,
-            labelText: widget.label,
-            labelStyle: TextStyle(color: Colors.grey.shade700),
-            floatingLabelBehavior: widget.floatingLabelBehavior,
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    width: widget.focusedBorderWidth ?? 0.3,
-                    color: widget.focusedBorderColor ?? Colors.grey.shade300),
-                borderRadius: BorderRadius.all(Radius.circular(widget.radius))),
-            hintStyle: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: Colors.grey.shade400),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 0.3, color: Colors.grey.shade300),
-                borderRadius: BorderRadius.all(Radius.circular(widget.radius))),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(width: 0.3, color: Colors.grey.shade300),
-                borderRadius: BorderRadius.all(Radius.circular(widget.radius))),
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: 10, vertical: (widget.maxLines > 1) ? 14 : 0),
-            // errorText:     !validCode ? widget.tr('field_required') : null,
-          ),
-          controller: textEditingController,
-          onSubmitted: (String value) {
-            widget.onSelected(value);
-          },
         );
       },
       optionsViewBuilder: (BuildContext context,
@@ -152,7 +167,7 @@ class _AutoCompleteTextFormState extends State<AutoCompleteTextForm> {
                     child: Column(
                   children: options.map((opt) {
                     return Container(
-                        margin: const EdgeInsets.only(right: 60),
+                        margin: EdgeInsets.only(right: widget.rightMargin),
                         child: InkWell(
                           onTap: () {
                             onSelected(opt);
@@ -160,11 +175,16 @@ class _AutoCompleteTextFormState extends State<AutoCompleteTextForm> {
                           child: widget.listItem != null
                               ? widget.listItem!(opt)
                               : Card(
+                                  elevation: 1,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  margin: const EdgeInsets.only(top: 3),
                                   child: Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(10),
-                                  child: Text(opt),
-                                )),
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(opt),
+                                  )),
                         ));
                   }).toList(),
                 ))));

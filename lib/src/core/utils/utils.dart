@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class Util {
   static Future<String> loadJsonAsset(String path) async {
@@ -43,5 +44,53 @@ class Util {
       }
     }
     isLoading(false);
+  }
+
+  static String GetTimeZoneOffset() {
+    Duration duration = DateTime.now().timeZoneOffset;
+    String toDigits(int n) => n.toString().padLeft(2, "0");
+    String twoHour = twoDigits(duration.inHours);
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    if (duration.inMinutes > 0) {
+      return "+$twoHour:$twoDigitMinutes";
+    }
+    return "-$twoHour:$twoDigitMinutes";
+  }
+
+  static String twoDigits(int num) {
+    return num < 10 ? '0$num' : '$num';
+  }
+
+  static DateTime ParseDate(String value) {
+    String dateUtc = value
+        .substring(
+            0,
+            (value.lastIndexOf('+') == -1
+                    ? value.lastIndexOf('-')
+                    : value.lastIndexOf('+')) -
+                1)
+        .replaceAll("T", " ");
+    var time = DateFormat("yyyy-MM-dd HH:mm:ss").parse(dateUtc, true);
+    Duration d = ParseTimeZoneOffset(value);
+    if (d.inMinutes == 0) {
+      return time.toLocal();
+    } else {
+      if (value.lastIndexOf('+') == -1) {
+        time.add(Duration(minutes: time.timeZoneOffset.inMinutes.abs()));
+      } else {
+        time.subtract(Duration(minutes: time.timeZoneOffset.inMinutes.abs()));
+      }
+      return time.toLocal();
+    }
+  }
+
+  static Duration ParseTimeZoneOffset(String val) {
+    String t1 = val.substring(
+        val.lastIndexOf('+') == -1
+            ? val.lastIndexOf('-') + 1
+            : val.lastIndexOf('+') + 1,
+        val.lastIndexOf(':') - 1);
+    String t2 = val.substring(val.lastIndexOf(':') + 1);
+    return Duration(minutes: int.parse(t2), hours: int.parse(t2));
   }
 }

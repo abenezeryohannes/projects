@@ -185,6 +185,7 @@ class _AuthPageState extends State<AuthPage> {
           ),
         // _appBar(),
         SizedBox(
+            height: 720,
             child: index == 0
                 ? landingSlide(state)
                 : index == 1

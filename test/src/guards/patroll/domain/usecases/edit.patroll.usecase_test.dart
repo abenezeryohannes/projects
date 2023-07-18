@@ -19,12 +19,11 @@ main() {
     useCase = EditPatrollUseCase(patrollRepository: mockPatrollRepo);
 
     pat = PatrollEntity(
-        qr_code_gps_lat: 2.234,
-        qr_code_gps_lng: 2.342,
-        qr_code_id: 234,
+        scanned_qr_code_gps_lat: '2.234',
+        scanned_qr_code_gps_lng: '2.342',
+        scanned_qr_code_id: '234',
         body: 'Body',
         created: DateTime.now(),
-        scanned_qr_code_id: 123,
         title: 'Title');
 
     params = EditPatrollParam(1, patroll: pat);

@@ -6,14 +6,15 @@ import 'package:rnginfra/src/core/usecases/usecase.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
 import '../../../../auth/domain/entities/user.entity.dart';
+import '../../../core/data/pagination.dto.dart';
 
 @singleton
-class GetStaffsUseCase extends UseCase<List<UserEntity>, GetStaffsParam> {
+class GetStaffsUseCase extends UseCase<Pagination<UserEntity>, GetStaffsParam> {
   final IActivityRepository repo;
   GetStaffsUseCase({required this.repo});
 
   @override
-  Future<Either<Failure, List<UserEntity>>?>? call(GetStaffsParam param) {
+  Future<Either<Failure, Pagination<UserEntity>>?>? call(GetStaffsParam param) {
     return repo.getStaffs(
         page: param.page,
         limit: param.limit,

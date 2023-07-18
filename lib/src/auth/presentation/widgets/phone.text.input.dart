@@ -31,7 +31,7 @@ class _PhoneTextInputState extends State<PhoneTextInput> {
       readOnly: false,
       focusNode: widget.focusNode,
       style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 24),
-      keyboardType: TextInputType.phone,
+      keyboardType: TextInputType.none,
       //initialValue: widget.value,
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.start,
@@ -46,7 +46,7 @@ class _PhoneTextInputState extends State<PhoneTextInput> {
         focusColor: Colors.white,
         prefixIcon: widget.prefix,
         prefixIconConstraints:
-            BoxConstraints(minWidth: widget.prefixGap!.toDouble()),
+            BoxConstraints(minWidth: widget.prefixGap.toDouble()),
         hintText: widget.hint,
         filled: true, fillColor: Colors.transparent,
         labelStyle: TextStyle(color: Colors.grey.shade700),

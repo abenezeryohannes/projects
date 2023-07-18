@@ -6,13 +6,13 @@ part 'patroll.entity.g.dart';
 @JsonSerializable()
 class PatrollEntity extends Equatable {
   //
-  final int? id;
+  final String? id;
 
-  final double scanned_qr_code_id;
+  final String? scanned_qr_code_id;
 
-  final double scanned_qr_code_gps_lat;
+  final String? scanned_qr_code_gps_lat;
 
-  final double scanned_qr_code_gps_lng;
+  final String? scanned_qr_code_gps_lng;
 
   final String title;
 
@@ -20,34 +20,29 @@ class PatrollEntity extends Equatable {
 
   final DateTime created;
 
-  final int qr_code_id;
-
-  final double qr_code_gps_lat;
-
-  final double qr_code_gps_lng;
-
   const PatrollEntity({
     this.id,
     required this.scanned_qr_code_id,
-    this.scanned_qr_code_gps_lat = 0,
-    this.scanned_qr_code_gps_lng = 0,
     required this.title,
     required this.body,
-    this.qr_code_id = -1,
-    this.qr_code_gps_lat = 0,
-    this.qr_code_gps_lng = 0,
     required this.created,
+    this.scanned_qr_code_gps_lat,
+    this.scanned_qr_code_gps_lng,
   });
 
   @override
-  List<Object?> get props => [qr_code_gps_lat, qr_code_gps_lng, qr_code_id];
+  List<Object?> get props => [
+        id,
+        scanned_qr_code_gps_lat,
+        scanned_qr_code_gps_lng,
+      ];
 
   factory PatrollEntity.fromJson(Map<String, dynamic> json) =>
       _$PatrollEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$PatrollEntityToJson(this);
 
-  static Future<List<PatrollEntity>> loadPatrolls(Iterable l) async {
+  static List<PatrollEntity> fromMany(Iterable l) {
     return List<PatrollEntity>.from(
         l.map((model) => PatrollEntity.fromJson(model)));
   }

@@ -79,6 +79,7 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
     on<OnAuthInitialEvent>((event, emit) async {
       emit(AuthStateInitial());
     });
+    on<OnCodeAutoRetrievalTimeout>((event, emit) async {});
 
     on<OnNotVerifiedEvent>((event, emit) async {
       countries = await getCountries();

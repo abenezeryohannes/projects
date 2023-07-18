@@ -16,7 +16,7 @@ class _GuardAddGuestActivityState extends State<GuardAddGuestActivity> {
 
   @override
   void initState() {
-    guest = UserEntity(fullName: '', phoneNumber: '');
+    guest = UserEntity(name: '', phoneNumber: '', uid: '');
     super.initState();
   }
 
@@ -32,10 +32,11 @@ class _GuardAddGuestActivityState extends State<GuardAddGuestActivity> {
           onChange: (String? local) async {
             setState(() {
               guest = UserEntity(
-                  fullName: guest.fullName,
+                  name: guest.name,
                   phoneNumber: guest.phoneNumber,
                   position: guest.position,
-                  avatar: local);
+                  avatar: local,
+                  uid: '');
             });
           },
         ),

@@ -26,20 +26,20 @@ class DeletingStaffActivityState extends StaffActivityState {}
 
 //loaded
 class LoadedStaffActivityState extends StaffActivityState {
-  final List<PatrollEntity> patrolls;
+  final List<StaffAttendanceEntity> patrolls;
   const LoadedStaffActivityState({required this.patrolls});
 }
 
 //done adding
 class AddedStaffActivityState extends StaffActivityState {
-  final PatrollEntity patroll;
-  const AddedStaffActivityState({required this.patroll});
+  final StaffActivityEntity activity;
+  const AddedStaffActivityState({required this.activity});
 }
 
 //done editing
 class EditedStaffActivityState extends StaffActivityState {
-  final PatrollEntity patroll;
-  const EditedStaffActivityState({required this.patroll});
+  final StaffActivityEntity activity;
+  const EditedStaffActivityState({required this.activity});
 }
 
 //done deleting

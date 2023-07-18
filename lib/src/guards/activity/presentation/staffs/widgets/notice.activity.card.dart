@@ -231,7 +231,7 @@ class _NoticeActivityCardState extends State<NoticeActivityCard> {
                           CustomShimmer(
                             show: widget.activity == null,
                             child: Text(
-                              'Published by ${widget.activity?.Publisher.fullName ?? 'Unknown'}',
+                              'Published by ${widget.activity?.Publisher.name ?? 'Unknown'}',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall!

@@ -24,7 +24,7 @@ class AddActivityController extends GetxController {
       required this.getGuestsUseCase});
 
   void initialize() async {
-    activityUser.value = const UserEntity(fullName: '', phoneNumber: '');
+    activityUser.value = const UserEntity(name: '', phoneNumber: '', uid: '');
     getStaffMembers();
     getActivityTypes();
     getPrevGuests();
@@ -32,11 +32,11 @@ class AddActivityController extends GetxController {
 
   int pageLimit = 25;
   late Rx<UserEntity> activityUser =
-      Rx<UserEntity>(const UserEntity(fullName: '', phoneNumber: ''));
+      Rx<UserEntity>(const UserEntity(name: '', phoneNumber: '', uid: ''));
 
   late Rx<ActivityEntity> activity = Rx<ActivityEntity>(ActivityEntity(
       Publisher: const UserEntity(
-          fullName: 'Guest Tester', phoneNumber: '+251910406268'),
+          name: 'Guest Tester', phoneNumber: '+251910406268', uid: ''),
       created: DateTime.now()));
 
   // loading status holder variables
@@ -75,20 +75,20 @@ class AddActivityController extends GetxController {
       loadingStaffs.refresh();
       staffsError.refresh();
     }, (r) async {
-      if (r.isEmpty) {
+      if (r.results.isEmpty) {
         staffsError.value = NoDataFailure(message: NoDataException().message);
         loadingStaffs.value = false;
         loadingStaffs.refresh();
         staffsError.refresh();
         return;
       }
-      if ((page ?? 0) <= 1) {
+      if ((page ?? 0) < 1) {
         staffs.value.clear();
       }
       loadingStaffs.value = false;
       loadingStaffs.refresh();
       staffs.refresh();
-      staffs.value.addAll(r);
+      staffs.value.addAll(r.results);
     });
   }
 

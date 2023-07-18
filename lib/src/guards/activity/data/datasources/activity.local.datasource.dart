@@ -8,6 +8,8 @@ import 'package:rnginfra/src/guards/activity/domain/entities/activity.type.entit
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../domain/entities/staff.activity.entity.dart';
+import '../../domain/entities/staff.attendance.entity.dart';
 
 @singleton
 class ActivityLocalDatasource {
@@ -31,13 +33,13 @@ class ActivityLocalDatasource {
     return ActivityEntity.loadActivities(json.decode(data));
   }
 
-  Future<List<ActivityEntity>>? loadStaffActivity(
+  Future<List<StaffAttendanceEntity>>? loadStaffActivity(
       {int? page, String? type, int? limit}) async {
     if (page != null && page > 1) return [];
     final data = cache
         .getString(STAFF_ACTIVITY_KEY + (type != null ? ('___' + type) : ''));
     if (data == null) throw CacheFailure();
-    return ActivityEntity.loadActivities(json.decode(data));
+    return StaffAttendanceEntity.loadAttendances(json.decode(data));
   }
 
   Future<List<UserEntity>>? loadStaffs({int? page, int? limit}) async {
@@ -71,7 +73,7 @@ class ActivityLocalDatasource {
   }
 
   Future<bool>? saveStaffActivity(
-      int? page, String? type, List<ActivityEntity> activities) async {
+      int? page, String? type, List<StaffAttendanceEntity> activities) async {
     if (page != null && page > 1) return false;
     return await cache.setString(
         STAFF_ACTIVITY_KEY + (type != null ? ('___' + type) : ''),

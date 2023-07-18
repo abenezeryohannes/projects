@@ -7,9 +7,12 @@ import 'package:rnginfra/src/guards/activity/data/datasources/activity.local.dat
 import 'package:rnginfra/src/guards/activity/data/datasources/activity.remote.datasource.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.type.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/staff.activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
 import '../../../../core/errors/exceptions.dart';
+import '../../../core/data/pagination.dto.dart';
+import '../../domain/entities/staff.attendance.entity.dart';
 
 @Singleton(as: IActivityRepository)
 class ActivityRepository extends IActivityRepository {
@@ -66,12 +69,13 @@ class ActivityRepository extends IActivityRepository {
   }
 
   @override
-  Future<Either<Failure, List<ActivityEntity>>?>? getStaffActivities(
-      {int? page,
-      int? limit,
-      String? type,
-      DateTime? startTime,
-      DateTime? endTime}) async {
+  Future<Either<Failure, Pagination<StaffAttendanceEntity>>?>?
+      getStaffActivities(
+          {int? page,
+          int? limit,
+          String? type,
+          DateTime? startTime,
+          DateTime? endTime}) async {
     try {
       if (await networkInfo.isConnected!) {
         final result = await remoteDataSource.listStaffActivity(
@@ -79,7 +83,7 @@ class ActivityRepository extends IActivityRepository {
         if (result == null) {
           throw NoDataException();
         }
-        await localDataSource.saveStaffActivity(page, type, result);
+        await localDataSource.saveStaffActivity(page, type, result.results);
         return Right(result);
       } else {
         final result = await localDataSource.loadStaffActivity(
@@ -87,7 +91,7 @@ class ActivityRepository extends IActivityRepository {
         if (result == null) {
           throw CacheException();
         }
-        return Right(result);
+        return Right(Pagination<StaffAttendanceEntity>.fill(results: result));
       }
     } on ServerSideException catch (e) {
       return Left(ServerFailure(message: e.message));
@@ -182,7 +186,7 @@ class ActivityRepository extends IActivityRepository {
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>?>? getStaffs(
+  Future<Either<Failure, Pagination<UserEntity>>?>? getStaffs(
       {int? page, int? limit, String? search, String? position}) async {
     try {
       if (await networkInfo.isConnected!) {
@@ -201,7 +205,67 @@ class ActivityRepository extends IActivityRepository {
         if (result == null) {
           throw CacheException();
         }
+        return Right(Pagination<UserEntity>.fill(results: result));
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, StaffActivityEntity>?>? addStaffAttendance(
+      {required String targetId, required DateTime time}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await remoteDataSource.addStaffAttendance(
+            targetId: targetId, time: time);
+        if (result == null) {
+          throw NoDataException();
+        }
         return Right(result);
+      } else {
+        throw NetworkException();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, StaffActivityEntity>?>? editStaffAttendance(
+      {required String targetId,
+      DateTime? entranceTime,
+      DateTime? exitTime}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await remoteDataSource.editStaffAttendance(
+            targetId: targetId, entranceTime: entranceTime, exitTime: exitTime);
+        if (result == null) {
+          throw NoDataException();
+        }
+        return Right(result);
+      } else {
+        throw NetworkException();
       }
     } on ServerSideException catch (e) {
       return Left(ServerFailure(message: e.message));

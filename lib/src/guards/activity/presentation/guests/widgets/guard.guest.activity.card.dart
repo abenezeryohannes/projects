@@ -231,7 +231,7 @@ class _GuardGuestActivityCardState extends State<GuardGuestActivityCard> {
                           CustomShimmer(
                             show: widget.activity == null,
                             child: Text(
-                              widget.activity?.Approval?.approver.fullName ??
+                              widget.activity?.Approval?.approver.name ??
                                   'Undetermined',
                               style: Theme.of(context)
                                   .textTheme

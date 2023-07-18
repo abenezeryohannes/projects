@@ -11,13 +11,13 @@ abstract class StaffActivityEvent extends Equatable {
 class OnInitialStaffActivityEvent extends StaffActivityEvent {}
 
 //load
-class OnLoadStaffActivityEvent extends StaffActivityEvent {
+class OnLoadStaffAttendanceEvent extends StaffActivityEvent {
   final int? page;
   final int? limit;
   final DateTime? startTime;
   final DateTime? endTime;
   final String? type;
-  const OnLoadStaffActivityEvent({
+  const OnLoadStaffAttendanceEvent({
     required this.page,
     required this.limit,
     this.startTime,

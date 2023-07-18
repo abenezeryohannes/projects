@@ -76,42 +76,43 @@ class PatrollBloc extends Bloc<PatrollEvent, PatrollState> {
         pagingController.error = l;
         emit(ErrorLoadingPatrollState(failure: l));
       }, (r) async {
-        if (r.isEmpty) {
+        if (r.results.isEmpty) {
           pagingController.error =
               NoDataFailure(message: NoDataException().message);
           emit(ErrorLoadingPatrollState(
               failure: NoDataFailure(message: NoDataException().message)));
           return;
         }
-        final isLastPage = r.length < pageLimit;
-        if ((event.page ?? 0) <= 1 && pagingController.itemList != null) {
+        final isLastPage = r.results.length < r.pager.items_per_page ||
+            r.pager.pages == r.pager.current_page + 1;
+        if ((event.page ?? 0) == 0 && pagingController.itemList != null) {
           pagingController.itemList!.clear();
         }
         if (isLastPage) {
-          pagingController.appendLastPage(r);
+          pagingController.appendLastPage(r.results);
         } else {
           final nextPageKey = (event.page ?? 1) + 1;
-          pagingController.appendPage(r, nextPageKey);
+          pagingController.appendPage(r.results, nextPageKey);
         }
         // emit(LoadedPatrollState(patrolls: patrolls));
       });
     });
 
     //add
-    on<OnAddPatrollEvent>((event, emit) async {
-      emit(AddingPatrollState());
-      final result =
-          await _addPatrollUseCase(AddPatrollParam(patroll: event.patroll));
-      if (result == null) {
-        emit(ErrorLoadingPatrollState(
-            failure: Failure(message: UnExpectedFailure().message)));
-      }
-      result?.fold((l) {
-        emit(ErrorAddingPatrollState(failure: l));
-      }, (r) async {
-        emit(AddedPatrollState(patroll: r));
-      });
-    });
+    // on<OnAddPatrollEvent>((event, emit) async {
+    //   emit(AddingPatrollState());
+    //   final result =
+    //       await _addPatrollUseCase(AddPatrollParam(patroll: event.patroll));
+    //   if (result == null) {
+    //     emit(ErrorLoadingPatrollState(
+    //         failure: Failure(message: UnExpectedFailure().message)));
+    //   }
+    //   result?.fold((l) {
+    //     emit(ErrorAddingPatrollState(failure: l));
+    //   }, (r) async {
+    //     emit(AddedPatrollState(patroll: r));
+    //   });
+    // });
     //delete
     on<OnDeletPatrollEvent>((event, emit) async {
       emit(DeletingPatrollState());

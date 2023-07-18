@@ -6,13 +6,10 @@ import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart
 
 void main() {
   PatrollEntity patroll = PatrollEntity(
-      id: 1,
-      scanned_qr_code_id: 123.0,
-      scanned_qr_code_gps_lat: 0.0,
-      scanned_qr_code_gps_lng: 0.0,
-      qr_code_gps_lat: 5.6345345,
-      qr_code_gps_lng: 6.3453453,
-      qr_code_id: 2452543,
+      id: '1',
+      scanned_qr_code_id: '123.0',
+      scanned_qr_code_gps_lat: '0.0',
+      scanned_qr_code_gps_lng: '0.0',
       body: 'Test Body',
       created: DateTime(2023, 2, 2),
       title: 'Test Title');

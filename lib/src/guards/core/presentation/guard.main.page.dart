@@ -7,8 +7,10 @@ import 'package:rnginfra/src/core/animations/fade.animation.dart';
 import 'package:rnginfra/src/core/animations/position.animation.dart';
 import 'package:rnginfra/src/guards/activity/presentation/guests/pages/guard.guest.activity.page.dart';
 import 'package:rnginfra/src/guards/activity/presentation/new_activity/pages/add.activity.page.dart';
+import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/add.staff.attendance.page.dart';
 import 'package:rnginfra/src/guards/patroll/presentation/patrolls_list/pages/guard.patroll.page.dart';
-import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/guard.staff.activity.page.dart';
+import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/guard.staff.attendance.page.dart';
+import 'package:rnginfra/src/guards/patroll/presentation/scan_patrolls/page/scan.patroll.page.dart';
 
 import '../../../core/animations/animate.dart';
 
@@ -91,7 +93,7 @@ class _GuardMainPageState extends State<GuardMainPage>
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const AddActivityPage()));
+                                            const ScanPatrollPage()));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -121,7 +123,7 @@ class _GuardMainPageState extends State<GuardMainPage>
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const AddActivityPage()));
+                                        const ScanPatrollPage()));
                           },
                           child: Icon(
                             Icons.add,
@@ -183,11 +185,15 @@ class _GuardMainPageState extends State<GuardMainPage>
                             child: FloatingActionButton(
                                 heroTag: 'ADD_ACTIVITY',
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AddActivityPage()));
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AddStaffAttendance();
+                                      });
+                                  // showModalBottomSheet(
+                                  //     context: context,
+                                  //     backgroundColor: Colors.transparent,
+                                  //     builder: (ctx) => AddStaffAttendance()); ;
                                 },
                                 backgroundColor:
                                     Theme.of(context).colorScheme.secondary,
@@ -305,7 +311,7 @@ class _GuardMainPageState extends State<GuardMainPage>
       case 0:
         return const GuardGuestActivityPage();
       case 1:
-        return const GuardStaffActivityPage();
+        return const GuardStaffAttendancePage();
       case 2:
         return const GuardPatrollPage();
       default:

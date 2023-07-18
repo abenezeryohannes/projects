@@ -175,10 +175,11 @@ class _AddActivityPageState extends State<AddActivityPage> {
               onChange: (String? local) async {
                 setState(() {
                   controller.activityUser.value = UserEntity(
-                      fullName: controller.activityUser.value.fullName,
+                      name: controller.activityUser.value.name,
                       phoneNumber: controller.activityUser.value.phoneNumber,
                       position: controller.activityUser.value.position,
-                      avatar: local);
+                      avatar: local,
+                      uid: '');
                 });
               },
             ),
@@ -200,12 +201,12 @@ class _AddActivityPageState extends State<AddActivityPage> {
                   onChanged: (String val) {
                     setState(() {
                       controller.activity.value.User = UserEntity(
-                          fullName: val,
+                          name: val,
                           avatar:
                               controller.activity.value.User?.phoneNumber ?? '',
                           phoneNumber:
-                              controller.activity.value.User?.phoneNumber ??
-                                  '');
+                              controller.activity.value.User?.phoneNumber ?? '',
+                          uid: '');
                     });
                   },
                   placeholder: 'Full Name',
@@ -231,12 +232,12 @@ class _AddActivityPageState extends State<AddActivityPage> {
                   onChanged: (String val) {
                     setState(() {
                       controller.activity.value.User = UserEntity(
-                          fullName: val,
+                          name: val,
                           avatar:
                               controller.activity.value.User?.phoneNumber ?? '',
                           phoneNumber:
-                              controller.activity.value.User?.phoneNumber ??
-                                  '');
+                              controller.activity.value.User?.phoneNumber ?? '',
+                          uid: '');
                     });
                   },
                   placeholder: 'Phone Number',
@@ -261,7 +262,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
           padding: const EdgeInsets.only(bottom: 20.0),
           child: AnimatedOpacity(
             duration: const Duration(seconds: 1),
-            opacity: controller.activity.value.User?.fullName == null ? 0 : 1,
+            opacity: controller.activity.value.User?.name == null ? 0 : 1,
             child: BigTextButton(
               padding: const EdgeInsets.symmetric(vertical: 16),
               cornerRadius: 20,

@@ -1,9 +1,14 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/core/errors/exceptions.dart';
+import 'package:rnginfra/src/guards/core/data/pagination.dto.dart';
+import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
 
 import '../../../../core/network/api.dart';
 import '../../domain/entitites/patroll.entity.dart';
@@ -13,7 +18,7 @@ class PatrollRemoteDataSource {
   final http.Client client;
   const PatrollRemoteDataSource({required this.client});
 
-  Future<PatrollEntity>? addPatroll({required PatrollEntity patroll}) async {
+  Future<bool>? addPatroll({required AddPatrollDto patroll}) async {
     Map<String, String> body = <String, String>{};
 
     patroll.toJson().forEach((key, value) {
@@ -21,13 +26,23 @@ class PatrollRemoteDataSource {
         body.addEntries({key: value.toString()}.entries);
       }
     });
-    final req = Api.request("patroll");
-    http.Response response = await client.post(req,
-        body: body, headers: Api.postHeader(GetStorage().read('token')));
+    var bodyValue = patroll.toJson();
+
+    var bodydata = json.encode(bodyValue);
+    //
+    String req = 'https://hood.pragathi.business/api/v1/patroll/log';
+    //Api.request("patroll");
+    Uri reqUri = Uri.parse(req);
+    http.Response response =
+        await client.post(reqUri, body: bodydata, headers: {
+      "Content-Type": "application/json",
+      "Firebase-ID-Token": FirebaseAuth.instance.currentUser?.uid ?? ''
+    });
 
     switch (response.statusCode) {
       case 200:
-        return PatrollEntity.fromJson(json.decode(response.body));
+        return Future.value(true);
+      // return PatrollEntity.fromJson(json.decode(response.body));
       default:
         throw UnExpectedException(message: response.body);
     }
@@ -54,7 +69,7 @@ class PatrollRemoteDataSource {
     }
   }
 
-  Future<List<PatrollEntity>>? listPatroll(
+  Future<Pagination<PatrollEntity>?>? listPatroll(
       {int? page, int? limit, DateTime? startTime, DateTime? endTime}) async {
     Map<String, String> query = <String, String>{};
 
@@ -64,20 +79,21 @@ class PatrollRemoteDataSource {
       query.addEntries({'limit': "$limit"}.entries);
     }
 
-    http.Response response = await client.get(
-        Api.getRequestWithParams("payrolls", query),
+    String res = 'https://hood.pragathi.business/api/v1/patroll/loglist';
+    Uri url = Uri.parse(res).replace(queryParameters: query);
+    http.Response response = await client.get(url,
         headers: Api.getHeader(GetStorage().read('token') ?? 'test'));
 
     switch (response.statusCode) {
       case 200:
-        return await PatrollEntity.loadPatrolls(json.decode(response.body));
+        return Pagination<PatrollEntity>.fromJson(jsonDecode(response.body));
       default:
         throw UnExpectedException(message: response.body);
     }
   }
 
   Future<bool> deletePatroll({required PatrollEntity patroll}) async {
-    Map<String, String> body = {'id': '${patroll.qr_code_id}'};
+    Map<String, String> body = {'id': '${patroll.scanned_qr_code_id}'};
 
     http.Response response = await client.delete(Api.request("patroll"),
         body: body, headers: Api.postHeader(GetStorage().read('token')));

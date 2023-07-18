@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
+import 'package:rnginfra/src/guards/core/data/pager.dto.dart';
+import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
 import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart';
 import 'package:rnginfra/src/guards/patroll/domain/repositories/i.patroll.repository.dart';
 import 'package:rnginfra/src/guards/patroll/data/datasources/patroll.local.data.source.dart';
@@ -8,6 +12,7 @@ import 'package:rnginfra/src/guards/patroll/data/datasources/patroll.remote.data
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/network/network.info.dart';
+import '../../../core/data/pagination.dto.dart';
 
 @Singleton(as: IPatrollRepository)
 class PatrollRepository extends IPatrollRepository {
@@ -21,8 +26,8 @@ class PatrollRepository extends IPatrollRepository {
       required this.localDataSource});
 
   @override
-  Future<Either<Failure, PatrollEntity>?>? addPatroll(
-      {required PatrollEntity patroll}) async {
+  Future<Either<Failure, bool>?>? addPatroll(
+      {required AddPatrollDto patroll}) async {
     try {
       if (await networkInfo.isConnected!) {
         final result = await remoteDataSource.addPatroll(patroll: patroll);
@@ -106,7 +111,7 @@ class PatrollRepository extends IPatrollRepository {
   }
 
   @override
-  Future<Either<Failure, List<PatrollEntity>>?>? listPatroll(
+  Future<Either<Failure, Pagination<PatrollEntity>>?>? listPatroll(
       {int? page, int? limit, DateTime? startTime, DateTime? endTime}) async {
     try {
       if (await networkInfo.isConnected!) {
@@ -115,7 +120,9 @@ class PatrollRepository extends IPatrollRepository {
         if (result == null) {
           throw NoDataException();
         }
-        await localDataSource.savePatroll(page, result);
+        if (result.pager.current_page <= 1) {
+          await localDataSource.savePatroll(page, result.results);
+        }
         return Right(result);
       } else {
         final result =

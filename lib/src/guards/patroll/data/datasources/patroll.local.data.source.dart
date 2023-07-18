@@ -4,6 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../core/data/pager.dto.dart';
+import '../../../core/data/pagination.dto.dart';
 import '../../domain/entitites/patroll.entity.dart';
 
 @singleton
@@ -14,11 +16,28 @@ class PatrollLocalDataSource {
 
   static String PATROLL_KEY = 'patrolls';
 
-  Future<List<PatrollEntity>>? loadPatrolls({int? page, int? limit}) async {
-    if (page != null && page > 1) return [];
+  Future<Pagination<PatrollEntity>>? loadPatrolls(
+      {int? page, int? limit}) async {
+    if (page != null && page > 1) {
+      return Pagination<PatrollEntity>(
+          results: const [],
+          pager: Pager(
+            count: '0',
+            pages: 0,
+            current_page: 0,
+            items_per_page: 0,
+          ));
+    }
     final data = cache.getString(PATROLL_KEY);
     if (data == null) throw CacheFailure();
-    return PatrollEntity.loadPatrolls(json.decode(data));
+    final results = PatrollEntity.fromMany(json.decode(data));
+    return Pagination<PatrollEntity>(
+        pager: Pager(
+            count: results.length.toString(),
+            pages: 0,
+            items_per_page: results.length,
+            current_page: 0),
+        results: results);
   }
 
   Future<bool>? savePatroll(int? page, List<PatrollEntity> patrolls) async {
