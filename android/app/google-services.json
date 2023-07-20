@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "433654320659",
+    "project_id": "linkoai",
+    "storage_bucket": "linkoai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433654320659:android:09c599317a622ecd5079e6",
+        "android_client_info": {
+          "package_name": "com.konrad.linko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433654320659-olhl3lcf7mjmv84vd8ejljcm4mvmk8jd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm1CSV4x0OI4o7_YOHM4q8Ub2CL35gwMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433654320659-olhl3lcf7mjmv84vd8ejljcm4mvmk8jd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "433654320659-gofhtrqv13833i53onao5f990cdi8d4t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.konrad.linko"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433654320659:android:fc6a5a9a5b1f410e5079e6",
+        "android_client_info": {
+          "package_name": "com.konrad.linko.linko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433654320659-olhl3lcf7mjmv84vd8ejljcm4mvmk8jd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm1CSV4x0OI4o7_YOHM4q8Ub2CL35gwMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433654320659-olhl3lcf7mjmv84vd8ejljcm4mvmk8jd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "433654320659-gofhtrqv13833i53onao5f990cdi8d4t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.konrad.linko"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

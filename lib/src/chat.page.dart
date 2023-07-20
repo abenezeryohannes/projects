@@ -1,6 +1,8 @@
 import 'package:dismissible_page/dismissible_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:linko/src/add.business.page.dart';
+import 'package:linko/src/auth/presentation/pages/auth.page.dart';
 import 'package:linko/src/chat.more.bottom.sheet.dart';
 import 'package:linko/src/core/widgets/text.input.form.dart';
 import 'package:linko/src/lilnko.anime.dart';
@@ -52,7 +54,7 @@ class _ChatPageState extends State<ChatPage> {
         const Padding(
           padding: EdgeInsets.only(left: 20.0, top: 10, right: 20, bottom: 10),
           child: CircleAvatar(
-            radius: 20,
+            radius: 21,
             backgroundImage: NetworkImage('https://picsum.photos/200/300'),
           ),
         ),
@@ -61,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
                 left: 20.0, top: 10, right: 20, bottom: 10),
             child: Material(
                 color: Theme.of(context).cardColor,
-                elevation: 1,
+                elevation: 0,
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(100))),
                 child: IconButton(
@@ -72,7 +74,7 @@ class _ChatPageState extends State<ChatPage> {
                     },
                     icon: Icon(
                       Icons.more_horiz,
-                      size: 32,
+                      size: 36,
                       color: Theme.of(context).disabledColor,
                     )))),
       ],
@@ -81,7 +83,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _bottomTxt() {
     return Material(
-      color: Theme.of(context).cardColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -90,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * (9 / 12),
               child: TextInputForm(
-                fillColor: Theme.of(context).disabledColor,
+                fillColor: Theme.of(context).cardColor,
                 placeholder: 'Message',
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -109,7 +111,14 @@ class _ChatPageState extends State<ChatPage> {
                   borderRadius: BorderRadius.all(Radius.circular(100))),
               child: IconButton(
                   onPressed: () {
-                    context.pushTransparentRoute(const AddBusinessPage());
+                    if (FirebaseAuth.instance.currentUser == null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => AuthPage(onAuthentication: () {
+                                    Navigator.maybePop(context);
+                                  })));
+                    }
                   },
                   icon: Transform.rotate(
                     angle: -.50,
