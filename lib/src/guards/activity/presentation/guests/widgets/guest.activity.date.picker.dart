@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart';
 
-class GuardGuestActivityDatePicker extends StatefulWidget {
-  const GuardGuestActivityDatePicker(
+class GuestActivityDatePicker extends StatefulWidget {
+  const GuestActivityDatePicker(
       {Key? key, this.patroll, required this.onDatePicked, required this.date})
       : super(key: key);
   final PatrollEntity? patroll;
   final DateTime date;
   final Function(DateTime date) onDatePicked;
   @override
-  State<GuardGuestActivityDatePicker> createState() =>
-      _GuardGuestActivityDatePickerState();
+  State<GuestActivityDatePicker> createState() =>
+      _GuestActivityDatePickerState();
 }
 
-class _GuardGuestActivityDatePickerState
-    extends State<GuardGuestActivityDatePicker> {
+class _GuestActivityDatePickerState extends State<GuestActivityDatePicker> {
   late DateTime temp;
   @override
   void initState() {
@@ -26,6 +25,7 @@ class _GuardGuestActivityDatePickerState
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(bottom: 40),
       height: MediaQuery.of(context).size.height * (6 / 12),
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(30)),
@@ -40,7 +40,7 @@ class _GuardGuestActivityDatePickerState
             height: 6,
           ),
           const SizedBox(
-            height: 22,
+            height: 16,
           ),
           Material(
             color: Theme.of(context).colorScheme.primaryContainer,
@@ -56,14 +56,6 @@ class _GuardGuestActivityDatePickerState
               ),
             ),
           ),
-          // PadelAvatar(
-          //     item: widget.patroll,
-          //     borderColor: Colors.transparent,
-          //     radius: 30,
-          //     margins: const EdgeInsets.all(8),
-          //     hero: '',
-          //     onClick: () {}),
-
           const SizedBox(
             height: 16,
           ),
@@ -74,15 +66,8 @@ class _GuardGuestActivityDatePickerState
                 .bodyMedium!
                 .copyWith(color: Theme.of(context).hintColor),
           ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
-          // Text(
-          //   'Filter by Date', //widget.patroll.body,
-          //   style: Theme.of(context).textTheme.bodySmall,
-          // ),
           const SizedBox(
-            height: 30,
+            height: 20,
           ),
           Expanded(
             child: DayPicker.single(
@@ -99,19 +84,9 @@ class _GuardGuestActivityDatePickerState
                   });
                   widget.onDatePicked(date);
                 },
-                firstDate: DateTime.now().subtract(const Duration(hours: 24)),
-                lastDate: DateTime.now().add(const Duration(days: 365))),
+                firstDate: DateTime.now().subtract(const Duration(days: 365)),
+                lastDate: DateTime.now().add(const Duration(days: 1))),
           ),
-          // WhenSearchCard(
-          //   activate: () {},
-          //   active: true,
-          //   onChange: (date) {
-          //     widget.onDatePicked(date);
-          //   },
-          //   value: widget.date,
-          //   startDate: DateTime.now().subtract(const Duration(hours: 24)),
-          //   endDate: DateTime.now().add(const Duration(days: 365)),
-          // ),
         ],
       ),
     );

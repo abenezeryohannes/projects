@@ -17,7 +17,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "args": ["--flavor", "visitors"],
+            "args": ["--flavor", "visitors"],,
             "program": "lib/main/visitors.dart"
         },
         {

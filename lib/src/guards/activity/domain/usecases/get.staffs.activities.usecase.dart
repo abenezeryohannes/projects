@@ -4,8 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/usecases/usecase.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
-import 'package:rnginfra/src/guards/core/data/pagination.dto.dart';
 
+import '../../../../core/data/pagination.dto.dart';
 import '../entities/staff.attendance.entity.dart';
 
 @singleton
@@ -17,7 +17,11 @@ class GetStaffsActivityUseCase
   @override
   Future<Either<Failure, Pagination<StaffAttendanceEntity>>?>? call(
       GetStaffsActivityParam param) {
-    return repo.getStaffActivities(page: param.page);
+    return repo.getStaffActivities(
+        page: param.page,
+        limit: param.limit,
+        startTime: param.startTime,
+        endTime: param.endTime);
   }
 }
 

@@ -78,6 +78,10 @@
     <key>NSMicrophoneUsageDescription</key>
     <string>Used to capture audio for image picker plugin</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>This app needs file access to upload images</string>
+    <string>RNG Infra needs file access to upload images</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>RNG Infra needs access to location when open.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>RNG Infra needs access to location when in the background.</string> 
   </dict>
 </plist>

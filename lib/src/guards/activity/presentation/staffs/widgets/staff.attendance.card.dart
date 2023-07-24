@@ -4,6 +4,7 @@ import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.en
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../../core/widgets/custom.shimmer.dart';
+import '../../../../core/widgets/entry.and.exit.time.dart';
 import '../pages/edit.staff.attendance.page.dart';
 
 class StaffAttendanceCard extends StatefulWidget {
@@ -66,7 +67,7 @@ class _StaffAttendanceCardState extends State<StaffAttendanceCard> {
                             child: CustomShimmer(
                               show: widget.attendance == null,
                               child: CircleAvatar(
-                                radius: 22,
+                                radius: 15,
                                 backgroundColor: Colors.transparent,
                                 backgroundImage: AssetImage(
                                   widget.attendance?.user?.avatar ??
@@ -76,7 +77,7 @@ class _StaffAttendanceCardState extends State<StaffAttendanceCard> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 12.0, left: 5),
+                            padding: const EdgeInsets.only(top: 8.0, left: 5),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -137,197 +138,11 @@ class _StaffAttendanceCardState extends State<StaffAttendanceCard> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 30.0, bottom: 10),
-                                  child: Row(
-                                    children: [
-                                      CustomShimmer(
-                                        show: widget.attendance == null,
-                                        child: Material(
-                                          color: Theme.of(context).cardColor,
-                                          shape: RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(20))),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 12.0, vertical: 4),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Image.asset(
-                                                  'assets/icon/enter.png',
-                                                  width: 14,
-                                                  height: 14,
-                                                  // color: Colors.white,
-                                                ),
-                                                const SizedBox(
-                                                  width: 4,
-                                                ),
-                                                Text(
-                                                  'Entered',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium!
-                                                      .copyWith(
-                                                          backgroundColor: widget
-                                                                      .attendance ==
-                                                                  null
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .dividerColor
-                                                              : null,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .secondary),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      CustomShimmer(
-                                        show: widget.attendance == null,
-                                        child: Text(
-                                          // widget.attendance?.created ??
-                                          //     '...................',
-
-                                          enter != null
-                                              ? (enter!
-                                                          .difference(
-                                                              DateTime.now())
-                                                          .inDays !=
-                                                      0
-                                                  ? (DateFormat(
-                                                          'E, hh:mm a ( dd / MM / yy )')
-                                                      .format(enter!))
-                                                  : timeago.format(
-                                                      enter!,
-                                                    ))
-                                              : '...................',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                                  backgroundColor:
-                                                      widget.attendance == null
-                                                          ? Theme.of(context)
-                                                              .hintColor
-                                                          : null,
-                                                  color: Theme.of(context)
-                                                      .disabledColor),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (widget.attendance == null || leave != null)
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0, bottom: 10),
-                                    child: Row(
-                                      children: [
-                                        CustomShimmer(
-                                          show: widget.attendance == null,
-                                          child: Material(
-                                            color: Theme.of(context).cardColor,
-                                            shape: RoundedRectangleBorder(
-                                                side: BorderSide(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .error),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(20))),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 14,
-                                                  right: 34.0,
-                                                  bottom: 4,
-                                                  top: 4),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Image.asset(
-                                                    'assets/icon/exit.png',
-                                                    width: 14,
-                                                    height: 14,
-                                                    // color: Colors.white,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Text(
-                                                    'Left',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium!
-                                                        .copyWith(
-                                                            backgroundColor: widget
-                                                                        .attendance ==
-                                                                    null
-                                                                ? Theme.of(
-                                                                        context)
-                                                                    .dividerColor
-                                                                : null,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .error),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        CustomShimmer(
-                                          show: widget.attendance == null,
-                                          child: Text(
-                                            // widget.attendance?.created ??
-                                            //     '...................',
-
-                                            leave != null
-                                                ? (leave!
-                                                            .difference(
-                                                                DateTime.now())
-                                                            .inDays !=
-                                                        0
-                                                    ? (DateFormat(
-                                                            'E, hh:mm a ( dd / MM / yy )')
-                                                        .format(leave!))
-                                                    : timeago.format(
-                                                        leave!,
-                                                      ))
-                                                : '...................',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                    backgroundColor:
-                                                        widget.attendance ==
-                                                                null
-                                                            ? Theme.of(context)
-                                                                .hintColor
-                                                            : null,
-                                                    color: Theme.of(context)
-                                                        .disabledColor),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                      top: 20.0, bottom: 20),
+                                  child: EntryAndExitTime(
+                                      entryTime: widget.attendance?.entryAt(),
+                                      exitTime: widget.attendance?.exitAt()),
+                                )
                               ],
                             ),
                           )

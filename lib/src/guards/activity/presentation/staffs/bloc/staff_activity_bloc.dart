@@ -4,8 +4,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/usecases/get.staffs.activities.usecase.dart';
-import 'package:rnginfra/src/guards/core/data/pagination.dto.dart';
 
+import '../../../../../core/data/pagination.dto.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../domain/entities/activity.entity.dart';

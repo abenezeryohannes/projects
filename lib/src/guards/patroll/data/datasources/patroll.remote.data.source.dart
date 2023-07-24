@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 import 'package:rnginfra/src/core/errors/exceptions.dart';
-import 'package:rnginfra/src/guards/core/data/pagination.dto.dart';
 import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
 
+import '../../../../core/data/pagination.dto.dart';
 import '../../../../core/network/api.dart';
 import '../../domain/entitites/patroll.entity.dart';
 
@@ -40,6 +39,7 @@ class PatrollRemoteDataSource {
     });
 
     switch (response.statusCode) {
+      case 201:
       case 200:
         return Future.value(true);
       // return PatrollEntity.fromJson(json.decode(response.body));
@@ -79,8 +79,20 @@ class PatrollRemoteDataSource {
       query.addEntries({'limit': "$limit"}.entries);
     }
 
+    if (startTime != null) {
+      query.addEntries({
+        'created\[min\]': DateFormat('yyyy-MM-dd').format(startTime)
+      }.entries);
+    }
+
+    if (endTime != null) {
+      query.addEntries(
+          {'created\[max\]': DateFormat('yyyy-MM-dd').format(endTime)}.entries);
+    }
+
     String res = 'https://hood.pragathi.business/api/v1/patroll/loglist';
     Uri url = Uri.parse(res).replace(queryParameters: query);
+    // print('uri' + url.toString());
     http.Response response = await client.get(url,
         headers: Api.getHeader(GetStorage().read('token') ?? 'test'));
 

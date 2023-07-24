@@ -5,9 +5,28 @@ part 'pager.dto.g.dart';
 
 @JsonSerializable()
 class Pager extends Equatable {
-  final String count;
+  @JsonKey(
+    toJson: _toJson,
+    fromJson: _fromJson,
+  )
+  final int count;
+
+  @JsonKey(
+    toJson: _toJson,
+    fromJson: _fromJson,
+  )
   final int pages;
+
+  @JsonKey(
+    toJson: _toJson,
+    fromJson: _fromJson,
+  )
   final int items_per_page;
+
+  @JsonKey(
+    toJson: _toJson,
+    fromJson: _fromJson,
+  )
   final int current_page;
 
   const Pager(
@@ -22,4 +41,13 @@ class Pager extends Equatable {
 
   @override
   List<Object?> get props => [count, pages, items_per_page, current_page];
+
+  static int _toJson(int value) => value;
+  static int _fromJson(dynamic value) {
+    if (value is String) {
+      return int.parse(value);
+    } else {
+      return (value) as int;
+    }
+  }
 }

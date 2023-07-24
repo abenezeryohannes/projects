@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:rnginfra/src/guards/core/data/pager.dto.dart';
-import 'package:rnginfra/src/guards/core/data/pagination.dto.dart';
+import 'package:rnginfra/src/core/data/pager.dto.dart';
+import 'package:rnginfra/src/core/data/pagination.dto.dart';
 import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
 import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart';
 import 'package:rnginfra/src/guards/patroll/domain/repositories/i.patroll.repository.dart';
@@ -44,8 +44,8 @@ main() {
     when(mockPatrollRepo.listPatroll()).thenAnswer((_) async => Right(
         Pagination(
             results: [pat],
-            pager: Pager(
-                count: '0', pages: 1, items_per_page: 1, current_page: 0))));
+            pager: const Pager(
+                count: 0, pages: 1, items_per_page: 1, current_page: 0))));
 
     //arrange
     final result = await useCase(params);

@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/data/pager.dto.dart';
+import '../../../../core/data/pagination.dto.dart';
 import '../../../../core/errors/failure.dart';
-import '../../../core/data/pager.dto.dart';
-import '../../../core/data/pagination.dto.dart';
 import '../../domain/entitites/patroll.entity.dart';
 
 @singleton
@@ -21,8 +21,8 @@ class PatrollLocalDataSource {
     if (page != null && page > 1) {
       return Pagination<PatrollEntity>(
           results: const [],
-          pager: Pager(
-            count: '0',
+          pager: const Pager(
+            count: 0,
             pages: 0,
             current_page: 0,
             items_per_page: 0,
@@ -33,7 +33,7 @@ class PatrollLocalDataSource {
     final results = PatrollEntity.fromMany(json.decode(data));
     return Pagination<PatrollEntity>(
         pager: Pager(
-            count: results.length.toString(),
+            count: results.length,
             pages: 0,
             items_per_page: results.length,
             current_page: 0),

@@ -9,6 +9,7 @@ import 'package:rnginfra/src/guards/patroll/presentation/patrolls_list/widgets/p
 import 'package:rnginfra/src/guards/patroll/presentation/patrolls_list/widgets/patroll.date.picker.dart';
 
 import '../../../domain/entitites/patroll.entity.dart';
+import '../../scan_patrolls/page/scan.patroll.page.dart';
 import '../bloc/patroll_bloc.dart';
 
 class GuardPatrollPage extends StatefulWidget {
@@ -46,6 +47,18 @@ class _GuardPatrollPageState extends State<GuardPatrollPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScanPatrollPage()));
+              },
+              icon: Icon(
+                Icons.add,
+                size: 24,
+                color: Theme.of(context).colorScheme.secondary,
+              )),
           IconButton(
               onPressed: () {
                 showModalBottomSheet(

@@ -15,6 +15,8 @@ PatrollEntity _$PatrollEntityFromJson(Map<String, dynamic> json) =>
       created: DateTime.parse(json['created'] as String),
       scanned_qr_code_gps_lat: json['scanned_qr_code_gps_lat'] as String?,
       scanned_qr_code_gps_lng: json['scanned_qr_code_gps_lng'] as String?,
+      qr_code_gps_lng: json['qr_code_gps_lng'] as String?,
+      qr_code_gps_lat: json['qr_code_gps_lat'] as String?,
     );
 
 Map<String, dynamic> _$PatrollEntityToJson(PatrollEntity instance) =>
@@ -23,6 +25,8 @@ Map<String, dynamic> _$PatrollEntityToJson(PatrollEntity instance) =>
       'scanned_qr_code_id': instance.scanned_qr_code_id,
       'scanned_qr_code_gps_lat': instance.scanned_qr_code_gps_lat,
       'scanned_qr_code_gps_lng': instance.scanned_qr_code_gps_lng,
+      'qr_code_gps_lng': instance.qr_code_gps_lng,
+      'qr_code_gps_lat': instance.qr_code_gps_lat,
       'title': instance.title,
       'body': instance.body,
       'created': instance.created.toIso8601String(),

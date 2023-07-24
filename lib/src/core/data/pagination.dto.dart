@@ -1,10 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:rnginfra/src/auth/domain/entities/user.entity.dart';
+import 'package:rnginfra/src/core/data/pager.dto.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.entity.dart';
-import 'package:rnginfra/src/guards/core/data/pager.dto.dart';
 
-import '../../patroll/domain/entitites/patroll.entity.dart';
+import '../../guards/patroll/domain/entitites/patroll.entity.dart';
 
 part 'pagination.dto.g.dart';
 
@@ -20,9 +22,9 @@ class Pagination<Type> extends Equatable {
   Pagination.fill(
       {this.results = const [],
       this.pager = const Pager(
-          count: '0', pages: 1, items_per_page: 0, current_page: 1)}) {
+          count: 0, pages: 1, items_per_page: 0, current_page: 1)}) {
     this.pager = Pager(
-        count: results.length.toString(),
+        count: results.length,
         pages: 1,
         items_per_page: results.length,
         current_page: 1);
@@ -46,6 +48,15 @@ class _Converter<T> implements JsonConverter<T, Object> {
         json.containsKey('scanned_qr_code_id')) {
       return PatrollEntity.fromJson(json) as T;
     } else if (json is Map<String, dynamic> &&
+        json.containsKey('residents') &&
+        json.containsKey('guest_type')) {
+      return GuestActivityEntity.fromJson(json) as T;
+    } else if (json is Map<String, dynamic> &&
+        json.containsKey('unit_number') &&
+        json.containsKey('uid') &&
+        json.containsKey('name')) {
+      return ResidentEntity.fromJson(json) as T;
+    } else if (json is Map<String, dynamic> &&
         json.containsKey('name') &&
         json.containsKey('uid')) {
       return UserEntity.fromJson(json) as T;
@@ -66,6 +77,12 @@ class _Converter<T> implements JsonConverter<T, Object> {
       return (object).toJson();
     }
     if (object is StaffAttendanceEntity) {
+      return (object).toJson();
+    }
+    if (object is ResidentEntity) {
+      return (object).toJson();
+    }
+    if (object is GuestActivityEntity) {
       return (object).toJson();
     }
     return {};

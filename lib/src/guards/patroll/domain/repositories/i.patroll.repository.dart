@@ -5,7 +5,7 @@ import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
 import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart';
 
-import '../../../core/data/pagination.dto.dart';
+import '../../../../core/data/pagination.dto.dart';
 
 abstract class IPatrollRepository {
   Future<Either<Failure, bool>?>? addPatroll({required AddPatrollDto patroll});

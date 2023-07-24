@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/auth/data/datasources/auth.local.datasource.dart';
 import 'package:rnginfra/src/auth/data/datasources/auth.remote.datasource.dart';
@@ -123,6 +124,34 @@ class AuthRepository extends IAuthRepository {
           throw UnExpectedException();
         }
         result.user = FirebaseAuth.instance.currentUser;
+        return Right(result);
+      } else {
+        throw NetworkException();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>?>? getToken() async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await authRemoteDataSource.getToken();
+        if (result == null) {
+          throw UnExpectedException();
+        }
+        GetStorage().write('token', result);
         return Right(result);
       } else {
         throw NetworkException();

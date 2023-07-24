@@ -8,6 +8,7 @@ import 'package:rnginfra/src/core/animations/delayed.animation.dart';
 import 'package:rnginfra/src/core/widgets/big.text.button.dart';
 import 'package:rnginfra/src/core/widgets/show.error.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.entity.dart';
+import 'package:rnginfra/src/guards/core/widgets/time.picker.dart';
 
 import '../../../../../core/animations/getstarted/button.size.animation.dart';
 import '../controllers/edit.staff.attendance.controller.dart';
@@ -98,67 +99,55 @@ class _EditStaffAttendanceState extends State<EditStaffAttendance> {
                   children: [
                     DelayedAnimation(
                       delay: 200,
-                      child: InkWell(
-                        onTap: () async {
-                          TimeOfDay? value = await showTimePicker(
-                              initialEntryMode: TimePickerEntryMode.inputOnly,
-                              initialTime: TimeOfDay.fromDateTime(
-                                  controller.entranceTime.value ??
-                                      DateTime.now()),
-                              context: context,
-                              hourLabelText: '',
-                              minuteLabelText: '');
-                          if (value != null) {
+                      child: Obx(
+                        () => CustomeTimePicker(
+                          icon: Image.asset(
+                            'assets/icon/enter.png',
+                            width: 32,
+                            height: 32,
+                          ),
+                          time: controller.entranceTime.value,
+                          title: 'Entry Time',
+                          onChange: (DateTime change) {
                             setState(() {
                               controller.entranceTime.value = DateTime(
                                   DateTime.now().year,
                                   DateTime.now().month,
                                   DateTime.now().day,
-                                  value.hour,
-                                  value.minute,
+                                  change.hour,
+                                  change.minute,
                                   0);
                             });
-                          }
-                        },
-                        child: Obx(
-                          () => _timeCard(
-                            icon: Image.asset(
-                              'assets/icon/enter.png',
-                              width: 32,
-                              height: 32,
-                            ),
-                            time: controller.entranceTime.value,
-                            title: 'Entry Time',
-                          ),
+                          },
                         ),
                       ),
                     ),
-                    DelayedAnimation(
-                      delay: 200,
-                      child: InkWell(
-                        onTap: () async {
-                          TimeOfDay? value = await showTimePicker(
-                              initialEntryMode: TimePickerEntryMode.inputOnly,
-                              initialTime: TimeOfDay.fromDateTime(
-                                  controller.exitTime.value ?? DateTime.now()),
-                              context: context,
-                              hourLabelText: '',
-                              minuteLabelText: '');
+                    InkWell(
+                      onTap: () async {
+                        TimeOfDay? value = await showTimePicker(
+                            initialEntryMode: TimePickerEntryMode.inputOnly,
+                            initialTime: TimeOfDay.fromDateTime(
+                                controller.exitTime.value ?? DateTime.now()),
+                            context: context,
+                            hourLabelText: '',
+                            minuteLabelText: '');
 
-                          if (value != null) {
-                            setState(() {
-                              controller.exitTime.value = DateTime(
-                                  DateTime.now().year,
-                                  DateTime.now().month,
-                                  DateTime.now().day,
-                                  value.hour,
-                                  value.minute,
-                                  0);
-                            });
-                          }
-                        },
+                        if (value != null) {
+                          setState(() {
+                            controller.exitTime.value = DateTime(
+                                DateTime.now().year,
+                                DateTime.now().month,
+                                DateTime.now().day,
+                                value.hour,
+                                value.minute,
+                                0);
+                          });
+                        }
+                      },
+                      child: DelayedAnimation(
+                        delay: 200,
                         child: Obx(
-                          () => _timeCard(
+                          () => CustomeTimePicker(
                             icon: Image.asset(
                               'assets/icon/exit.png',
                               width: 32,
@@ -166,6 +155,17 @@ class _EditStaffAttendanceState extends State<EditStaffAttendance> {
                             ),
                             time: controller.exitTime.value,
                             title: 'Leave Time',
+                            onChange: (DateTime change) {
+                              setState(() {
+                                controller.exitTime.value = DateTime(
+                                    DateTime.now().year,
+                                    DateTime.now().month,
+                                    DateTime.now().day,
+                                    change.hour,
+                                    change.minute,
+                                    0);
+                              });
+                            },
                           ),
                         ),
                       ),
@@ -215,8 +215,9 @@ class _EditStaffAttendanceState extends State<EditStaffAttendance> {
                           ? Theme.of(context).colorScheme.secondary
                           : Theme.of(context).colorScheme.primaryContainer,
                       enabled: controller.exitTime.value != null &&
-                          controller.entranceTime.value != null,
-                      isLoading: controller.loadingEditStaffs.value,
+                          controller.entranceTime.value != null &&
+                          !controller.loadingEditStaffs.value,
+                      isLoading: false, //controller.loadingEditStaffs.value,
                       cornerRadius: 20,
                       padding: const EdgeInsets.only(bottom: 20, top: 20),
                       text: (controller.staffActivity.value == null)
@@ -327,55 +328,5 @@ class _EditStaffAttendanceState extends State<EditStaffAttendance> {
       },
     );
     selectedTime();
-  }
-
-  Widget _timeCard(
-      {required Widget icon,
-      required String title,
-      DateTime? time,
-      double height = 140,
-      double width = 140}) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).disabledColor.withOpacity(0.1),
-                offset: const Offset(5, 5),
-                blurRadius: 2)
-          ],
-          color: Theme.of(context).cardColor,
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: icon,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).disabledColor),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Text(
-            (time == null) ? '-' : (DateFormat('MMM d, yyyy').format(time)),
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(),
-          ),
-          if (time != null)
-            Text(
-              (DateFormat('E, hh:mm a').format(time)),
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(),
-            ),
-        ],
-      ),
-    );
   }
 }

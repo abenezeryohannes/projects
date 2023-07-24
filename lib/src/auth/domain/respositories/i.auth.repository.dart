@@ -14,4 +14,6 @@ abstract class IAuthRepository {
 
   Future<Either<Failure, IFirebaseAuthEntity>?>? signOut(
       IFirebaseAuthEntity firebaseDto);
+
+  Future<Either<Failure, String>?>? getToken();
 }

@@ -7,11 +7,13 @@ import 'package:rnginfra/src/guards/activity/data/datasources/activity.local.dat
 import 'package:rnginfra/src/guards/activity/data/datasources/activity.remote.datasource.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.type.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
+import '../../../../core/data/pagination.dto.dart';
 import '../../../../core/errors/exceptions.dart';
-import '../../../core/data/pagination.dto.dart';
 import '../../domain/entities/staff.attendance.entity.dart';
 
 @Singleton(as: IActivityRepository)
@@ -26,7 +28,7 @@ class ActivityRepository extends IActivityRepository {
       required this.localDataSource});
 
   @override
-  Future<Either<Failure, List<ActivityEntity>>?>? getGuestActivities(
+  Future<Either<Failure, Pagination<GuestActivityEntity>>?>? getGuestActivities(
       {int? page,
       int? limit,
       String? type,
@@ -43,7 +45,9 @@ class ActivityRepository extends IActivityRepository {
         if (result == null) {
           throw NoDataException();
         }
-        await localDataSource.saveGuestActivity(page, type, result);
+        if (result.results.isNotEmpty) {
+          await localDataSource.saveGuestActivity(page, type, result.results);
+        }
         return Right(result);
       } else {
         final result = await localDataSource.loadGuestActivity(
@@ -51,7 +55,7 @@ class ActivityRepository extends IActivityRepository {
         if (result == null) {
           throw CacheException();
         }
-        return Right(result);
+        return Right(Pagination<GuestActivityEntity>.fill(results: result));
       }
     } on ServerSideException catch (e) {
       return Left(ServerFailure(message: e.message));
@@ -266,6 +270,110 @@ class ActivityRepository extends IActivityRepository {
         return Right(result);
       } else {
         throw NetworkException();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ActivityEntity>?>? addGuestActivity({
+    required ActivityEntity activity,
+    required DateTime entry,
+    required DateTime? exit,
+  }) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await remoteDataSource.addGuestActivity(
+            activity: activity, entry: entry, exit: exit);
+        if (result == null) {
+          throw NoDataException();
+        }
+        return Right(result);
+      } else {
+        throw NetworkException();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ActivityEntity>?>? editGuestActivity(
+      {required String targetId,
+      required ActivityEntity activity,
+      DateTime? entranceTime,
+      DateTime? exitTime}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await remoteDataSource.editGuestActivity(
+            targetId: targetId,
+            entranceTime: entranceTime,
+            exitTime: exitTime,
+            activity: activity);
+        if (result == null) {
+          throw NoDataException();
+        }
+        return Right(result);
+      } else {
+        throw NetworkException();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Pagination<ResidentEntity>>?>? getResidents(
+      {int? page, int? limit, String? search}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await remoteDataSource.getResidents(
+            page: page, limit: limit, search: search);
+        if (result == null) {
+          throw NoDataException();
+        }
+        if (search == null) {
+          await localDataSource.saveResidents(page, result);
+        }
+        return Right(result);
+      } else {
+        final result =
+            await localDataSource.loadResidents(page: page, limit: limit);
+        if (result == null) {
+          throw CacheException();
+        }
+        return Right(Pagination<ResidentEntity>.fill(results: result));
       }
     } on ServerSideException catch (e) {
       return Left(ServerFailure(message: e.message));

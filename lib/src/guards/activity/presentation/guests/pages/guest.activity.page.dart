@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:rnginfra/src/guards/activity/presentation/guests/pages/guard.add.guest.activity.page.dart';
-import 'package:rnginfra/src/guards/activity/presentation/guests/widgets/guard.guest.activity.card.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
 
 import '../../../../../../main/injectable/getit.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/widgets/show.error.dart';
-import '../../../domain/entities/activity.entity.dart';
 import '../bloc/guest_activity_bloc.dart';
-import '../widgets/guard.guest.activity.date.picker.dart';
+import '../widgets/cab.guest.activity.card.dart';
+import '../widgets/guest.activity.date.picker.dart';
 
 class GuardGuestActivityPage extends StatefulWidget {
   const GuardGuestActivityPage({super.key});
@@ -28,7 +27,10 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
 
     activityBloc.pagingController.addPageRequestListener((pageKey) {
       activityBloc.add(OnLoadGuestctivityEvent(
-          page: pageKey, limit: activityBloc.pageLimit));
+          page: pageKey,
+          limit: activityBloc.pageLimit,
+          startTime: activityBloc.selectedDay,
+          endTime: activityBloc.selectedDay?.add(const Duration(days: 1))));
     });
     super.initState();
   }
@@ -43,17 +45,11 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
                 showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.transparent,
-                    builder: (ctx) => GuardGuestActivityDatePicker(
+                    builder: (ctx) => GuestActivityDatePicker(
                           date: activityBloc.selectedDay ?? DateTime.now(),
                           onDatePicked: (DateTime date) {
                             activityBloc.selectedDay = date;
-
-                            activityBloc.add(OnLoadGuestctivityEvent(
-                                page: 0,
-                                limit: activityBloc.pageLimit,
-                                startTime: activityBloc.selectedDay,
-                                endTime: activityBloc.selectedDay!
-                                    .add(const Duration(days: 1))));
+                            activityBloc.pagingController.refresh();
                             Future.delayed(const Duration(milliseconds: 100),
                                 () {
                               Navigator.maybePop(context);
@@ -103,7 +99,7 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
                             activityBloc.pagingController.refresh();
                           }
                         },
-                        child: PagedListView<int, ActivityEntity?>(
+                        child: PagedListView<int, GuestActivityEntity?>(
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
                             pagingController: activityBloc.pagingController,
@@ -135,7 +131,7 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
                                                   left: 10,
                                                   right: 10),
                                               child:
-                                                  const GuardGuestActivityCard(),
+                                                  const CabGuestActivityCard(),
                                             )),
                                 itemBuilder: ((context, item, index) => Padding(
                                       padding: EdgeInsets.only(
@@ -151,16 +147,15 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
                                               : 0,
                                           left: 16,
                                           right: 16),
-                                      child: GuardGuestActivityCard(
+                                      child: CabGuestActivityCard(
                                           activity: item,
                                           showDate: index == 0 ||
                                               (index > 0 &&
-                                                  activityBloc
-                                                          .pagingController
+                                                  activityBloc.pagingController
                                                           .itemList![index - 1]!
-                                                          .created
+                                                          .createdAt()
                                                           .difference(
-                                                              item!.created)
+                                                              item!.createdAt())
                                                           .inDays !=
                                                       0)),
                                     )))),

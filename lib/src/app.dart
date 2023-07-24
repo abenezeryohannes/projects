@@ -1,10 +1,10 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rnginfra/main/themes/themes.dart';
 import 'package:rnginfra/src/auth/presentation/pages/auth.page.dart';
-import 'package:rnginfra/src/guards/core/presentation/guard.main.page.dart';
+import 'package:rnginfra/src/guards/guard.main.page.dart';
 import 'flavors.dart';
 
 class App extends StatelessWidget {
@@ -15,7 +15,7 @@ class App extends StatelessWidget {
     return ThemeProvider(
         initTheme: lightDriverThemeData,
         builder: (context, myTheme) {
-          return MaterialApp(
+          return GetMaterialApp(
             title: F.title,
             theme: lightDriverThemeData,
             debugShowCheckedModeBanner: false,

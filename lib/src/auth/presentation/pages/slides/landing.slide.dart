@@ -23,20 +23,33 @@ class LandingSlideState extends State<LandingSlide> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DelayedAnimation(
-            delay: delayed - 400,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 50.0, vertical: 30),
-              child: Text(
-                'RNG Supra Avenue security', //'Find friends all over the world',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: Colors.grey.shade700,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 28),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 28.0),
+                child: Image.asset(
+                  'assets/icon/logo_croped.png',
+                  width: 40,
+                  height: 40,
+                ),
               ),
-            ),
+              DelayedAnimation(
+                delay: delayed - 400,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 50.0, vertical: 10),
+                  child: Text(
+                    'RNG Supra Avenue security', //'Find friends all over the world',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: Colors.grey.shade700,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 26),
+                  ),
+                ),
+              ),
+            ],
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -53,6 +66,7 @@ class LandingSlideState extends State<LandingSlide> {
                   text: 'Get Started',
                   fontSize: 20,
                   fontWight: FontWeight.bold,
+                  backgroudColor: Theme.of(context).colorScheme.secondary,
                   horizontalMargin:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
                   padding: const EdgeInsets.symmetric(vertical: 16),

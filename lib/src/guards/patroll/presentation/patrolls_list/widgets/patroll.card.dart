@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rnginfra/src/core/widgets/custom.shimmer.dart';
@@ -45,7 +44,8 @@ class _PatrollCardState extends State<PatrollCard> {
                   show: widget.patroll == null,
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Random().nextInt(2) + 1 == 1
+                        color: ((widget.patroll?.getDiff() ?? 0) >
+                                PatrollEntity.ACCEPTABLE_DIFF_IN_METTER)
                             ? Colors.amber.shade800
                             : Theme.of(context).colorScheme.secondary,
                         borderRadius:

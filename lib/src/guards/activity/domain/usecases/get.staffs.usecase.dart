@@ -6,7 +6,7 @@ import 'package:rnginfra/src/core/usecases/usecase.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
 import '../../../../auth/domain/entities/user.entity.dart';
-import '../../../core/data/pagination.dto.dart';
+import '../../../../core/data/pagination.dto.dart';
 
 @singleton
 class GetStaffsUseCase extends UseCase<Pagination<UserEntity>, GetStaffsParam> {

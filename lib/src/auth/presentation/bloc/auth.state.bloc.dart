@@ -9,6 +9,7 @@ import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/auth/domain/entities/country.entity.dart';
 import 'package:rnginfra/src/auth/domain/usecases/confirm.phone.confirmation.code.dart';
 import 'package:rnginfra/src/auth/domain/entities/i.firebase.entity.dart';
+import 'package:rnginfra/src/auth/domain/usecases/get.token.dart';
 import 'package:rnginfra/src/auth/domain/usecases/resend.phone.confirmation.code.dart';
 import 'package:rnginfra/src/auth/domain/usecases/sign.out.dart';
 import 'package:rnginfra/src/auth/domain/usecases/verify.phone.dart';
@@ -19,7 +20,7 @@ import '../../../core/errors/failure.dart';
 part 'auth.state.event.dart';
 part 'auth.state.state.dart';
 
-@singleton
+@injectable
 class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
     implements IFirebaseAuthEntity {
   @override
@@ -71,6 +72,7 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
 
   AuthStateBloc({
     required VerifyPhoneNumber verifyPhoneNumber,
+    required GetToken getToken,
     required ResendPhoneConfirmationCode resendPhoneConfirmationCode,
     required SignOut signOut,
     required ConfirmPhoneConfirmationCode confirmPhoneConfirmationCode,
@@ -151,11 +153,21 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
       result!.fold((l) => emit(ConfirmationFailedAuthState(failure: l)), (r) {
         clone(r);
         emit(ConfirmedAuthState(user: user!));
+        if (user != null) {
+          add(OnConfirmedEvent(user: user!));
+        }
       });
     });
 
     on<OnConfirmedEvent>((event, emit) async {
-      //emit signup
+      emit(GettingTokenAuthState());
+      final result = await getToken(const GetTokenParam());
+      if (result == null) {
+        emit(GettingTokenFailureAuthState(failure: UnExpectedFailure()));
+      }
+      result!.fold((l) => emit(GettingTokenFailureAuthState(failure: l)), (r) {
+        emit(GettingTokenSuccessAuthState(token: r));
+      });
     });
   }
 

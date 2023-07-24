@@ -28,6 +28,7 @@ class _PatrollDatePickerState extends State<PatrollDatePicker> {
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(30)),
           color: Theme.of(context).scaffoldBackgroundColor),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -97,8 +98,8 @@ class _PatrollDatePickerState extends State<PatrollDatePicker> {
                   });
                   widget.onDatePicked(date);
                 },
-                firstDate: DateTime.now().subtract(const Duration(hours: 24)),
-                lastDate: DateTime.now().add(const Duration(days: 365))),
+                firstDate: DateTime.now().subtract(const Duration(days: 365)),
+                lastDate: DateTime.now().add(const Duration(days: 1))),
           ),
           // WhenSearchCard(
           //   activate: () {},

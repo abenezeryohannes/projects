@@ -1,17 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/main.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8fc2b5f6-6e5f-4637-8c2a-3910eea85189" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main/injectable/getit.config.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main/injectable/getit.config.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main/themes/themes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main/themes/themes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/app.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/data/datasources/auth.remote.datasource.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/data/datasources/auth.remote.datasource.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/data/respositories/auth.repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/data/respositories/auth.repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/domain/respositories/i.auth.repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/domain/respositories/i.auth.repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/presentation/bloc/auth.state.bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/presentation/bloc/auth.state.bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/presentation/bloc/auth.state.state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/presentation/bloc/auth.state.state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/presentation/pages/auth.page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/presentation/pages/auth.page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/presentation/pages/slides/confirm.slide.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/presentation/pages/slides/confirm.slide.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/presentation/pages/slides/landing.slide.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/presentation/pages/slides/landing.slide.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/presentation/pages/slides/signup.slide.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/auth/presentation/pages/slides/signup.slide.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/auth/presentation/widgets/fill.user.form.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/widgets/custom.shimmer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/widgets/custom.shimmer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/data/datasources/activity.local.datasource.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/data/datasources/activity.local.datasource.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/data/datasources/activity.remote.datasource.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/data/datasources/activity.remote.datasource.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/data/repositories/activity.repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/data/repositories/activity.repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/domain/entities/activity.entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/domain/entities/activity.entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/domain/entities/activity.entity.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/domain/entities/activity.entity.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/domain/repositories/i.activities.repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/domain/repositories/i.activities.repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/domain/usecases/get.guests.activities.usecase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/domain/usecases/get.guests.activities.usecase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/domain/usecases/get.staffs.activities.usecase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/domain/usecases/get.staffs.activities.usecase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/domain/usecases/get.staffs.usecase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/domain/usecases/get.staffs.usecase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/guests/bloc/guest_activity_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/presentation/guests/bloc/guest_activity_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/guests/pages/guard.add.guest.activity.page.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/guests/pages/guard.guest.activity.page.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/guests/widgets/guard.guest.activity.card.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/guests/widgets/guard.guest.activity.date.picker.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/new_activity/controller/add.activity.controller.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/new_activity/pages/add.activity.page.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/bloc/staff_activity_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/bloc/staff_activity_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/pages/add.staff.attendance.page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/pages/add.staff.attendance.page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/pages/edit.staff.attendance.page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/pages/edit.staff.attendance.page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/widgets/notice.activity.card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/widgets/notice.activity.card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/widgets/staff.activity.date.picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/widgets/staff.activity.date.picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/widgets/staff.attendance.card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/activity/presentation/staffs/widgets/staff.attendance.card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/core/data/pager.dto.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/core/data/pager.dto.g.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/core/data/pagination.dto.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/core/data/pagination.dto.g.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/core/presentation/guard.main.page.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/data/datasources/patroll.local.data.source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/data/datasources/patroll.local.data.source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/data/datasources/patroll.remote.data.source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/data/datasources/patroll.remote.data.source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/data/repositories/patroll.repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/data/repositories/patroll.repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/domain/entitites/patroll.entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/domain/entitites/patroll.entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/domain/entitites/patroll.entity.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/domain/entitites/patroll.entity.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/domain/repositories/i.patroll.repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/domain/repositories/i.patroll.repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/domain/usecases/list.patroll.usecase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/domain/usecases/list.patroll.usecase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/patrolls_list/pages/guard.patroll.page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/patrolls_list/pages/guard.patroll.page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/patrolls_list/widgets/patroll.card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/patrolls_list/widgets/patroll.card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/patrolls_list/widgets/patroll.date.picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/patrolls_list/widgets/patroll.date.picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/scan_patrolls/controller/scan.patroll.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/scan_patrolls/controller/scan.patroll.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/scan_patrolls/page/scan.patroll.page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/guards/patroll/presentation/scan_patrolls/page/scan.patroll.page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/guards/patroll/domain/usecases/list.patroll.usecase_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/guards/patroll/domain/usecases/list.patroll.usecase_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2T0wH1u0AyEqom3CVehDAXopRRB" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" />
+    <panes>
+      <pane id="ProjectPane">
+        <option name="show-excluded-files" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "/Users/Abenezer/dev/upwork/rnginfra",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="RunManager" selected="Flutter.guards.dart">
+    <configuration name="visitors.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="additionalArgs" value="--flavor=guards" />
+      <option name="buildFlavor" value="visitors" />
+      <option name="filePath" value="$PROJECT_DIR$/lib/main/visitors.dart" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Flutter.guards.dart" />
+      <item itemvalue="Flutter.visitors.dart" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8fc2b5f6-6e5f-4637-8c2a-3910eea85189" name="Changes" comment="" />
+      <created>1690193214572</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1690193214572</updated>
+    </task>
+    <servers />
   </component>
   <component name="ToolWindowManager">
     <editor active="true" />
@@ -19,18 +133,15 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
     </layout>
   </component>
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <option name="show-excluded-files" value="false" />
-      </pane>
-    </panes>
-  </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="dart.analysis.tool.window.force.activate" value="true" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rnginfra/src/core/widgets/big.text.button.dart';
+import 'package:rnginfra/src/core/widgets/custom.shimmer.dart';
 import 'package:rnginfra/src/core/widgets/loading.bar.dart';
 import 'package:rnginfra/src/flavors.dart';
-import 'package:rnginfra/src/guards/core/presentation/guard.main.page.dart';
+import 'package:rnginfra/src/guards/guard.main.page.dart';
 
 import '../../../../main/injectable/getit.dart';
 import '../../domain/entities/country.entity.dart';
 import '../bloc/auth.state.bloc.dart';
 import 'slides/confirm.slide.dart';
-import '../widgets/fill.user.form.dart';
 import 'slides/signup.slide.dart';
 import 'slides/landing.slide.dart';
 
@@ -138,32 +140,17 @@ class _AuthPageState extends State<AuthPage> {
             });
             return slide(2, state);
           case ConfirmedAuthState:
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              setState(() {
-                fillHeight();
+            if (_height != MediaQuery.of(context).size.height) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {
+                  fillHeight();
+                });
               });
-            });
-
-            Future.delayed(const Duration(seconds: 2), () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const GuardMainPage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(0.0, 1.0);
-                        const end = Offset.zero;
-                        final tween = Tween(begin: begin, end: end);
-                        final offsetAnimation = animation.drive(tween);
-
-                        return SlideTransition(
-                          position: offsetAnimation,
-                          child: child,
-                        );
-                      }),
-                  (route) => false);
-            });
+            }
+            return slide(3, state);
+          case GettingTokenAuthState:
+          case GettingTokenFailureAuthState:
+          case GettingTokenSuccessAuthState:
             return slide(3, state);
         }
         return slide(0, state);
@@ -185,7 +172,7 @@ class _AuthPageState extends State<AuthPage> {
           ),
         // _appBar(),
         SizedBox(
-            height: 720,
+            //TODO height: index == 0 ?  : 720,
             child: index == 0
                 ? landingSlide(state)
                 : index == 1
@@ -214,6 +201,29 @@ class _AuthPageState extends State<AuthPage> {
         authBloc.add(const OnNotVerifiedEvent(isNewUser: false));
       },
     );
+  }
+
+  void openMainPage() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const GuardMainPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end);
+                final offsetAnimation = animation.drive(tween);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                );
+              }),
+          (route) => false);
+    });
   }
 
   Widget signUpSlide(AuthStateState state) {
@@ -270,23 +280,128 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Widget formSlide(AuthStateState state) {
-    return FillUserForm(
-      isKeyboardVisible: MediaQuery.of(context).viewInsets.bottom != 0,
-      //userW: controller.userModel.value,
-      //userDto: controller.userDto.value,
-      isLoading: (isLoading) => isLoading = isLoading,
-      onUpload: (path) => SizedBox(), //TODO,
-      onNameChange: (name) => SizedBox(), //TODO
-      onFocus: (bool focus) {
-        setState(() {
-          //TODO
-        });
-      },
-      onNext: () {
-        if (authBloc.user != null) {
-          authBloc.add(OnConfirmedEvent(user: authBloc.user!));
-        }
-      },
+    if (state.runtimeType == GettingTokenSuccessAuthState) {
+      openMainPage();
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(
+          height: 200,
+        ),
+        if (state.runtimeType == GettingTokenAuthState)
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                    child: CustomShimmer(
+                  show: true,
+                  baseColor: Colors.grey.shade700,
+                  highlightColor: Colors.grey.shade300,
+                  child: Text(
+                    'Wait a moment ...',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground),
+                  ),
+                )),
+              ),
+            ],
+          ),
+        if (state.runtimeType == GettingTokenSuccessAuthState)
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  radius: 30,
+                  child: const Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                  )),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                    child: Text(
+                  'Successfully Signed in!',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: Colors.grey.shade700),
+                )),
+              ),
+            ],
+          ),
+        if (state.runtimeType == GettingTokenFailureAuthState)
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                    child: Text(
+                  (state as GettingTokenFailureAuthState).failure.message ?? '',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: Theme.of(context).colorScheme.error),
+                )),
+              ),
+              SizedBox(
+                width: 100,
+                child: BigTextButton(
+                  onClick: () {
+                    if (FirebaseAuth.instance.currentUser != null) {
+                      authBloc.add(OnConfirmedEvent(
+                          user: FirebaseAuth.instance.currentUser!));
+                    } else {
+                      if (authBloc.phoneNumber.isNotEmpty) {
+                        authBloc.add(
+                            OnVerifyEvent(phoneNumber: authBloc.phoneNumber));
+                      } else {
+                        authBloc.add(OnAuthInitialEvent());
+                      }
+                    }
+                  },
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  backgroudColor: Theme.of(context).cardColor,
+                  text: 'Retry',
+                ),
+              )
+            ],
+          ),
+      ],
     );
+    // return FillUserForm(
+    //   isKeyboardVisible: MediaQuery.of(context).viewInsets.bottom != 0,
+    //   //userW: controller.userModel.value,
+    //   //userDto: controller.userDto.value,
+    //   isLoading: (isLoading) => isLoading = isLoading,
+    //   onUpload: (path) => SizedBox(), //TODO,
+    //   onNameChange: (name) => SizedBox(), //TODO
+    //   onFocus: (bool focus) {
+    //     setState(() {
+    //       //TODO
+    //     });
+    //   },
+    //   onNext: () {
+    //     if (authBloc.user != null) {
+    //       authBloc.add(OnConfirmedEvent(user: authBloc.user!));
+    //     }
+    //   },
+    // );
   }
 }

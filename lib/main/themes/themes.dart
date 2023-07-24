@@ -10,7 +10,8 @@ ThemeData lightDriverThemeData = ThemeData(
     primaryColor: const Color(0xFF59705C),
     textTheme: const TextTheme(labelLarge: TextStyle(color: Colors.white70)),
     brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color(0xFFF4F4F4),
+    cardColor: const Color(0xFFF4F4F4),
+    scaffoldBackgroundColor: const Color(0xFFFFFFFF),
     colorScheme: const ColorScheme.light(
       secondary: Color(0xFF59705C),
       onSecondary: Color(0xFFFFFFFF),

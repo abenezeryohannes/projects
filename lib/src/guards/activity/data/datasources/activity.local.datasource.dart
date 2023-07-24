@@ -5,6 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/auth/domain/entities/user.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.type.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/failure.dart';
@@ -23,14 +25,15 @@ class ActivityLocalDatasource {
   static String GUESTS_KEY = 'GUESTS_KEY';
   static String STAFFS_KEY = 'STAFFS_KEY';
   static String ACTIVITY_TYPES_KEY = 'ACTIVITY_TYPES_KEY';
+  static String RESIDENTS_KEY = 'RESIDENTS_KEY';
 
-  Future<List<ActivityEntity>>? loadGuestActivity(
+  Future<List<GuestActivityEntity>>? loadGuestActivity(
       {int? page, String? type, int? limit}) async {
     if (page != null && page > 1) return [];
     final data = cache
         .getString(GUEST_ACTIVITY_KEY + (type != null ? ('___' + type) : ''));
     if (data == null) throw CacheFailure();
-    return ActivityEntity.loadActivities(json.decode(data));
+    return GuestActivityEntity.loadGuestActivities(json.decode(data));
   }
 
   Future<List<StaffAttendanceEntity>>? loadStaffActivity(
@@ -56,6 +59,13 @@ class ActivityLocalDatasource {
     return UserEntity.loadUsers(json.decode(data));
   }
 
+  Future<List<ResidentEntity>>? loadResidents({int? page, int? limit}) async {
+    if (page != null && page > 1) return [];
+    final data = cache.getString(GUESTS_KEY);
+    if (data == null) throw CacheFailure();
+    return ResidentEntity.parseMany(json.decode(data));
+  }
+
   Future<List<ActivityTypeEntity>>? loadActivityTypes(
       {int? page, int? limit, String? search}) async {
     if (page != null && page > 1) return [];
@@ -65,7 +75,7 @@ class ActivityLocalDatasource {
   }
 
   Future<bool>? saveGuestActivity(
-      int? page, String? type, List<ActivityEntity> activities) async {
+      int? page, String? type, List<GuestActivityEntity> activities) async {
     if (page != null && page > 1) return false;
     return await cache.setString(
         GUEST_ACTIVITY_KEY + (type != null ? ('___' + type) : ''),
@@ -93,5 +103,10 @@ class ActivityLocalDatasource {
   Future<bool>? saveActivityTypes(int? page, result) async {
     if (page != null && page > 1) return false;
     return await cache.setString(ACTIVITY_TYPES_KEY, json.encode(result));
+  }
+
+  Future<bool>? saveResidents(int? page, result) async {
+    if (page != null && page > 1) return false;
+    return await cache.setString(RESIDENTS_KEY, json.encode(result));
   }
 }

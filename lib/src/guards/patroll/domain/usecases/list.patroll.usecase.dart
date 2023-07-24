@@ -3,9 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/usecases/usecase.dart';
-import 'package:rnginfra/src/guards/core/data/pagination.dto.dart';
 import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart';
 import 'package:rnginfra/src/guards/patroll/domain/repositories/i.patroll.repository.dart';
+
+import '../../../../core/data/pagination.dto.dart';
 
 @singleton
 class ListPatrollUseCase
@@ -17,7 +18,11 @@ class ListPatrollUseCase
   @override
   Future<Either<Failure, Pagination<PatrollEntity>>?>? call(
       ListPatrollParam param) {
-    return patrollRepository.listPatroll(page: param.page, limit: param.limit);
+    return patrollRepository.listPatroll(
+        page: param.page,
+        limit: param.limit,
+        startTime: param.startTime,
+        endTime: param.endTime);
   }
 }
 

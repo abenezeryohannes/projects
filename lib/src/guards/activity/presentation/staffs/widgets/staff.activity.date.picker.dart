@@ -26,6 +26,7 @@ class _StaffActivityDatePickerState extends State<StaffActivityDatePicker> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * (6 / 12),
+      padding: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(30)),
           color: Theme.of(context).scaffoldBackgroundColor),
@@ -55,14 +56,6 @@ class _StaffActivityDatePickerState extends State<StaffActivityDatePicker> {
               ),
             ),
           ),
-          // PadelAvatar(
-          //     item: widget.patroll,
-          //     borderColor: Colors.transparent,
-          //     radius: 30,
-          //     margins: const EdgeInsets.all(8),
-          //     hero: '',
-          //     onClick: () {}),
-
           const SizedBox(
             height: 16,
           ),
@@ -73,13 +66,6 @@ class _StaffActivityDatePickerState extends State<StaffActivityDatePicker> {
                 .bodyMedium!
                 .copyWith(color: Theme.of(context).hintColor),
           ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
-          // Text(
-          //   'Filter by Date', //widget.patroll.body,
-          //   style: Theme.of(context).textTheme.bodySmall,
-          // ),
           const SizedBox(
             height: 30,
           ),
@@ -98,19 +84,9 @@ class _StaffActivityDatePickerState extends State<StaffActivityDatePicker> {
                   });
                   widget.onDatePicked(date);
                 },
-                firstDate: DateTime.now().subtract(const Duration(hours: 24)),
-                lastDate: DateTime.now().add(const Duration(days: 365))),
+                firstDate: DateTime.now().subtract(const Duration(days: 365)),
+                lastDate: DateTime.now().add(const Duration(days: 1))),
           ),
-          // WhenSearchCard(
-          //   activate: () {},
-          //   active: true,
-          //   onChange: (date) {
-          //     widget.onDatePicked(date);
-          //   },
-          //   value: widget.date,
-          //   startDate: DateTime.now().subtract(const Duration(hours: 24)),
-          //   endDate: DateTime.now().add(const Duration(days: 365)),
-          // ),
         ],
       ),
     );

@@ -3,9 +3,11 @@ import 'package:rnginfra/src/auth/domain/entities/user.entity.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.type.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.entity.dart';
 
-import '../../../core/data/pagination.dto.dart';
+import '../../../../core/data/pagination.dto.dart';
+import '../entities/guest.activity.entity.dart';
 import '../entities/staff.activity.entity.dart';
 
 abstract class IActivityRepository {
@@ -18,7 +20,8 @@ abstract class IActivityRepository {
     DateTime? endTime,
   });
 
-  Future<Either<Failure, List<ActivityEntity>>?>? getGuestActivities({
+  Future<Either<Failure, Pagination<GuestActivityEntity>>?>?
+      getGuestActivities({
     int? page,
     int? limit,
     String? type,
@@ -43,9 +46,26 @@ abstract class IActivityRepository {
     String? activityType,
   });
 
+  Future<Either<Failure, Pagination<ResidentEntity>>?>? getResidents({
+    int? page,
+    int? limit,
+    String? search,
+  });
+
   Future<Either<Failure, List<ActivityTypeEntity>>?>? getActivityTypes(
       {int? page, int? limit, String? search});
 
   Future<Either<Failure, StaffActivityEntity>?>? editStaffAttendance(
       {required String targetId, DateTime? entranceTime, DateTime? exitTime});
+
+  Future<Either<Failure, ActivityEntity>?>? addGuestActivity(
+      {required ActivityEntity activity,
+      required DateTime entry,
+      required DateTime? exit});
+
+  Future<Either<Failure, ActivityEntity>?>? editGuestActivity(
+      {required String targetId,
+      required ActivityEntity activity,
+      DateTime? entranceTime,
+      DateTime? exitTime});
 }

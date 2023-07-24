@@ -15,11 +15,23 @@ class CodeSentAuthState extends AuthStateState {
   const CodeSentAuthState({required this.verificationId, this.resendToken});
 }
 
+class GettingTokenSuccessAuthState extends AuthStateState {
+  final String token;
+  const GettingTokenSuccessAuthState({required this.token});
+}
+
 class NotVerifiedAuthState extends AuthStateState {}
 
 class VerifiyingAuthState extends AuthStateState {}
 
 class ConfirmingAuthState extends AuthStateState {}
+
+class GettingTokenAuthState extends AuthStateState {}
+
+class GettingTokenFailureAuthState extends AuthStateState {
+  final Failure failure;
+  const GettingTokenFailureAuthState({required this.failure});
+}
 
 class VerificationFailedAuthState extends AuthStateState {
   final Failure failure;

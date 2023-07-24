@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/widgets/big.text.button.dart';
+import '../../../../core/widgets/big.text.button.dart';
 
 class FillUserForm extends StatefulWidget {
   const FillUserForm({
@@ -49,14 +49,6 @@ class _FillUserFormState extends State<FillUserForm> {
                   const SizedBox(
                     height: 200,
                   ),
-                  // TODO Center(
-                  //   child: UserAvatar(
-                  //       userDto: widget.userW,
-                  //       size: 160,
-                  //       onUpload: (x) => widget.onUpload(x),
-                  //       isLoading: (loading) => widget.isLoading(loading),
-                  //       localImage: widget.userDto.localImage),
-                  // ),
                   const SizedBox(
                     height: 16,
                   ),

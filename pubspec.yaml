@@ -60,6 +60,7 @@ dependencies:
   animated_theme_switcher: ^2.0.8
   easy_stepper: ^0.7.2
   animated_icon: ^0.0.5
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:

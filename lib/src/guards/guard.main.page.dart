@@ -5,14 +5,14 @@ import 'package:animated_floating_buttons/widgets/animated_floating_action_butto
 import 'package:flutter/material.dart';
 import 'package:rnginfra/src/core/animations/fade.animation.dart';
 import 'package:rnginfra/src/core/animations/position.animation.dart';
-import 'package:rnginfra/src/guards/activity/presentation/guests/pages/guard.guest.activity.page.dart';
-import 'package:rnginfra/src/guards/activity/presentation/new_activity/pages/add.activity.page.dart';
+import 'package:rnginfra/src/guards/activity/presentation/guests/pages/guest.activity.page.dart';
+import 'package:rnginfra/src/guards/activity/presentation/guests/pages/add.guest.activity.page.dart';
 import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/add.staff.attendance.page.dart';
 import 'package:rnginfra/src/guards/patroll/presentation/patrolls_list/pages/guard.patroll.page.dart';
 import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/guard.staff.attendance.page.dart';
 import 'package:rnginfra/src/guards/patroll/presentation/scan_patrolls/page/scan.patroll.page.dart';
 
-import '../../../core/animations/animate.dart';
+import '../core/animations/animate.dart';
 
 class GuardMainPage extends StatefulWidget {
   const GuardMainPage({super.key});
@@ -69,7 +69,7 @@ class _GuardMainPageState extends State<GuardMainPage>
                   finish: 1,
                   start: 0,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 10.0, bottom: 8),
+                    padding: const EdgeInsets.only(right: 10, bottom: 8),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,7 +99,7 @@ class _GuardMainPageState extends State<GuardMainPage>
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: Text(
-                                  'Add Patroll',
+                                  'Staff Activity',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge!
@@ -117,13 +117,13 @@ class _GuardMainPageState extends State<GuardMainPage>
                           width: 16,
                         ),
                         FloatingActionButton(
-                          heroTag: null,
+                          heroTag: 'STAFF_ACTIVITY',
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ScanPatrollPage()));
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const AddStaffAttendance();
+                                });
                           },
                           child: Icon(
                             Icons.add,
@@ -141,7 +141,7 @@ class _GuardMainPageState extends State<GuardMainPage>
                   end: const Offset(0, 0),
                   milli: 600,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0),
+                    padding: const EdgeInsets.only(bottom: 30.0, right: 6),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,7 +163,7 @@ class _GuardMainPageState extends State<GuardMainPage>
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: Text(
-                                'Add Activity',
+                                'Guest Activity',
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
@@ -181,19 +181,15 @@ class _GuardMainPageState extends State<GuardMainPage>
                         ),
                         Padding(
                             padding:
-                                const EdgeInsets.only(right: 16.0, bottom: 8),
+                                const EdgeInsets.only(right: 10.0, bottom: 8),
                             child: FloatingActionButton(
-                                heroTag: 'ADD_ACTIVITY',
+                                heroTag: 'GUEST_ACTIVITY',
                                 onPressed: () {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return AddStaffAttendance();
+                                        return const AddActivityPage();
                                       });
-                                  // showModalBottomSheet(
-                                  //     context: context,
-                                  //     backgroundColor: Colors.transparent,
-                                  //     builder: (ctx) => AddStaffAttendance()); ;
                                 },
                                 backgroundColor:
                                     Theme.of(context).colorScheme.secondary,
@@ -219,32 +215,13 @@ class _GuardMainPageState extends State<GuardMainPage>
           ),
         ],
       ),
-      // floatingActionButton: AnimatedFloatingActionButton(
-      //   key: key,
-      //   fabButtons: <Widget>[
-      //     add(),
-      //     image(),
-      //     inbox(),
-      //   ],
-      //   colorStartAnimation: Colors.blue,
-      //   colorEndAnimation: Colors.red,
-      //   animatedIconData: AnimatedIcons.menu_close,
-      // ),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
         onPressed: () {
-          if (!fabsVisible) {
-            controller.sink.add(Animate.forward);
-            setState(() {
-              _animationIconController.forward();
-            });
-          } else {
-            controller.sink.add(Animate.reverse);
-            setState(() {
-              _animationIconController.reverse();
-            });
+          _reverseOnEachClickFab();
+          if (fabsVisible) {
+            Future.delayed(const Duration(seconds: 3), _hideFabs);
           }
-          fabsVisible = !fabsVisible;
         },
         child: AnimatedIcon(
           icon: AnimatedIcons.add_event,
@@ -272,38 +249,32 @@ class _GuardMainPageState extends State<GuardMainPage>
         onTap: (index) => setState(() => _currentIndex = index),
         //other params
       ),
-      // bottomNavigationBar: SalomonBottomBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (i) => setState(() => _currentIndex = i),
-      //   margin: const EdgeInsets.symmetric(horizontal: 24),
-      //   items: [
-      //     /// Guest Activity
-      //     SalomonBottomBarItem(
-      //       icon: Icon(_currentIndex != 0
-      //           ? Icons.follow_the_signs_outlined
-      //           : Icons.follow_the_signs_rounded),
-      //       title: const Text("Guest Activity"),
-      //       selectedColor: Colors.purple,
-      //     ),
-
-      //     /// Staff Activity
-      //     SalomonBottomBarItem(
-      //       icon: Icon(_currentIndex != 1 ? Icons.group_outlined : Icons.group),
-      //       title: const Text("Staff Activity"),
-      //       selectedColor: Colors.pink,
-      //     ),
-
-      //     /// Patrolling
-      //     SalomonBottomBarItem(
-      //       icon: Icon(_currentIndex != 2
-      //           ? Icons.local_police_outlined
-      //           : Icons.local_police_rounded),
-      //       title: const Text("Patrolling"),
-      //       selectedColor: Colors.orange,
-      //     ),
-      //   ],
-      // ),
     );
+  }
+
+  void _reverseOnEachClickFab() {
+    if (!fabsVisible) {
+      controller.sink.add(Animate.forward);
+      setState(() {
+        _animationIconController.forward();
+      });
+    } else {
+      controller.sink.add(Animate.reverse);
+      setState(() {
+        _animationIconController.reverse();
+      });
+    }
+    fabsVisible = !fabsVisible;
+  }
+
+  void _hideFabs() {
+    if (fabsVisible) {
+      controller.sink.add(Animate.reverse);
+      setState(() {
+        _animationIconController.reverse();
+      });
+      fabsVisible = !fabsVisible;
+    }
   }
 
   Widget _body(int index) {
