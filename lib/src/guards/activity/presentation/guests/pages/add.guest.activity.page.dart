@@ -22,7 +22,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
   @override
   void initState() {
     controller = getIt<AddActivityController>();
-
+    controller.init();
     controller.initialize();
     super.initState();
   }

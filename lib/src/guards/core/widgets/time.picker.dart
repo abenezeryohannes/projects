@@ -31,8 +31,7 @@ class _CustomeTimePickerState extends State<CustomeTimePicker> {
         onTap: () async {
           TimeOfDay? value = await showTimePicker(
               initialEntryMode: TimePickerEntryMode.inputOnly,
-              initialTime:
-                  TimeOfDay.fromDateTime(widget.time ?? DateTime.now()),
+              initialTime: TimeOfDay.fromDateTime(DateTime.now()),
               context: context,
               hourLabelText: '',
               minuteLabelText: '');

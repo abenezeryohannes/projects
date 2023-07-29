@@ -111,9 +111,14 @@ class _EditStaffAttendanceState extends State<EditStaffAttendance> {
                           onChange: (DateTime change) {
                             setState(() {
                               controller.entranceTime.value = DateTime(
-                                  DateTime.now().year,
-                                  DateTime.now().month,
-                                  DateTime.now().day,
+                                  widget.staffAttendanceEntity.exitAt()?.year ??
+                                      DateTime.now().year,
+                                  widget.staffAttendanceEntity
+                                          .exitAt()
+                                          ?.month ??
+                                      DateTime.now().month,
+                                  widget.staffAttendanceEntity.exitAt()?.day ??
+                                      DateTime.now().day,
                                   change.hour,
                                   change.minute,
                                   0);
@@ -158,9 +163,18 @@ class _EditStaffAttendanceState extends State<EditStaffAttendance> {
                             onChange: (DateTime change) {
                               setState(() {
                                 controller.exitTime.value = DateTime(
-                                    DateTime.now().year,
-                                    DateTime.now().month,
-                                    DateTime.now().day,
+                                    widget.staffAttendanceEntity
+                                            .exitAt()
+                                            ?.year ??
+                                        DateTime.now().year,
+                                    widget.staffAttendanceEntity
+                                            .exitAt()
+                                            ?.month ??
+                                        DateTime.now().month,
+                                    widget.staffAttendanceEntity
+                                            .exitAt()
+                                            ?.day ??
+                                        DateTime.now().day,
                                     change.hour,
                                     change.minute,
                                     0);
@@ -312,13 +326,13 @@ class _EditStaffAttendanceState extends State<EditStaffAttendance> {
               ),
             ),
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

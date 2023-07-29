@@ -75,8 +75,10 @@ class AppSnackBar {
         snackPosition: position ?? SnackPosition.BOTTOM);
   }
 
-  AppSnackBar.failure({required Failure failure, SnackPosition? position}) {
+  AppSnackBar.failure(
+      {required Failure failure, SnackPosition? position, Duration? duration}) {
     Get.snackbar('Error', failure.message ?? 'Unknown',
+        duration: duration ?? const Duration(seconds: 3),
         messageText: Text(
           failure.message ?? 'Sorry, something went wrong. try again later!',
           style: TextStyle(

@@ -15,4 +15,7 @@ abstract class IPatrollRepository {
       {required PatrollEntity patroll, required int id});
   Future<Either<Failure, Pagination<PatrollEntity>>?>? listPatroll(
       {int? page, int? limit, DateTime? startTime, DateTime? endTime});
+
+  Future<Either<Failure, Pagination<PatrollEntity>>?>? listLocalPatroll(
+      {int? page, int? limit, DateTime? startTime, DateTime? endTime});
 }

@@ -1,12 +1,9 @@
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/core/errors/exceptions.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/widgets/app.snackbar.dart';
 import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
-import 'package:rnginfra/src/guards/patroll/domain/entitites/patroll.entity.dart';
 import 'package:rnginfra/src/guards/patroll/domain/usecases/add.patroll.usecase.dart';
 
 @injectable
@@ -19,11 +16,12 @@ class ScanPatrollController extends GetxController {
 
   Rx<Failure?> failure = Rx<Failure?>(null);
 
+  RxBool canScan = true.obs;
+
   Future addQr(
       {required int qr_code,
       required double latitude,
-      required double longitude,
-      required BuildContext context}) async {
+      required double longitude}) async {
     //loading
     status.value = 'Uploading';
     status.refresh();
@@ -44,8 +42,10 @@ class ScanPatrollController extends GetxController {
       failure.refresh();
       AppSnackBar.failure(failure: l);
     }, (r) {
+      canScan.value = false;
+      canScan.refresh();
       status.value = 'Qr uploaded';
-      Navigator.maybePop(context);
+      Get.back();
       AppSnackBar.success(title: 'Success', message: "Reading Uploaded !!");
     });
   }

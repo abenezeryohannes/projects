@@ -389,4 +389,64 @@ class ActivityRepository extends IActivityRepository {
       return Left(Failure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Pagination<GuestActivityEntity>>?>?
+      getLocalGuestActivities(
+          {int? page,
+          int? limit,
+          String? type,
+          DateTime? startTime,
+          DateTime? endTime}) async {
+    try {
+      final result = await localDataSource.loadGuestActivity(
+          page: page, limit: limit, type: type);
+      if (result == null) {
+        throw CacheException();
+      }
+      return Right(Pagination<GuestActivityEntity>.fill(results: result));
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Pagination<StaffAttendanceEntity>>?>?
+      getLocalStaffActivities(
+          {int? page,
+          int? limit,
+          String? type,
+          DateTime? startTime,
+          DateTime? endTime}) async {
+    try {
+      final result = await localDataSource.loadStaffActivity(
+          page: page, limit: limit, type: type);
+      if (result == null) {
+        throw CacheException();
+      }
+      return Right(Pagination<StaffAttendanceEntity>.fill(results: result));
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
 }

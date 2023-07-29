@@ -14,7 +14,7 @@ class EditStaffAttendanceController extends GetxController {
 
   // loading status holder variables
   RxBool loadingEditStaffs = false.obs;
-  Rx<DateTime?> exitTime = Rx<DateTime?>(null);
+  Rx<DateTime?> exitTime = Rx<DateTime?>(DateTime.now());
   Rx<DateTime?> entranceTime = Rx<DateTime?>(null);
 
   //data holder

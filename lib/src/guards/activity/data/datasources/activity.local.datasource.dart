@@ -1,16 +1,13 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/auth/domain/entities/user.entity.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.type.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../domain/entities/staff.activity.entity.dart';
 import '../../domain/entities/staff.attendance.entity.dart';
 
 @singleton
@@ -30,8 +27,7 @@ class ActivityLocalDatasource {
   Future<List<GuestActivityEntity>>? loadGuestActivity(
       {int? page, String? type, int? limit}) async {
     if (page != null && page > 1) return [];
-    final data = cache
-        .getString(GUEST_ACTIVITY_KEY + (type != null ? ('___' + type) : ''));
+    final data = cache.getString(GUEST_ACTIVITY_KEY + (page?.toString() ?? ''));
     if (data == null) throw CacheFailure();
     return GuestActivityEntity.loadGuestActivities(json.decode(data));
   }
@@ -39,8 +35,7 @@ class ActivityLocalDatasource {
   Future<List<StaffAttendanceEntity>>? loadStaffActivity(
       {int? page, String? type, int? limit}) async {
     if (page != null && page > 1) return [];
-    final data = cache
-        .getString(STAFF_ACTIVITY_KEY + (type != null ? ('___' + type) : ''));
+    final data = cache.getString(STAFF_ACTIVITY_KEY + (page?.toString() ?? ''));
     if (data == null) throw CacheFailure();
     return StaffAttendanceEntity.loadAttendances(json.decode(data));
   }
@@ -78,16 +73,14 @@ class ActivityLocalDatasource {
       int? page, String? type, List<GuestActivityEntity> activities) async {
     if (page != null && page > 1) return false;
     return await cache.setString(
-        GUEST_ACTIVITY_KEY + (type != null ? ('___' + type) : ''),
-        json.encode(activities));
+        GUEST_ACTIVITY_KEY + (page?.toString() ?? ''), json.encode(activities));
   }
 
   Future<bool>? saveStaffActivity(
       int? page, String? type, List<StaffAttendanceEntity> activities) async {
     if (page != null && page > 1) return false;
     return await cache.setString(
-        STAFF_ACTIVITY_KEY + (type != null ? ('___' + type) : ''),
-        json.encode(activities));
+        STAFF_ACTIVITY_KEY + (page?.toString() ?? ''), json.encode(activities));
   }
 
   Future<bool>? saveStaffs(int? page, result) async {

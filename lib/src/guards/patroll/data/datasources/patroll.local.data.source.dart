@@ -42,6 +42,7 @@ class PatrollLocalDataSource {
 
   Future<bool>? savePatroll(int? page, List<PatrollEntity> patrolls) async {
     if (page != null && page > 1) return false;
-    return await cache.setString(PATROLL_KEY, json.encode(patrolls));
+    return await cache.setString(
+        PATROLL_KEY + (page?.toString() ?? ''), json.encode(patrolls));
   }
 }

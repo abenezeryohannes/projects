@@ -12,14 +12,25 @@ import '../widgets/cab.guest.activity.card.dart';
 import '../widgets/guest.activity.date.picker.dart';
 
 class GuardGuestActivityPage extends StatefulWidget {
-  const GuardGuestActivityPage({super.key});
+  GuardGuestActivityPage({super.key});
+  final _activityPageState = _GuardGuestActivityPageState();
 
   @override
-  State<GuardGuestActivityPage> createState() => _GuardGuestActivityPageState();
+  State<GuardGuestActivityPage> createState() => _activityPageState;
+
+  void reload() {
+    _activityPageState.reload();
+  }
 }
 
 class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
-  late GuestActivityBloc activityBloc;
+  GuestActivityBloc activityBloc = getIt<GuestActivityBloc>();
+
+  void reload() {
+    if (!activityBloc.isClosed) {
+      activityBloc.pagingController.refresh();
+    }
+  }
 
   @override
   void initState() {

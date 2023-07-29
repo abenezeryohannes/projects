@@ -23,9 +23,13 @@ class GuardMainPage extends StatefulWidget {
 
 class _GuardMainPageState extends State<GuardMainPage>
     with SingleTickerProviderStateMixin {
+//
   final GlobalKey<AnimatedFloatingActionButtonState> key =
       GlobalKey<AnimatedFloatingActionButtonState>();
-
+//
+  GuardGuestActivityPage? _activityPage;
+  GuardStaffAttendancePage? _attendancePage;
+//
   int _currentIndex = 0;
   List<IconData> iconList = [
     Icons.local_activity,
@@ -45,44 +49,137 @@ class _GuardMainPageState extends State<GuardMainPage>
     super.initState();
   }
 
+  List<int> indexStack = [];
+  Future<bool> _onWillPop() async {
+    if (indexStack.isEmpty) {
+      return true;
+    } else {
+      if (indexStack.last == 0) {
+        _activityPage = null;
+      }
+      if (indexStack.last == 1) {
+        _attendancePage = null;
+      }
+      setState(() {
+        _currentIndex = indexStack.last;
+      });
+      indexStack.removeLast();
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(F.title),
-      // ),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Stack(
-        children: [
-          _body(_currentIndex),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FadeAnimation(
-                  begin: const Offset(0, 2),
-                  controller: controller,
-                  delay: 100,
-                  end: const Offset(0, 0),
-                  milli: 600,
-                  finish: 1,
-                  start: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10, bottom: 8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        FadeAnimation(
-                          begin: const Offset(0, 0),
-                          controller: controller,
-                          delay: 100,
-                          end: const Offset(0, 0),
-                          milli: 600,
-                          finish: 1,
-                          start: 0,
-                          child: Material(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: Stack(
+          children: [
+            _body(_currentIndex),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FadeAnimation(
+                    begin: const Offset(0, 2),
+                    controller: controller,
+                    delay: 100,
+                    end: const Offset(0, 0),
+                    milli: 600,
+                    finish: 1,
+                    start: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10, bottom: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          FadeAnimation(
+                            begin: const Offset(0, 0),
+                            controller: controller,
+                            delay: 100,
+                            end: const Offset(0, 0),
+                            milli: 600,
+                            finish: 1,
+                            start: 0,
+                            child: Material(
+                              elevation: 1,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ScanPatrollPage()))
+                                      .then((value) {
+                                    if (value != null) {
+                                      _attendancePage!.reload();
+                                    }
+                                  });
+                                  ;
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  child: Text(
+                                    'Staff Activity',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(
+                                            fontSize: 16,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          FloatingActionButton(
+                            heroTag: 'STAFF_ACTIVITY',
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddStaffAttendance();
+                                  }).then((value) {
+                                if (value != null) {
+                                  _attendancePage!.reload();
+                                }
+                              });
+                              ;
+                            },
+                            child: Icon(
+                              Icons.add,
+                              color: Theme.of(context).colorScheme.onSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  PositionAnimation(
+                    begin: const Offset(1, 2),
+                    controller: controller,
+                    delay: 100,
+                    end: const Offset(0, 0),
+                    milli: 600,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0, right: 6),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Material(
                             elevation: 1,
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
@@ -90,16 +187,21 @@ class _GuardMainPageState extends State<GuardMainPage>
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ScanPatrollPage()));
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddActivityPage()))
+                                    .then((value) {
+                                  // if (value != null) {
+                                  _activityPage!.reload();
+                                  // }
+                                });
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: Text(
-                                  'Staff Activity',
+                                  'Guest Activity',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge!
@@ -112,142 +214,88 @@ class _GuardMainPageState extends State<GuardMainPage>
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        FloatingActionButton(
-                          heroTag: 'STAFF_ACTIVITY',
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AddStaffAttendance();
-                                });
-                          },
-                          child: Icon(
-                            Icons.add,
-                            color: Theme.of(context).colorScheme.onSecondary,
+                          const SizedBox(
+                            width: 16,
                           ),
-                        ),
-                      ],
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 10.0, bottom: 8),
+                              child: FloatingActionButton(
+                                  heroTag: 'GUEST_ACTIVITY',
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return const AddActivityPage();
+                                        }).then((value) {
+                                      if (value != null) {
+                                        _activityPage!.reload();
+                                      }
+                                    });
+                                  },
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
+                                  ))),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                PositionAnimation(
-                  begin: const Offset(1, 2),
-                  controller: controller,
-                  delay: 100,
-                  end: const Offset(0, 0),
-                  milli: 600,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0, right: 6),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Material(
-                          elevation: 1,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddActivityPage()));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child: Text(
-                                'Guest Activity',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(
-                                        fontSize: 16,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Padding(
-                            padding:
-                                const EdgeInsets.only(right: 10.0, bottom: 8),
-                            child: FloatingActionButton(
-                                heroTag: 'GUEST_ACTIVITY',
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return const AddActivityPage();
-                                      });
-                                },
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                child: Icon(
-                                  Icons.add,
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                ))
-                            // FloatingActionButton(
-                            //   onPressed: () {},
-                            //   child: Icon(
-                            //     Icons.add,
-                            //     color: Theme.of(context).colorScheme.onSecondary,
-                            //   ),
-                            // ),
-                            ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: null,
-        onPressed: () {
-          _reverseOnEachClickFab();
-          if (fabsVisible) {
-            Future.delayed(const Duration(seconds: 3), _hideFabs);
-          }
-        },
-        child: AnimatedIcon(
-          icon: AnimatedIcons.add_event,
-          color: Theme.of(context).colorScheme.onSecondary,
-          progress: _animationIconController,
+          ],
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        icons: [
-          (_currentIndex != 0
-              ? Icons.follow_the_signs_outlined
-              : Icons.follow_the_signs_rounded),
-          (_currentIndex != 1 ? Icons.group_outlined : Icons.group),
-          (_currentIndex != 2
-              ? Icons.local_police_outlined
-              : Icons.local_police_rounded)
-        ],
-        activeIndex: _currentIndex,
-        gapLocation: GapLocation.end,
-        notchSmoothness: NotchSmoothness.verySmoothEdge,
-        leftCornerRadius: 0,
-        rightCornerRadius: 0,
-        activeColor: Theme.of(context).colorScheme.primary,
-        onTap: (index) => setState(() => _currentIndex = index),
-        //other params
+        floatingActionButton: FloatingActionButton(
+          heroTag: null,
+          onPressed: () {
+            _reverseOnEachClickFab();
+            if (fabsVisible) {
+              Future.delayed(const Duration(seconds: 3), _hideFabs);
+            }
+          },
+          child: AnimatedIcon(
+            icon: AnimatedIcons.add_event,
+            color: Theme.of(context).colorScheme.onSecondary,
+            progress: _animationIconController,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        bottomNavigationBar: AnimatedBottomNavigationBar(
+          icons: [
+            (_currentIndex != 0
+                ? Icons.follow_the_signs_outlined
+                : Icons.follow_the_signs_rounded),
+            (_currentIndex != 1 ? Icons.group_outlined : Icons.group),
+            (_currentIndex != 2
+                ? Icons.local_police_outlined
+                : Icons.local_police_rounded)
+          ],
+          activeIndex: _currentIndex,
+          gapLocation: GapLocation.end,
+          notchSmoothness: NotchSmoothness.verySmoothEdge,
+          leftCornerRadius: 0,
+          rightCornerRadius: 0,
+          activeColor: Theme.of(context).colorScheme.primary,
+          onTap: (index) {
+            if (index == 0) {
+              _activityPage = null;
+            }
+            if (index == 1) {
+              _attendancePage = null;
+            }
+            if (indexStack.contains(_currentIndex)) {
+              indexStack.removeWhere((element) => element == _currentIndex);
+            }
+            indexStack.add(_currentIndex);
+            setState(() => _currentIndex = index);
+          },
+          //other params
+        ),
       ),
     );
   }
@@ -280,13 +328,16 @@ class _GuardMainPageState extends State<GuardMainPage>
   Widget _body(int index) {
     switch (index) {
       case 0:
-        return const GuardGuestActivityPage();
+        _activityPage ??= GuardGuestActivityPage();
+        return _activityPage!;
       case 1:
-        return const GuardStaffAttendancePage();
+        _attendancePage ??= GuardStaffAttendancePage();
+        return _attendancePage!;
       case 2:
         return const GuardPatrollPage();
       default:
-        return const GuardGuestActivityPage();
+        _activityPage ??= GuardGuestActivityPage();
+        return _activityPage!;
     }
   }
 }

@@ -29,6 +29,24 @@ abstract class IActivityRepository {
     DateTime? endTime,
   });
 
+  Future<Either<Failure, Pagination<StaffAttendanceEntity>>?>?
+      getLocalStaffActivities({
+    int? page,
+    int? limit,
+    String? type,
+    DateTime? startTime,
+    DateTime? endTime,
+  });
+
+  Future<Either<Failure, Pagination<GuestActivityEntity>>?>?
+      getLocalGuestActivities({
+    int? page,
+    int? limit,
+    String? type,
+    DateTime? startTime,
+    DateTime? endTime,
+  });
+
   Future<Either<Failure, StaffActivityEntity>?>? addStaffAttendance(
       {required String targetId, required DateTime time});
 

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rnginfra/main/injectable/getit.dart';
 import 'package:rnginfra/src/core/errors/exceptions.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/widgets/show.error.dart';
+import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
 import 'package:rnginfra/src/guards/patroll/presentation/patrolls_list/widgets/patroll.card.dart';
 import 'package:rnginfra/src/guards/patroll/presentation/patrolls_list/widgets/patroll.date.picker.dart';
+import 'package:rnginfra/src/guards/patroll/presentation/scan_patrolls/controller/scan.patroll.controller.dart';
 
+import '../../../../../core/widgets/app.snackbar.dart';
 import '../../../domain/entitites/patroll.entity.dart';
 import '../../scan_patrolls/page/scan.patroll.page.dart';
 import '../bloc/patroll_bloc.dart';
@@ -42,6 +46,24 @@ class _GuardPatrollPageState extends State<GuardPatrollPage> {
     super.dispose();
   }
 
+  void _postScan(AddPatrollDto? dto) async {
+    try {
+      if (dto == null) {
+        throw Exception('Invalid Qr format (Must be a number)!');
+      }
+      if (dto.latitude == 0 || dto.longitude == 0) {
+        throw Exception(
+            'Please Turn location on and give us permission first.');
+      }
+      await getIt<ScanPatrollController>().addQr(
+          qr_code: dto.qr_code_id,
+          latitude: dto.latitude,
+          longitude: dto.longitude);
+    } catch (e) {
+      AppSnackBar.failure(failure: Failure(message: e.toString()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +72,15 @@ class _GuardPatrollPageState extends State<GuardPatrollPage> {
           IconButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ScanPatrollPage()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ScanPatrollPage()))
+                    .then((value) async {
+                  if (value != null) {
+                    AddPatrollDto? dto = value as AddPatrollDto;
+                    _postScan(dto);
+                  }
+                });
               },
               icon: Icon(
                 Icons.add,

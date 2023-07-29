@@ -153,7 +153,7 @@ class _AddStaffAttendanceState extends State<AddStaffAttendance> {
                                     .toString(),
                                 time: DateTime.now());
                           } else {
-                            Navigator.maybePop(context);
+                            Navigator.maybePop(context, 'reload');
                           }
                         },
                         backgroudColor: (controller.staffActivity.value == null)

@@ -90,6 +90,10 @@ class AddActivityController extends GetxController {
       saving.value = false;
       saving.refresh();
       error.refresh();
+      AppSnackBar.failure(
+          failure: l,
+          position: SnackPosition.TOP,
+          duration: const Duration(seconds: 10));
     }, (r) async {
       saving.value = false;
       saving.refresh();
@@ -246,5 +250,11 @@ class AddActivityController extends GetxController {
       loadingResidents.value = false;
       loadingResidents.refresh();
     });
+  }
+
+  void init() {
+    activeStep = 0;
+    activity = Rx<ActivityEntity>(ActivityEntity());
+    refresh();
   }
 }

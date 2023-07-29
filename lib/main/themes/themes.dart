@@ -23,6 +23,23 @@ ThemeData lightDriverThemeData = ThemeData(
       onPrimaryContainer: Color(0xFFFFFFFF),
       onSecondaryContainer: Color(0xFFFFFFFF),
     ));
+// ThemeData lightDriverThemeData = ThemeData(
+//     primaryColor: const Color(0xFF395873),
+//     textTheme: const TextTheme(labelLarge: TextStyle(color: Colors.white70)),
+//     brightness: Brightness.light,
+//     cardColor: const Color(0xFFF4F4F4),
+//     scaffoldBackgroundColor: const Color(0xFFFFFFFF),
+//     colorScheme: const ColorScheme.light(
+//       secondary: Color(0xFF395873),
+//       onSecondary: Color(0xFFFFFFFF),
+//       onBackground: Color(0xFF395873),
+//       background: Color(0xFFFFFFFF),
+//       onPrimary: Color(0xFFFFFFFF),
+//       primary: Color(0xFF395873),
+//       primaryContainer: Color(0xFF395873),
+//       onPrimaryContainer: Color(0xFFFFFFFF),
+//       onSecondaryContainer: Color(0xFFFFFFFF),
+//     ));
 
 ThemeData darkDriverThemeData = ThemeData(
     primaryColor: Colors.blue,

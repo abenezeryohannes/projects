@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/staff.activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.entity.dart';
-import 'package:rnginfra/src/guards/activity/presentation/staffs/widgets/staff.activity.card.dart';
 import 'package:rnginfra/src/guards/activity/presentation/staffs/widgets/staff.attendance.card.dart';
 
 import '../../../../../../main/injectable/getit.dart';
@@ -14,21 +12,31 @@ import '../bloc/staff_activity_bloc.dart';
 import '../widgets/staff.activity.date.picker.dart';
 
 class GuardStaffAttendancePage extends StatefulWidget {
-  const GuardStaffAttendancePage({super.key});
-
+  GuardStaffAttendancePage({super.key});
+  final _staffAttendancePageState = _GuardStaffAttendancePageState();
   @override
-  State<GuardStaffAttendancePage> createState() =>
-      _GuardStaffAttendancePageState();
+  State<GuardStaffAttendancePage> createState() => _staffAttendancePageState;
+
+  void reload() {
+    _staffAttendancePageState.reload();
+  }
 }
 
 class _GuardStaffAttendancePageState extends State<GuardStaffAttendancePage> {
-  late StaffActivityBloc activityBloc;
+  StaffActivityBloc activityBloc = getIt<StaffActivityBloc>();
   late DateTime? startTime;
   late DateTime? endTime;
+  //
+  void reload() {
+    if (!activityBloc.isClosed) {
+      activityBloc.pagingController.refresh();
+    }
+  }
+
+  //
   @override
   void initState() {
     activityBloc = getIt<StaffActivityBloc>();
-
     activityBloc.pagingController.addPageRequestListener((pageKey) {
       activityBloc.add(OnLoadStaffAttendanceEvent(
           startTime: activityBloc.selectedDay,

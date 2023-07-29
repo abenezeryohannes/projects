@@ -27,9 +27,7 @@ class StaffActivityBloc extends Bloc<StaffActivityEvent, StaffActivityState> {
 
   StaffActivityBloc(this._getStaffsActivityUseCase)
       : super(StaffActivityInitial()) {
-    on<StaffActivityEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<StaffActivityEvent>((event, emit) {});
 
     on<OnLoadStaffAttendanceEvent>((event, emit) async {
       final result = await _getStaffsActivityUseCase(GetStaffsActivityParam(

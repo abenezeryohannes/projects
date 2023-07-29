@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart' as loc;
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:rnginfra/main/injectable/getit.dart';
-import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/widgets/app.snackbar.dart';
+import 'package:rnginfra/src/core/widgets/custom.shimmer.dart';
 import 'package:rnginfra/src/core/widgets/loading.bar.dart';
+import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
 import 'package:rnginfra/src/guards/patroll/presentation/scan_patrolls/controller/scan.patroll.controller.dart';
 
 class ScanPatrollPage extends StatefulWidget {
@@ -19,8 +20,10 @@ class ScanPatrollPage extends StatefulWidget {
 }
 
 class _ScanPatrollPageState extends State<ScanPatrollPage> {
+  Position? p;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
+  loc.LocationData? l;
   QRViewController? controller;
 
   late final ScanPatrollController getXController;
@@ -30,6 +33,7 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
   void initState() {
     super.initState();
     getXController = getIt<ScanPatrollController>();
+    getXController.canScan.value = true;
   }
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -46,6 +50,8 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
 
   @override
   Widget build(BuildContext context) {
+    loadPosition();
+
     return Scaffold(
       // backgroundColor: Colors.amber,
 
@@ -57,9 +63,36 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
               children: <Widget>[
                 Expanded(
                   flex: 5,
-                  child: QRView(
-                    key: qrKey,
-                    onQRViewCreated: (x) => _onQRViewCreated(x, context),
+                  child: Stack(
+                    children: [
+                      QRView(
+                        key: qrKey,
+                        onQRViewCreated: (x) => _onQRViewCreated(x, context),
+                      ),
+                      Expanded(
+                          // flex: 5,
+                          child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    color: Colors.black.withOpacity(0.3),
+                                    width: MediaQuery.of(context).size.height *
+                                        (2 / 12)),
+                                bottom: BorderSide(
+                                    color: Colors.black.withOpacity(0.3),
+                                    width: MediaQuery.of(context).size.height *
+                                        (2 / 12)),
+                                right: BorderSide(
+                                    color: Colors.black.withOpacity(0.3),
+                                    width: MediaQuery.of(context).size.width *
+                                        (2 / 12)),
+                                left: BorderSide(
+                                    color: Colors.black.withOpacity(0.3),
+                                    width: MediaQuery.of(context).size.width *
+                                        (2 / 12)))),
+                        child: Container(),
+                      )),
+                    ],
                   ),
                 ),
                 Expanded(
@@ -72,9 +105,15 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
                               onTap: () {
                                 _postScan('13454235', context);
                               },
-                              child: Text(getXController.status.value,
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium),
+                              child: CustomShimmer(
+                                show: true,
+                                baseColor: Colors.grey.shade700,
+                                highlightColor: Colors.grey.shade300,
+                                child: Text(getXController.status.value,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall),
+                              ),
                             )
                           : Text(
                               getXController.status.value,
@@ -112,6 +151,7 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
   void _onQRViewCreated(QRViewController controller, BuildContext context) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
+      if (!getXController.canScan.value) return;
       setState(() {
         uploading = true;
         result = scanData;
@@ -120,27 +160,26 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
     });
   }
 
-  void _postScan(String? qr, BuildContext context) async {
+  void loadPosition() async {
+    // p ??= await Geolocator.getLastKnownPosition();
     try {
-      if (qr == null || int.tryParse(qr) == null) {
-        throw Exception('Invlid Qr format (Must be a number)!');
-      }
-      Position p = await _determinePosition();
-      setState(() {
-        uploading = true;
-      });
-      await getXController.addQr(
-          qr_code: int.parse(qr),
-          latitude: p.latitude,
-          longitude: p.longitude,
-          context: context);
+      // if (Platform.isAndroid) {
+      //   l = await _determinPositionForAndroid();
+      // } else {
+      p = await _determinePosition();
+      // }
     } catch (e) {
-      AppSnackBar.failure(failure: Failure(message: e.toString()));
-    } finally {
-      setState(() {
-        uploading = false;
-      });
+      AppSnackBar.error(message: e.toString());
     }
+  }
+
+  void _postScan(String? code, BuildContext context) {
+    // p = await _determinePosition();
+    AddPatrollDto addPatrollDto = AddPatrollDto(
+        qr_code_id: int.parse(code!),
+        latitude: p?.latitude ?? 0,
+        longitude: p?.longitude ?? 0);
+    Navigator.maybePop(context, addPatrollDto);
   }
 
   /// Determine the current position of the device.
@@ -150,13 +189,8 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
-
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('Location services are disabled.');
     }
 
@@ -164,11 +198,6 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
@@ -179,9 +208,34 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+        forceAndroidLocationManager: true);
+  }
+
+  Future<loc.LocationData?> _determinPositionForAndroid() async {
+    loc.Location location = new loc.Location();
+
+    bool _serviceEnabled;
+    loc.PermissionStatus _permissionGranted;
+    loc.LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return null;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == loc.PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != loc.PermissionStatus.granted) {
+        return null;
+      }
+    }
+    return await location.getLocation();
   }
 
   @override
