@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Controller, Get, Query, Render, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { createReadStream, existsSync } from 'fs';
 import { join } from 'path';
@@ -29,12 +29,12 @@ export class AppController {
     }
   }
 
-  @Get()
-  home(@Query() query: any, @Res() res) {
-    return res.send('Hello there !');
-  }
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  // @Get()
+  // home(@Query() query: any, @Res() res) {
+  //   return res.send('Hello there !');
+  // }
+
+  // @Get('terms_and_conditions')
+  // @Render('terms.and.condition.html')
+  // termsAndConditions() {}
 }

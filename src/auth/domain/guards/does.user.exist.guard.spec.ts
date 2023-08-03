@@ -1,4 +1,4 @@
-import { UsersService } from 'src/users/domain/services/users.service';
+import { UsersService } from 'src/modules/users/domain/services/users.service';
 import { DoesUserExist } from './does.user.exist.guard';
 
 describe('DoesUserExist', () => {

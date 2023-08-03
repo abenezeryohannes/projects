@@ -2,24 +2,15 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  Inject,
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { DataSource } from 'typeorm';
 import { Token } from '../entities/token.entity';
-import { TOKEN_REPOSITORY } from '../../../core/constants';
-import { UsersService } from '../../../users/domain/services/users.service';
-import { User } from '../../../users/domain/entities/user.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private readonly userService: UsersService,
-    @InjectRepository(Token) private tokenRepository: Repository<Token>,
-  ) {}
+  constructor(private reflector: Reflector, private dataSource: DataSource) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const permittedRoles = this.reflector.get<string[]>(
@@ -37,7 +28,7 @@ export class RolesGuard implements CanActivate {
     }
     const jwt = request.headers.authorization.replace('Bearer ', '');
 
-    const token = await this.tokenRepository.findOne({
+    const token = await this.dataSource.getRepository(Token).findOne({
       where: { token: jwt },
       relations: {
         user: true,
@@ -51,7 +42,7 @@ export class RolesGuard implements CanActivate {
       request.user.Token = token;
     }
 
-    return matchRoles(token.role, permittedRoles);
+    return matchRoles(token.role.toUpperCase(), permittedRoles);
   }
 }
 

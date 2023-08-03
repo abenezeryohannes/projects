@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { UsersService } from 'src/users/domain/services/users.service';
+import { UsersService } from 'src/modules/users/domain/services/users.service';
 
 @Injectable()
 export class DoesUserExist implements CanActivate {

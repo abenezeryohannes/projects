@@ -1,4 +1,4 @@
-import { User } from '../../../../src/users/domain/entities/user.entity';
+import { User } from '../../../modules/users/domain/entities/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
@@ -12,7 +12,7 @@ export class Token {
   @Column()
   token: string;
 
-  @Column()
+  @Column({ name: 'fcm_token' })
   fcmToken: string;
 
   @Column()

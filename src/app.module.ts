@@ -3,30 +3,27 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { UsersModule } from './users/users.module';
-import { User } from './users/domain/entities/user.entity';
+import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { Token } from './auth/domain/entities/token.entity';
+import { config } from './config/orm.config';
+import { CompaniesModule } from './modules/companies/companies.module';
+import { ChatsModule } from './modules/chats/chats.module';
+import { MessageGateway } from './message.gateway';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'linkoai',
-      entities: [User, Token],
-      migrations: ['../migrations/*{.ts,.js}'],
-      synchronize: true,
-      autoLoadEntities: true,
-    }),
+    TypeOrmModule.forRoot(config as TypeOrmModule),
     UsersModule,
     AuthModule,
+    CompaniesModule,
+    ChatsModule,
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'assets/public'),
+    //   exclude: ['/api*'],
+    // }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MessageGateway],
 })
 export class AppModule {
   constructor(private DataSource: DataSource) {}
