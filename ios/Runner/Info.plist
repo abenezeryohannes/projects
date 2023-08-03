@@ -72,5 +72,10 @@
     <string>Used to capture audio for image picker plugin</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>This app needs file access to upload images</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en-US</string>
+		<string>ar-KW</string>
+	</array>
 </dict>
 </plist>
