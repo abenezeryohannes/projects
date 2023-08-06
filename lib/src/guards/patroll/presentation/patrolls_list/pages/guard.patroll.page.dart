@@ -83,7 +83,7 @@ class _GuardPatrollPageState extends State<GuardPatrollPage> {
                 });
               },
               icon: Icon(
-                Icons.add,
+                Icons.qr_code,
                 size: 24,
                 color: Theme.of(context).colorScheme.secondary,
               )),

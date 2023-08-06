@@ -62,7 +62,6 @@ dependencies:
   animated_icon: ^0.0.5
   geolocator: ^9.0.2
 
-  location: ^5.0.0
 
 dev_dependencies:
   flutter_test:

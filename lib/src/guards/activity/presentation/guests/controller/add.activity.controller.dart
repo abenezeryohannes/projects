@@ -54,7 +54,6 @@ class AddActivityController extends GetxController {
   RxBool loadingActivityTypes = false.obs;
   RxBool loadingGuests = false.obs;
   RxBool saving = false.obs;
-  RxBool canGoToStep3 = false.obs;
 
   Rx<DateTime> entry = Rx<DateTime>(DateTime.now());
   Rx<DateTime> exit = Rx<DateTime>(DateTime.now());
@@ -256,5 +255,15 @@ class AddActivityController extends GetxController {
     activeStep = 0;
     activity = Rx<ActivityEntity>(ActivityEntity());
     refresh();
+  }
+
+  bool canGoToStep3() {
+    if (activity.value.field_guest_type?.toLowerCase().contains('cab') ??
+        false) {
+      return activity.value.field_short_notes != null &&
+          activity.value.field_ref_apartment_unit != null;
+    } else {
+      return activity.value.field_short_notes != null;
+    }
   }
 }

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.entity.dart';
+import 'package:rnginfra/src/guards/activity/presentation/staffs/controllers/add.staff.attendance.controller.dart';
+import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/scan.staff.attendance.page.dart';
 import 'package:rnginfra/src/guards/activity/presentation/staffs/widgets/staff.attendance.card.dart';
 
 import '../../../../../../main/injectable/getit.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failure.dart';
+import '../../../../../core/widgets/app.snackbar.dart';
 import '../../../../../core/widgets/show.error.dart';
 import '../bloc/staff_activity_bloc.dart';
 import '../widgets/staff.activity.date.picker.dart';
@@ -33,7 +36,6 @@ class _GuardStaffAttendancePageState extends State<GuardStaffAttendancePage> {
     }
   }
 
-  //
   @override
   void initState() {
     activityBloc = getIt<StaffActivityBloc>();
@@ -47,11 +49,38 @@ class _GuardStaffAttendancePageState extends State<GuardStaffAttendancePage> {
     super.initState();
   }
 
+  void _postScan(String qr) async {
+    try {
+      await getIt<AddStaffAttendanceController>()
+          .addStaffSnack(targetId: qr, time: DateTime.now(), page: widget);
+    } catch (e) {
+      AppSnackBar.failure(failure: Failure(message: e.toString()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ScanStaffAttendancePage()))
+                    .then((value) async {
+                  if (value != null) {
+                    _postScan(value);
+                  }
+                });
+              },
+              icon: Icon(
+                Icons.qr_code,
+                size: 24,
+                color: Theme.of(context).colorScheme.secondary,
+              )),
           IconButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -79,7 +108,7 @@ class _GuardStaffAttendancePageState extends State<GuardStaffAttendancePage> {
                 Icons.calendar_month,
                 size: 24,
                 color: Theme.of(context).colorScheme.secondary,
-              ))
+              )),
         ],
         centerTitle: false,
         elevation: 0.3,

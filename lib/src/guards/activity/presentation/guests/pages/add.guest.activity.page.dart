@@ -161,7 +161,6 @@ class _AddActivityPageState extends State<AddActivityPage> {
                       setState(() {
                         controller.activity.value.field_vehicle_identification =
                             val;
-                        controller.canGoToStep3.value = val.isNotEmpty;
                       });
                     },
                     placeholder: 'Vehicle Identification',
@@ -228,7 +227,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
           padding: const EdgeInsets.only(top: 30.0),
           child: AnimatedOpacity(
             duration: const Duration(seconds: 1),
-            opacity: controller.canGoToStep3.value ? 1 : 0,
+            opacity: controller.canGoToStep3() ? 1 : 0,
             child: TextButton(
                 onPressed: () {
                   controller.save(context);
@@ -390,7 +389,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
             padding: const EdgeInsets.only(top: 40.0),
             child: AnimatedOpacity(
               duration: const Duration(seconds: 1),
-              opacity: controller.canGoToStep3.value ? 1 : 0,
+              opacity: controller.canGoToStep3() ? 1 : 0,
               child: TextButton(
                   onPressed: () {
                     controller.save(context);

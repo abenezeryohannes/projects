@@ -4,8 +4,10 @@ import 'package:rnginfra/src/auth/domain/entities/user.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/usecases/add.staff.attendance.usecase.dart';
 import 'package:rnginfra/src/guards/activity/domain/usecases/get.staffs.usecase.dart';
+import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/guard.staff.attendance.page.dart';
 
 import '../../../../../core/errors/failure.dart';
+import '../../../../../core/widgets/app.snackbar.dart';
 
 @injectable
 class AddStaffAttendanceController extends GetxController {
@@ -55,6 +57,27 @@ class AddStaffAttendanceController extends GetxController {
       staffActivity.refresh();
       loadingAddStaffs.value = false;
       loadingAddStaffs.refresh();
+    });
+  }
+
+  //adding without UI update
+
+  Future addStaffSnack(
+      {required String targetId,
+      required DateTime time,
+      GuardStaffAttendancePage? page}) async {
+    final result = await addStaffAttendanceUseCase(
+        AddStaffAttendanceParam(targetId: targetId, time: time));
+    if (result == null) {
+      AppSnackBar.failure(
+          failure: Failure(message: UnExpectedFailure().message.toString()));
+    }
+    result?.fold((l) {
+      AppSnackBar.failure(failure: Failure(message: l.message.toString()));
+    }, (r) async {
+      AppSnackBar.success(
+          title: 'Successful', message: 'Attendance Saved Succesfully');
+      if (page != null) page.reload();
     });
   }
 

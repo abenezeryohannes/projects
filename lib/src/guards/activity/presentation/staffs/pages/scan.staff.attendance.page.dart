@@ -2,36 +2,31 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:rnginfra/main/injectable/getit.dart';
-import 'package:rnginfra/src/core/widgets/app.snackbar.dart';
-import 'package:rnginfra/src/core/widgets/custom.shimmer.dart';
-import 'package:rnginfra/src/core/widgets/loading.bar.dart';
-import 'package:rnginfra/src/guards/patroll/data/dtos/add.patroll.dto.dart';
-import 'package:rnginfra/src/guards/patroll/presentation/scan_patrolls/controller/scan.patroll.controller.dart';
 
-class ScanPatrollPage extends StatefulWidget {
-  const ScanPatrollPage({super.key});
+import '../../../../../core/widgets/app.snackbar.dart';
+import '../../../../../core/widgets/custom.shimmer.dart';
+import '../../../../../core/widgets/loading.bar.dart';
+
+class ScanStaffAttendancePage extends StatefulWidget {
+  const ScanStaffAttendancePage({super.key});
 
   @override
-  State<ScanPatrollPage> createState() => _ScanPatrollPageState();
+  State<ScanStaffAttendancePage> createState() =>
+      _ScanStaffAttendancePageState();
 }
 
-class _ScanPatrollPageState extends State<ScanPatrollPage> {
-  Position? p;
+class _ScanStaffAttendancePageState extends State<ScanStaffAttendancePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
 
-  late final ScanPatrollController getXController;
   late bool uploading = false;
+  String status = 'Scanning';
 
   @override
   void initState() {
     super.initState();
-    getXController = getIt<ScanPatrollController>();
-    getXController.canScan.value = true;
   }
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -48,8 +43,6 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
 
   @override
   Widget build(BuildContext context) {
-    loadPosition();
-
     return Scaffold(
       // backgroundColor: Colors.amber,
 
@@ -101,20 +94,20 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
                       child: (result == null)
                           ? InkWell(
                               onTap: () {
-                                // _postScan('13454235', context);
+                                _postScan('258', context);
                               },
                               child: CustomShimmer(
                                 show: true,
                                 baseColor: Colors.grey.shade700,
                                 highlightColor: Colors.grey.shade300,
-                                child: Text(getXController.status.value,
+                                child: Text(status,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineSmall),
                               ),
                             )
                           : Text(
-                              getXController.status.value,
+                              status,
                               style: Theme.of(context).textTheme.bodyMedium,
                             )),
                 )
@@ -149,7 +142,6 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
   void _onQRViewCreated(QRViewController controller, BuildContext context) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      if (!getXController.canScan.value) return;
       setState(() {
         uploading = true;
         result = scanData;
@@ -158,56 +150,8 @@ class _ScanPatrollPageState extends State<ScanPatrollPage> {
     });
   }
 
-  void loadPosition() async {
-    try {
-      p = await _determinePosition();
-    } catch (e) {
-      AppSnackBar.error(message: e.toString());
-    }
-  }
-
   void _postScan(String? code, BuildContext context) {
-    // p = await _determinePosition();
-    AddPatrollDto addPatrollDto = AddPatrollDto(
-        qr_code_id: int.parse(code!),
-        latitude: p?.latitude ?? 0,
-        longitude: p?.longitude ?? 0);
-    Navigator.maybePop(context, addPatrollDto);
-  }
-
-  /// Determine the current position of the device.
-  ///
-  /// When the location services are not enabled or permissions
-  /// are denied the `Future` will return an error.
-  Future<Position?> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-    try {
-      return await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best,
-          timeLimit: const Duration(seconds: 5),
-          forceAndroidLocationManager: true);
-    } catch (e) {
-      return Geolocator.getLastKnownPosition(forceAndroidLocationManager: true);
-    }
+    Navigator.maybePop(context, code);
   }
 
   @override
