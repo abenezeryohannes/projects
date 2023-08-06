@@ -13,10 +13,10 @@ import '../../appcore/utils/utils.dart';
 import '../../domain/auth/entities/country.entity.dart';
 import '../../domain/auth/entities/i.firebase.entity.dart';
 import '../../domain/auth/usecases/confirm.phone.confirmation.code.dart';
-import '../../domain/auth/usecases/resend.phone.confirmation.code.dart';
-import '../../domain/auth/usecases/sign.out.dart';
-import '../../domain/auth/usecases/sign.up.dart';
-import '../../domain/auth/usecases/verify.phone.dart';
+import '../../domain/auth/usecases/resend.phone.confirmation.code.usecase.dart';
+import '../../domain/auth/usecases/sign.out.usecase.dart';
+import '../../domain/auth/usecases/sign.up.usecase.dart';
+import '../../domain/auth/usecases/verify.phone.usecase.dart';
 
 part 'auth.state.event.dart';
 part 'auth.state.state.dart';
@@ -72,11 +72,11 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
   }
 
   AuthStateBloc({
-    required VerifyPhoneNumber verifyPhoneNumber,
-    required SignUp signUp,
-    required ResendPhoneConfirmationCode resendPhoneConfirmationCode,
-    required SignOut signOut,
-    required ConfirmPhoneConfirmationCode confirmPhoneConfirmationCode,
+    required VerifyPhoneNumberUseCase verifyPhoneNumber,
+    required SignUpUseCase signUp,
+    required ResendPhoneConfirmationCodeUseCase resendPhoneConfirmationCode,
+    required SignOutUseCase signOut,
+    required ConfirmPhoneConfirmationCodeUseCase confirmPhoneConfirmationCode,
   }) : super(AuthStateInitial()) {
     //
     on<OnAuthInitialEvent>((event, emit) async {
@@ -124,7 +124,7 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
         return;
       }
       final result =
-          await verifyPhoneNumber(param: VerifyParam(firebaseDto: this));
+          await verifyPhoneNumber(param: VerifyUseCaseParam(firebaseDto: this));
 
       if (result == null) {
         return emit(VerificationFailedAuthState(failure: UnExpectedFailure()));
@@ -148,7 +148,7 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
       }
 
       final result = await confirmPhoneConfirmationCode(
-          param: ConfirmPhoneConfirmationCodeParam(firebaseDto: this));
+          param: ConfirmPhoneConfirmationCodeUseCaseParam(firebaseDto: this));
 
       if (result == null) {
         emit(ConfirmationFailedAuthState(failure: UnExpectedFailure()));
@@ -166,7 +166,8 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
     on<OnConfirmedEvent>((event, emit) async {
       emit(GettingTokenAuthState());
       final result = await signUp(
-          param: SignUpParam(phoneNumber: '${country!.dial_code}$phoneNumber'));
+          param: SignUpUseCaseParam(
+              phoneNumber: '${country!.dial_code}$phoneNumber'));
       if (result == null) {
         emit(GettingTokenFailureAuthState(failure: UnExpectedFailure()));
       }

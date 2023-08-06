@@ -56,11 +56,13 @@ class _ChatPageState extends State<ChatPage> {
       'transports': ['websocket', 'polling'],
       'query': {'limit': 25, 'page': controller.page.value}
     });
+
     if (socket.io.options != null) {
       socket.io.options!['extraHeaders'] = {
         'authorization': GetStorage().read('token') ?? ''
       };
     }
+
     socket.connect();
     socket.onConnect((_) {
       print('Connection established');
@@ -69,20 +71,22 @@ class _ChatPageState extends State<ChatPage> {
     socket.onConnectError((err) => print(err));
     socket.onError((err) => print(err));
 
-    final uid = GetStorage().read('UID') ?? 'receiveMessage';
-    socket.on(uid, (data) {
-      ChatEntity chat = ChatEntity.fromJson(jsonDecode(data));
-      if (mounted) {
-        setState(() {
-          if (chat.sender?.id == controller.user.value?.id &&
-              chat.data == controller.text.value) controller.text.value = '';
-          {
-            _bottomChat?.clear();
-          }
-          controller.chatList.insert(0, chat);
-        });
-      }
-    });
+    final uid = GetStorage().read('UID');
+    if (uid != null) {
+      socket.on(uid, (data) {
+        ChatEntity chat = ChatEntity.fromJson(jsonDecode(data));
+        if (mounted) {
+          setState(() {
+            if (chat.sender?.id == controller.user.value?.id &&
+                chat.data == controller.text.value) controller.text.value = '';
+            {
+              _bottomChat?.clear();
+            }
+            controller.chatList.insert(0, chat);
+          });
+        }
+      });
+    }
   }
 
   sendMessage(ChatDto message) {
@@ -116,7 +120,11 @@ class _ChatPageState extends State<ChatPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                const SizedBox(height: 70, child: ChatAppBar()),
+                Obx(() => SizedBox(
+                    height: 70,
+                    child: ChatAppBar(
+                      user: controller.user.value,
+                    ))),
                 Expanded(
                     child: Obx(() => ChatList(
                           controller: controller.scrollController,
@@ -127,7 +135,11 @@ class _ChatPageState extends State<ChatPage> {
                                   ? null
                                   : controller.chatList.last.id),
                         ))),
-                SizedBox(height: 70, child: _bottomChat!)
+                Container(
+                    constraints: const BoxConstraints(
+                      minHeight: 80,
+                    ),
+                    child: _bottomChat!)
               ],
             ),
           ),
@@ -138,17 +150,19 @@ class _ChatPageState extends State<ChatPage> {
 
   ChatBottom bottomChat() {
     return ChatBottom(sendMessage: (cDto) {
-      if (FirebaseAuth.instance.currentUser == null) {
+      print("chat token${GetStorage().read('token')}");
+      if (FirebaseAuth.instance.currentUser == null ||
+          GetStorage().read('token') == null) {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (_) => AuthPage(onAuthentication: () {
-                      Navigator.maybePop(context);
+                      Get.offAll(const ChatPage());
                     })));
       } else {
+        if (cDto.data == null || cDto.data!.trim().isEmpty) return;
         sendMessage(ChatDto(
-            senderID: controller.user.value?.id ?? -1,
-            data: controller.text.value));
+            senderID: controller.user.value?.id ?? -1, data: cDto.data));
       }
     });
   }

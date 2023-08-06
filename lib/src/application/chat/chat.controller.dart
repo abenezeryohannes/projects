@@ -46,10 +46,10 @@ class ChatController extends GetxController {
       loading.refresh();
     } else {
       result.fold((l) {
-        loading.value = false;
-        failure.value = l;
-        failure.refresh();
-        loading.refresh();
+        // loading.value = false;
+        // failure.value = l;
+        // failure.refresh();
+        // loading.refresh();
       }, (r) {
         chatWrapper.value = r;
         chatWrapper.refresh();
@@ -68,8 +68,8 @@ class ChatController extends GetxController {
             );
           }
         }
-        loading.value = false;
-        loading.refresh();
+        // loading.value = false;
+        // loading.refresh();
       });
     }
   }

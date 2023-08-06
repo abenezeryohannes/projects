@@ -85,16 +85,18 @@ class AuthRepository extends IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, IFirebaseAuthEntity>?>? signOut(
-      IFirebaseAuthEntity firebaseDto) async {
+  Future<Either<Failure, IFirebaseAuthEntity?>?>? signOut(
+      IFirebaseAuthEntity? firebaseDto) async {
     try {
       if (await networkInfo.isConnected!) {
         final result = await authRemoteDataSource.signOut(firebaseDto);
         if (result == null || !result) {
           throw UnExpectedException();
         }
-        firebaseDto.signOut();
+        firebaseDto?.signOut();
 
+        GetStorage().write('UID', null);
+        GetStorage().write('token', null);
         return Right(firebaseDto);
       } else {
         throw NetworkException();

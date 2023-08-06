@@ -1,15 +1,26 @@
 import 'package:dismissible_page/dismissible_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:linko/injectable/getit.dart';
+import 'package:linko/src/appcore/widgets/app.snackbar.dart';
+import 'package:linko/src/domain/auth/usecases/sign.out.usecase.dart';
+import 'package:linko/src/domain/user/usecases/delete.user.usecase.dart';
+import 'package:linko/src/presentation/chat/chat.page.dart';
+import 'package:linko/src/presentation/privacy.bottom.sheet.dart';
+import 'package:linko/src/presentation/user/change.language.dialog.dart';
+import '../../../appcore/network/api.dart';
+import '../../../domain/user/entities/user.entity.dart';
 import '../../about.bottom.sheet.dart';
 import '../../company/add.company.page.dart';
 import '../../../appcore/widgets/bottom.sheet.button.dart';
 import '../../../appcore/widgets/big.text.button.dart';
 import '../../user/favorites.page.dart';
-import '../../user/history.page.dart';
+import '../history.page.dart';
 
 class ChatMoreBottomSheet extends StatefulWidget {
-  const ChatMoreBottomSheet({super.key});
-
+  const ChatMoreBottomSheet({super.key, this.user});
+  final UserEntity? user;
   @override
   State<ChatMoreBottomSheet> createState() => _ChatMoreBottomSheetState();
 }
@@ -101,11 +112,22 @@ class _ChatMoreBottomSheetState extends State<ChatMoreBottomSheet> {
             BottomSheetButton(
                 title: 'Change language',
                 icon: 'assets/icon/language.png',
-                onClick: () {}),
+                onClick: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const Dialog(
+                        insetPadding: EdgeInsets.only(bottom: 200),
+                        backgroundColor: Colors.transparent,
+                        child: ChangeLanguageDialog()),
+                  );
+                  // Get.dialog(const ChangeLanguageDialog());
+                }),
             BottomSheetButton(
                 title: 'Privacy and terms',
                 icon: 'assets/icon/privacy_and_terms.png',
-                onClick: () {}),
+                onClick: () {
+                  context.pushTransparentRoute(const PrivacyBottomSheet());
+                }),
             const SizedBox(
               height: 20,
             ),
@@ -124,31 +146,53 @@ class _ChatMoreBottomSheetState extends State<ChatMoreBottomSheet> {
 
   List<Widget> _body(BuildContext context) {
     return [
-      const Padding(
-        padding: EdgeInsets.only(left: 20.0, top: 10, right: 20, bottom: 10),
+      Padding(
+        padding:
+            const EdgeInsets.only(left: 20.0, top: 10, right: 20, bottom: 10),
         child: CircleAvatar(
           radius: 36,
-          backgroundImage: NetworkImage('https://picsum.photos/200/300'),
+          backgroundImage: NetworkImage(
+              Api.getMedia(widget.user?.avatar ?? 'img/placeholder.jpg')),
         ),
       ),
-      Text('Salem',
+      Text(widget.user?.fullName ?? context.tr('anonymous'),
           style: Theme.of(context)
               .textTheme
               .titleMedium!
               .copyWith(fontWeight: FontWeight.bold)),
-      Text('+965 50508080',
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium!
-              .copyWith(color: Theme.of(context).disabledColor)),
+      if (widget.user != null)
+        Text(widget.user!.phoneNumber,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Theme.of(context).disabledColor)),
       BigTextButton(
         onClick: () {
           context.pushTransparentRoute(const AddCompanyPage());
         },
+        textWidget: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/icon/add_company.png',
+              width: 24,
+              height: 24,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Add your business',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
         horizontalMargin:
             const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
-        text: 'Add your business',
         backgroudColor: Theme.of(context).colorScheme.secondary,
+        borderColor: Theme.of(context).colorScheme.secondary,
         cornerRadius: 200,
         padding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -173,7 +217,9 @@ class _ChatMoreBottomSheetState extends State<ChatMoreBottomSheet> {
                 BottomSheetButton(
                     title: 'Sign Out',
                     icon: 'assets/icon/power.png',
-                    onClick: () {}),
+                    onClick: () {
+                      signOut();
+                    }),
               ],
             ),
             Padding(
@@ -189,5 +235,27 @@ class _ChatMoreBottomSheetState extends State<ChatMoreBottomSheet> {
         ),
       )
     ];
+  }
+
+  void signOut() async {
+    final signout = getIt<SignOutUseCase>();
+    final result = await signout(param: const SignOutUseCaseParam());
+    result?.fold((l) {
+      AppSnackBar.failure(failure: l);
+    }, (r) {
+      Get.offAll(const ChatPage());
+    });
+  }
+
+  void deleteAccount() async {
+    if (widget.user == null) return;
+    final deleteUserUsecase = getIt<DeleteUserUsecase>();
+    final result = await deleteUserUsecase(
+        param: DeleteUserUsecaseParam(user: widget.user!));
+    result?.fold((l) {
+      AppSnackBar.failure(failure: l);
+    }, (r) {
+      Get.offAll(const ChatPage());
+    });
   }
 }

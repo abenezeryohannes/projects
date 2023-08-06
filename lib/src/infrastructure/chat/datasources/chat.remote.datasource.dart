@@ -36,4 +36,19 @@ class ChatRemoteDataSource {
       throw ServerFailure(message: responseDto.message);
     }
   }
+
+  Future<WrapperDto?> clearAll() async {
+    http.Response response = await client.delete(
+      Api.request("chats/clearAll"),
+      headers: Api.getHeader(GetStorage().read('token')),
+    );
+
+    WrapperDto responseDto = WrapperDto.fromJson(json.decode(response.body));
+
+    if (responseDto.success) {
+      return responseDto;
+    } else {
+      throw ServerFailure(message: responseDto.message);
+    }
+  }
 }

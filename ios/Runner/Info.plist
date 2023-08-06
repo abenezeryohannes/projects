@@ -72,10 +72,19 @@
     <string>Used to capture audio for image picker plugin</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>This app needs file access to upload images</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Linko needs micraphone access to recognize voice</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Linko needs micraphone access to recognize voice</string>
 	<key>CFBundleLocalizations</key>
 	<array>
-		<string>en-US</string>
-		<string>ar-KW</string>
+		<string>en</string>
+		<string>ar</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>sms</string>
+		<string>tel</string>
 	</array>
 </dict>
 </plist>

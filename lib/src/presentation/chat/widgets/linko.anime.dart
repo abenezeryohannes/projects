@@ -78,6 +78,7 @@ class _LinkoAnimeState extends State<LinkoAnime> {
                 _currentTxt,
                 style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                     color: Colors.black,
+                    fontFamily: 'Malik-Heavy',
                     fontSize: 32,
                     fontWeight: FontWeight.w900),
               ),

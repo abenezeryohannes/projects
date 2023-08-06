@@ -57,20 +57,32 @@ class _ShowErrorState extends State<ShowError> {
   Widget _img() {
     if (widget.failure.runtimeType == CacheFailure ||
         widget.failure.runtimeType == NetworkFailure) {
-      return Image.asset(
-        "assets/img/no_connection.png",
-        height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
+      return ColorFiltered(
+        colorFilter:
+            ColorFilter.mode(Colors.red.withOpacity(1), BlendMode.color),
+        child: Image.asset(
+          "assets/img/no_connection.png",
+          height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
+        ),
       );
     }
     if (widget.failure.runtimeType == NoDataFailure) {
-      return Image.asset(
-        "assets/img/empty.png",
-        height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
-      );
+      return ColorFiltered(
+          colorFilter:
+              ColorFilter.mode(Colors.red.withOpacity(1), BlendMode.color),
+          child: Image.asset(
+            "assets/icon/empty.png",
+            height:
+                (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
+          ));
     } else {
-      return Image.asset(
-        "assets/img/error.png",
-        height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
+      return ColorFiltered(
+        colorFilter:
+            ColorFilter.mode(Colors.red.withOpacity(1), BlendMode.color),
+        child: Image.asset(
+          "assets/icon/error.png",
+          height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
+        ),
       );
     }
   }

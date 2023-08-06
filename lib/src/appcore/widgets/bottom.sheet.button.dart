@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:linko/src/appcore/widgets/custom.shimmer.dart';
 
 class BottomSheetButton extends StatefulWidget {
   const BottomSheetButton(
       {super.key,
-      required this.title,
+      this.title,
       this.icon,
       this.color,
       this.cheviron = true,
-      required this.onClick,
+      this.onClick,
       this.padding});
-  final String title;
+  final String? title;
   final String? icon;
   final bool cheviron;
-  final Function onClick;
+  final Function? onClick;
   final Color? color;
   final EdgeInsets? padding;
   @override
@@ -28,7 +29,11 @@ class _BottomSheetButtonState extends State<BottomSheetButton> {
               horizontal: MediaQuery.of(context).size.width * (2 / 12),
               vertical: 14),
       child: InkWell(
-        onTap: () => widget.onClick(),
+        onTap: () {
+          if (widget.onClick != null) {
+            widget.onClick!();
+          }
+        },
         child: Row(
           children: [
             Expanded(
@@ -47,25 +52,36 @@ class _BottomSheetButtonState extends State<BottomSheetButton> {
                     ),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0),
-                    child: Text(widget.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                color: widget.color ??
-                                    Theme.of(context).colorScheme.onBackground,
-                                fontWeight: widget.cheviron
-                                    ? FontWeight.bold
-                                    : FontWeight.w600)),
+                    child: CustomShimmer(
+                      show: widget.title == null,
+                      child: Text(widget.title ?? '.........................',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                  backgroundColor: (widget.title == null)
+                                      ? Theme.of(context).disabledColor
+                                      : Colors.transparent,
+                                  color: widget.color ??
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                  fontWeight: widget.cheviron
+                                      ? FontWeight.bold
+                                      : FontWeight.w600)),
+                    ),
                   ),
                 ],
               ),
             ),
-            if (widget.cheviron)
-              Icon(
-                Icons.chevron_right,
-                size: 24,
-                color: Theme.of(context).disabledColor,
+            if (widget.cheviron || widget.title == null)
+              CustomShimmer(
+                show: widget.title == null,
+                child: Icon(
+                  Icons.chevron_right,
+                  size: 24,
+                  color: Theme.of(context).disabledColor,
+                ),
               )
           ],
         ),

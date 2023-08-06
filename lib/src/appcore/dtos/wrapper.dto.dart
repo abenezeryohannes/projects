@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:linko/src/domain/auth/entities/token.entity.dart';
@@ -84,14 +86,16 @@ class _Converter<T> implements JsonConverter<T, Object> {
       return TokenEntity.fromJson(json) as T;
     } else if (json is Map<String, dynamic> &&
         json.containsKey('name') &&
-        json.containsKey('isDefault')) {
+        json.containsKey('canDetermine')) {
       return TagEntity.fromJson(json) as T;
     } else if (json is Map<String, dynamic> &&
         json.containsKey('user') &&
         json.containsKey('company')) {
       return FavoriteEntity.fromJson(json) as T;
+    } else if (json is Array || json is List) {
+      return {} as T;
     }
-    return json as T;
+    return {json} as T;
   }
 
   @override

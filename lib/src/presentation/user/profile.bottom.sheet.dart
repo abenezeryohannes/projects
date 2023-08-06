@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:linko/src/appcore/network/api.dart';
-import 'package:linko/src/appcore/widgets/big.text.button.dart';
 import 'package:linko/src/appcore/widgets/editable.text.form.dart';
 import 'package:linko/src/appcore/widgets/loading.bar.dart';
 import 'package:linko/src/application/user/profile.controller.dart';
@@ -19,12 +18,56 @@ class ProfileBottomSheet extends StatefulWidget {
 
 class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
   late ProfileController controller;
+  bool _editing = false;
 
   @override
   void initState() {
     controller = getIt<ProfileController>();
     controller.find(local: true);
     super.initState();
+  }
+
+  final List<Widget> states = <Widget>[
+    Text('View'),
+    Text('Edit'),
+  ];
+  final List<Widget> statesOnEdit = <Widget>[Text('Save'), Text('Cancel')];
+
+  Widget _toggleBeforeEditing() {
+    return ToggleButtons(
+      direction: Axis.horizontal,
+      onPressed: (int index) {
+        setState(() {
+          switch (index) {
+            case 0:
+              if (_editing) {
+                _save();
+              } else {
+                _cancel();
+              }
+              break;
+            case 1:
+              if (_editing) {
+                _cancel();
+              } else {
+                _edit();
+              }
+              break;
+          }
+        });
+      },
+      borderRadius: const BorderRadius.all(Radius.circular(8)),
+      selectedBorderColor: Colors.red[700],
+      selectedColor: Colors.white,
+      fillColor: Colors.red[200],
+      color: Colors.red[400],
+      constraints: const BoxConstraints(
+        minHeight: 40.0,
+        minWidth: 80.0,
+      ),
+      isSelected: _editing ? [_editing, !_editing] : [_editing, !_editing],
+      children: _editing ? statesOnEdit : states,
+    );
   }
 
   @override
@@ -36,24 +79,61 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(20)),
             color: Theme.of(context).scaffoldBackgroundColor),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Obx(() => LoadingBar(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 2),
-                    show: controller.loading.value,
-                  )),
-              Container(
-                width: 60,
-                height: 5,
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).disabledColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+        child: Stack(
+          children: [
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Obx(() => LoadingBar(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 2),
+                          show: controller.loading.value,
+                        )),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 60,
+                      height: 5,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).disabledColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20))),
+                    ),
+                  ),
+                  ..._body(context)
+                ]),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 0, bottom: 20.0),
+                child: _toggleBeforeEditing(),
               ),
-              ..._body(context)
-            ]));
+            )
+          ],
+        ));
+  }
+
+  void _edit() {
+    setState(() {
+      _editing = true;
+    });
+  }
+
+  void _cancel() {
+    setState(() {
+      _editing = false;
+    });
+  }
+
+  void _save() async {
+    await controller.save(userDto: controller.userDto.value!);
+    await controller.save(userDto: controller.userDto.value!);
+    _cancel();
   }
 
   List<Widget> _body(BuildContext context) {
@@ -72,6 +152,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                 width: 120,
                 height: 120,
                 radius: 500,
+                editable: _editing,
                 isLoading: (val) {
                   setState(() {
                     controller.loading.value = val;
@@ -87,7 +168,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                   });
                 },
                 onSave: () async {
-                  await controller.save(userDto: controller.userDto.value!);
+                  // await controller.save(userDto: controller.userDto.value!);
                 },
               ),
             ],
@@ -103,9 +184,10 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
               controller.userDto.value ??=
                   UserDto.fromEntity(controller.user.value);
               controller.userDto.value?.fullName = val;
-              await controller.save(userDto: controller.userDto.value!);
+              // await controller.save(userDto: controller.userDto.value!);
             }
           },
+          editable: _editing,
           textEditorWidth: 180,
           style: Theme.of(context)
               .textTheme
@@ -116,29 +198,6 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
       const SizedBox(
         height: 20,
       ),
-      // _changeLocales(context),
-      // Form(
-      // key: _formKey,
-      // child:
-
-      // ),
-      // Row(
-      //   mainAxisSize: MainAxisSize.min,
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     // Text(
-      //     //   'Language:  ',
-      //     //   style: Theme.of(context).textTheme.bodySmall,
-      //     // ),
-      //     // const SizedBox(
-      //     //   height: 10,
-      //     // ),
-      //     Text(
-      //       'English',
-      //       style: Theme.of(context).textTheme.bodySmall,
-      //     ),
-      //   ],
-      // )
     ];
   }
 

@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:linko/src/appcore/dtos/wrapper.dto.dart';
 import 'package:linko/src/domain/chat/entities/chat.entity.dart';
+import 'package:linko/src/domain/company/entities/company.entity.dart';
+import 'package:linko/src/presentation/chat/widgets/chat.received.card.dart';
+import 'package:linko/src/presentation/company/business.card.dart';
 
 import 'chat.sent.card.dart';
 
@@ -53,9 +59,40 @@ class _ChatListState extends State<ChatList> {
               ),
             );
           }
-          return ChatSentCard(
-            chat: widget.chatList[i],
+          return showChatItem(
+            widget.chatList[i],
           );
         });
+  }
+
+  Widget showChatItem(
+    ChatEntity chat,
+  ) {
+    if (chat.type != 'text') {
+      if (chat.data == null || chat.data!.trim().isEmpty)
+        return const SizedBox();
+      final decoded = json.decode(chat.data!);
+      WrapperDto<CompanyEntity?> wrapper =
+          WrapperDto<CompanyEntity?>.fromJson(decoded);
+      if (wrapper.datas == null) return const SizedBox();
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ...wrapper.datas!.map((company) {
+            return BusinessCard(
+              company: company,
+            );
+          })
+        ],
+      );
+    } else {
+      if (chat.sender == null) {
+        return ChatReceivedCard(
+          chat: chat,
+        );
+      } else {
+        return ChatSentCard(chat: chat);
+      }
+    }
   }
 }

@@ -57,6 +57,10 @@ class TextInputForm extends StatefulWidget {
     state.clear();
   }
 
+  void setValue(String val) {
+    state.setValue(val);
+  }
+
   @override
   State<TextInputForm> createState() => state;
 }
@@ -74,6 +78,14 @@ class _TextInputFormState extends State<TextInputForm> {
     if (mounted) {
       setState(() {
         controller.clear();
+      });
+    }
+  }
+
+  void setValue(String val) {
+    if (mounted) {
+      setState(() {
+        controller.text = val;
       });
     }
   }

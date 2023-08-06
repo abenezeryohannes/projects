@@ -15,6 +15,7 @@ CompanyEntity _$CompanyEntityFromJson(Map<String, dynamic> json) =>
       phoneNumber: json['phoneNumber'] as String?,
       ownerPhoneNumber: json['ownerPhoneNumber'] as String?,
       url: json['url'] as String?,
+      liked: json['liked'] as int?,
       deliveryFee: json['deliveryFee'] as String?,
       deliveryTime: json['deliveryTime'] as String?,
       tags: (json['tags'] as List<dynamic>?)
@@ -39,6 +40,7 @@ Map<String, dynamic> _$CompanyEntityToJson(CompanyEntity instance) =>
       'ownerPhoneNumber': instance.ownerPhoneNumber,
       'deliveryTime': instance.deliveryTime,
       'deliveryFee': instance.deliveryFee,
+      'liked': instance.liked,
       'url': instance.url,
       'isActive': instance.isActive,
       'tags': instance.tags,

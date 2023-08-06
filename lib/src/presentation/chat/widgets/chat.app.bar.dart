@@ -2,13 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../appcore/network/api.dart';
+import '../../../domain/user/entities/user.entity.dart';
 import '../../auth/pages/auth.page.dart';
 import '../../user/profile.bottom.sheet.dart';
 import 'chat.more.bottom.sheet.dart';
 
 class ChatAppBar extends StatefulWidget {
-  const ChatAppBar({super.key});
-
+  const ChatAppBar({super.key, this.user});
+  final UserEntity? user;
   @override
   State<ChatAppBar> createState() => _ChatAppBarState();
 }
@@ -44,8 +46,9 @@ class _ChatAppBarState extends State<ChatAppBar> {
               },
               child: CircleAvatar(
                 radius: 21,
-                // backgroundImage: NetworkImage(Api.getMedia(
-                //     controller.user.value?.avatar ?? 'img/placeholder.jpg')),
+                backgroundImage: NetworkImage(
+                  Api.getMedia(widget.user?.avatar ?? 'img/placeholder.jpg'),
+                ),
               ),
             )),
         Padding(
@@ -60,7 +63,9 @@ class _ChatAppBarState extends State<ChatAppBar> {
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
-                          builder: (context) => const ChatMoreBottomSheet());
+                          builder: (context) => ChatMoreBottomSheet(
+                                user: widget.user,
+                              ));
                     },
                     icon: Icon(
                       Icons.more_horiz,

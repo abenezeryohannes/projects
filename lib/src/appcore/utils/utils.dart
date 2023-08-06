@@ -3,6 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:linko/src/appcore/widgets/app.snackbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Util {
   static Future<String> loadJsonAsset(String path) async {
@@ -96,5 +98,18 @@ class Util {
         val.lastIndexOf(':') - 1);
     String t2 = val.substring(val.lastIndexOf(':') + 1);
     return Duration(minutes: int.parse(t2), hours: int.parse(t2));
+  }
+
+  static Future dial(String contactNumber) async {
+    final Uri _phoneUri = Uri(scheme: "tel", path: contactNumber);
+    try {
+      if (await canLaunchUrl(_phoneUri)) {
+        await launchUrl(_phoneUri);
+      }
+    } catch (error) {
+      AppSnackBar.error(
+          message:
+              'Can\'t call the number ($contactNumber) due to unknown reason');
+    }
   }
 }

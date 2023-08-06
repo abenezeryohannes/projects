@@ -43,6 +43,9 @@ dependencies:
   material_tag_editor: ^0.1.2
   socket_io_client: ^2.0.3+1
   auto_animated: ^3.2.0
+  url_launcher: ^6.1.12
+  infinite_scroll_pagination: ^3.2.0
+  speech_to_text: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -85,14 +88,47 @@ flutter:
     - assets/translations/
     - .env
  
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700 
+  fonts:
+    - family: Malik
+      fonts:
+        - asset: assets/font/MalikTrial-Regular.ttf
+        - asset: assets/font/MalikTrial-Italic.ttf
+          style: italic 
+        - asset: assets/font/MalikTrial-Bold.ttf
+          weight: 700
+
+    - family: Malik-Light
+      fonts: 
+        - asset: assets/font/MalikTrial-Light.ttf 
+        - asset: assets/font/MalikTrial-LightItalic.ttf
+          style: italic
+
+    - family: Malik-Midium
+      fonts:
+        - asset: assets/font/MalikTrial-Medium.ttf 
+        - asset: assets/font/MalikTrial-MediumItalic.ttf
+          style: italic
+
+    - family: Malik-Extra-Light
+      fonts:
+        - asset: assets/font/MalikTrial-ExtraLight.ttf
+        - asset: assets/font/MalikTrial-ExtraLightItalic.ttf
+          style: italic
+    
+    - family: Malik-Extra-Bold
+      fonts: 
+        - asset: assets/font/MalikTrial-ExtraBold.ttf 
+        - asset: assets/font/MalikTrial-ExtraBoldItalic.ttf
+          style: italic
+    
+    - family: Malik-Heavy
+      fonts:
+        - asset: assets/font/MalikTrial-HeavyDisplay.ttf 
+        - asset: assets/font/MalikTrial-HeavyDisplayItalic.ttf
+          style: italic
+  
+    - family: Malik-book
+      fonts:
+        - asset: assets/font/MalikTrial-Book.ttf
+        - asset: assets/font/MalikTrial-BookItalic.ttf
+          style: italic 

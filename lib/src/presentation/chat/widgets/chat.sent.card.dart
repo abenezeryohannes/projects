@@ -18,7 +18,10 @@ class _ChatSentCardState extends State<ChatSentCard> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Spacer(),
             Container(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * (10 / 12)),
               padding: const EdgeInsets.only(
                   left: 14, right: 14, top: 10, bottom: 8),
               decoration: BoxDecoration(

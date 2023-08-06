@@ -7,4 +7,6 @@ import '../../../appcore/errors/failure.dart';
 abstract class IChatRepository {
   Future<Either<Failure, WrapperDto<ChatEntity>>?>? findAll(
       {int? id, int? limit, int? page});
+
+  Future<Either<Failure, WrapperDto>?>? clearAll();
 }

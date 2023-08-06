@@ -27,7 +27,6 @@ class Api {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         "Authorization": token,
-        "Firebase-ID-Token": firebaseID ?? ''
       };
 
   static Map<String, String>? postHeader(String token, {String? firebaseID}) =>

@@ -4,12 +4,12 @@ import 'package:linko/src/appcore/dtos/wrapper.dto.dart';
 import 'package:linko/src/appcore/errors/failure.dart';
 import 'package:linko/src/domain/user/entities/user.entity.dart';
 import 'package:linko/src/domain/user/repositories/i.user.repository.dart';
-import 'package:linko/src/infrastructure/user/datasources/user.local.datasource.dart';
-import 'package:linko/src/infrastructure/user/datasources/user.remote.datasource.dart';
 import 'package:linko/src/infrastructure/user/dtos/user.dto.dart';
 
 import '../../../appcore/errors/exceptions.dart';
 import '../../../appcore/network/network.info.dart';
+import '../datasources/user/user.local.datasource.dart';
+import '../datasources/user/user.remote.datasource.dart';
 
 @LazySingleton(as: IUserRepository)
 class UserRepositoryImp extends IUserRepository {

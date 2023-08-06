@@ -12,12 +12,12 @@ class CompanyLocalDataSource {
   static String COMPANY_KEY = "COMPANY_KEY";
   CompanyLocalDataSource({required this.cache});
 
-  Future<bool>? saveCompanies(int? page, List<CompanyEntity>? tags) async {
+  Future<bool>? saveCompanies(int? page, List<CompanyEntity>? companies) async {
     if (page != null && page > 1) return false;
-    return await cache.setString(COMPANY_KEY, json.encode(tags));
+    return await cache.setString(COMPANY_KEY, json.encode(companies));
   }
 
-  Future<List<CompanyEntity>> loadTags() async {
+  Future<List<CompanyEntity>> loadCompanies() async {
     final data = cache.getString(COMPANY_KEY);
     if (data == null) throw CacheFailure(message: "No Cache!");
     return parseFromJson(json.decode(data));

@@ -36,6 +36,7 @@ class LandingSlideState extends State<LandingSlide> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                         color: Colors.grey.shade700,
+                        fontFamily: 'Malik-Heavy',
                         fontWeight: FontWeight.w400,
                         fontSize: 28),
                   ),

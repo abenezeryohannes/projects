@@ -77,9 +77,10 @@ class _EditableTextFormState extends State<EditableTextForm> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          width: (widget.iconSize ?? 16) * 3,
-        ),
+        if (widget.editable)
+          SizedBox(
+            width: (widget.iconSize ?? 16) * 3,
+          ),
         Text(
           widget.text,
           style: widget.style ??
@@ -87,7 +88,7 @@ class _EditableTextFormState extends State<EditableTextForm> {
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onBackground),
         ),
-        _editButton()
+        if (widget.editable) _editButton()
       ],
     );
   }

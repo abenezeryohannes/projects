@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:linko/src/appcore/errors/failure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../domain/user/entities/user.entity.dart';
+import '../../../../domain/user/entities/user.entity.dart';
 
 @lazySingleton
 class UserLocalDataSource {

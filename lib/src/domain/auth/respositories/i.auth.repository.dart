@@ -15,8 +15,8 @@ abstract class IAuthRepository {
   Future<Either<Failure, IFirebaseAuthEntity>?>? confirmPhoneConfirmationCode(
       IFirebaseAuthEntity firebaseDto);
 
-  Future<Either<Failure, IFirebaseAuthEntity>?>? signOut(
-      IFirebaseAuthEntity firebaseDto);
+  Future<Either<Failure, IFirebaseAuthEntity?>?>? signOut(
+      IFirebaseAuthEntity? firebaseDto);
 
   Future<Either<Failure, WrapperDto<UserEntity>>?>? signup(
       {required String phoneNumber});

@@ -22,7 +22,7 @@ class _TextBadgeState extends State<TextBadge> {
       child: Text(
         widget.text,
         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            fontWeight: FontWeight.bold, color: widget.color, fontSize: 12),
+            fontWeight: FontWeight.bold, color: widget.color, fontSize: 10),
       ),
     );
   }

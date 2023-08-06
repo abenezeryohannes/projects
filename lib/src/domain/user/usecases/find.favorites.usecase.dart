@@ -9,23 +9,30 @@ import '../entities/favorites.entity.dart';
 import '../repositories/i.favorite.repository.dart';
 
 @lazySingleton
-class AddFavoriteUsecase
-    implements
-        UseCase<WrapperDto<List<FavoriteEntity>?>, FindFavoriteUsecaseParam> {
+class FindFavoritesUsecase
+    implements UseCase<WrapperDto<FavoriteEntity>, FindFavoritesUsecaseParam> {
   final IFavoriteRepository favoriteRepository;
 
-  AddFavoriteUsecase({required this.favoriteRepository});
+  FindFavoritesUsecase({required this.favoriteRepository});
 
   @override
-  Future<Either<Failure, WrapperDto<List<FavoriteEntity>?>>?>? call(
-      {required FindFavoriteUsecaseParam param}) {
-    return favoriteRepository.findFavorites(search: param.search);
+  Future<Either<Failure, WrapperDto<FavoriteEntity>>?>? call(
+      {required FindFavoritesUsecaseParam param}) {
+    return favoriteRepository.findAll(
+        search: param.search,
+        limit: param.limit,
+        page: param.page,
+        lastID: param.lastID);
   }
 }
 
-class FindFavoriteUsecaseParam extends Equatable {
+class FindFavoritesUsecaseParam extends Equatable {
   final String? search;
-  const FindFavoriteUsecaseParam({this.search});
+  final int? limit;
+  final int? page;
+  final int? lastID;
+  const FindFavoritesUsecaseParam(
+      {this.limit, this.page, this.lastID, this.search});
 
   @override
   List<Object?> get props => [];

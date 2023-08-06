@@ -8,21 +8,22 @@ import '../entities/i.firebase.entity.dart';
 import '../respositories/i.auth.repository.dart';
 
 @singleton
-class VerifyPhoneNumber implements UseCase<IFirebaseAuthEntity, VerifyParam> {
+class SignOutUseCase
+    implements UseCase<IFirebaseAuthEntity?, SignOutUseCaseParam> {
   late IAuthRepository signInRepository;
-  VerifyPhoneNumber({required this.signInRepository});
+  SignOutUseCase({required this.signInRepository});
 
   @override
-  Future<Either<Failure, IFirebaseAuthEntity>?>? call(
-      {required VerifyParam param}) {
-    return signInRepository.verifyPhoneNumber(param.firebaseDto);
+  Future<Either<Failure, IFirebaseAuthEntity?>?>? call(
+      {required SignOutUseCaseParam param}) {
+    return signInRepository.signOut(param.firebaseDto);
   }
 }
 
-class VerifyParam extends Equatable {
-  final IFirebaseAuthEntity firebaseDto;
+class SignOutUseCaseParam extends Equatable {
+  final IFirebaseAuthEntity? firebaseDto;
 
-  const VerifyParam({required this.firebaseDto});
+  const SignOutUseCaseParam({this.firebaseDto});
 
   @override
   List<Object?> get props => [firebaseDto];

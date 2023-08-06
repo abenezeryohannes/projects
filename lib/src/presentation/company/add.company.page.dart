@@ -3,21 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:linko/injectable/getit.dart';
 import 'package:linko/src/appcore/widgets/editable.tag.dart';
-import 'package:linko/src/appcore/widgets/material.tag.dart';
 import 'package:linko/src/application/company/company.controller.dart';
-import 'package:linko/src/domain/company/entities/tag.entity.dart';
-import 'package:linko/src/infrastructure/company/dto/company.dto.dart';
 import 'package:linko/src/infrastructure/company/dto/tag.dto.dart';
-import 'package:linko/src/presentation/company/on.business.add.modal.dart';
-import 'package:material_tag_editor/tag_editor.dart';
-import 'package:textfield_tags/textfield_tags.dart';
-
 import '../../appcore/network/api.dart';
 import '../../appcore/widgets/big.text.button.dart';
 import '../../appcore/widgets/image.form.dart';
 import '../../appcore/widgets/loading.bar.dart';
 import '../../appcore/widgets/text.input.form.dart';
-import '../../appcore/widgets/textfield.tag.dart';
 
 class AddCompanyPage extends StatefulWidget {
   const AddCompanyPage({super.key});
@@ -93,6 +85,38 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                           height: 20,
                         ),
                         Padding(
+                          padding: const EdgeInsets.only(
+                              left: 30, right: 30, bottom: 10),
+                          child: EditableTag(
+                            suggestions: controller.tags,
+                            placeholder: 'Add Tags',
+                            onSelected: (val) {
+                              if (!controller.tagsDto
+                                  .contains(TagDto(name: val))) {
+                                setState(() {
+                                  controller.tagsDto.add(TagDto(name: val));
+                                });
+                              }
+                            },
+                            searchOption: (val) {
+                              controller.findTags(search: val);
+                            },
+                            tags:
+                                controller.tagsDto.map((e) => e.name).toList(),
+                            validator: (x) => (x == null || ((x.length) < 4))
+                                ? 'Tag must be at least more th)atn 3 character'
+                                : null,
+                            onTagDelete: (tag) {
+                              setState(() {
+                                controller.tagsDto.removeWhere((element) =>
+                                    element.name
+                                        .toLowerCase()
+                                        .startsWith(tag.toLowerCase()));
+                              });
+                            },
+                          ),
+                        ),
+                        Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 6, horizontal: 30),
                           child: TextInputForm(
@@ -137,38 +161,6 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                                   controller.dto.value.ownerPhoneNumber = val;
                                 });
                               }),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 30, right: 30, bottom: 10),
-                          child: EditableTag(
-                            suggestions: controller.tags,
-                            placeholder: 'Add Tags',
-                            onSelected: (val) {
-                              if (!controller.tagsDto
-                                  .contains(TagDto(name: val))) {
-                                setState(() {
-                                  controller.tagsDto.add(TagDto(name: val));
-                                });
-                              }
-                            },
-                            searchOption: (val) {
-                              controller.findTags(search: val);
-                            },
-                            tags:
-                                controller.tagsDto.map((e) => e.name).toList(),
-                            validator: (x) => (x == null || ((x.length) < 4))
-                                ? 'Tag must be at least more th)atn 3 character'
-                                : null,
-                            onTagDelete: (tag) {
-                              setState(() {
-                                controller.tagsDto.removeWhere((element) =>
-                                    element.name
-                                        .toLowerCase()
-                                        .startsWith(tag.toLowerCase()));
-                              });
-                            },
-                          ),
                         ),
                         Container(
                           height: 70,

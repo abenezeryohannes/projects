@@ -10,8 +10,8 @@ import 'package:linko/src/infrastructure/user/dtos/user.dto.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 
-import '../../../appcore/errors/failure.dart';
-import '../../../appcore/network/api.dart';
+import '../../../../appcore/errors/failure.dart';
+import '../../../../appcore/network/api.dart';
 
 @lazySingleton
 class UserRemoteDataSource {

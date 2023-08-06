@@ -8,22 +8,23 @@ import '../entities/i.firebase.entity.dart';
 import '../respositories/i.auth.repository.dart';
 
 @singleton
-class ConfirmPhoneConfirmationCode
-    implements UseCase<IFirebaseAuthEntity, ConfirmPhoneConfirmationCodeParam> {
+class ConfirmPhoneConfirmationCodeUseCase
+    implements
+        UseCase<IFirebaseAuthEntity, ConfirmPhoneConfirmationCodeUseCaseParam> {
   late IAuthRepository signInRepository;
-  ConfirmPhoneConfirmationCode({required this.signInRepository});
+  ConfirmPhoneConfirmationCodeUseCase({required this.signInRepository});
 
   @override
   Future<Either<Failure, IFirebaseAuthEntity>?>? call(
-      {required ConfirmPhoneConfirmationCodeParam param}) {
+      {required ConfirmPhoneConfirmationCodeUseCaseParam param}) {
     return signInRepository.confirmPhoneConfirmationCode(param.firebaseDto);
   }
 }
 
-class ConfirmPhoneConfirmationCodeParam extends Equatable {
+class ConfirmPhoneConfirmationCodeUseCaseParam extends Equatable {
   final IFirebaseAuthEntity firebaseDto;
 
-  const ConfirmPhoneConfirmationCodeParam({required this.firebaseDto});
+  const ConfirmPhoneConfirmationCodeUseCaseParam({required this.firebaseDto});
 
   @override
   List<Object?> get props => [firebaseDto];
