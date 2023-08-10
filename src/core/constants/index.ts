@@ -32,5 +32,6 @@ export const BOOKING_DURATION_REPOSITORY = 'BOOKING_DURATION';
 export const PADEL_SCHEDULE_REPOSITORY = 'PADEL_SCHEDULE';
 export const PADEL_PRICESS_REPOSITORY = 'PADEL_PRICESS';
 export const PROMO_CODE_REPOSITORY = 'PROMO_CODE';
+export const JWT = 'PROMO_CODE';
 export const IMG_LOCATION = '../../../assets/img';
 export const HEX_REGEX = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Request } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Request } from '@nestjs/common';
 import { Roles } from '../../../../auth/domain/guards/roles.decorator';
 import { ROLE } from '../../../../auth/domain/entities/roles';
 import { FavoritesService } from '../../domain/services/favorites/favorites.service';
@@ -10,7 +10,7 @@ export class FavoritesController {
 
   @Roles(ROLE.ADMIN, ROLE.USER)
   @Get()
-  async findAllUsers(@Request() request) {
+  async findAll(@Request() request) {
     try {
       const result = await this.favService.findAll(request);
       return WrapperDto.paginate(result, request.query);
@@ -20,7 +20,7 @@ export class FavoritesController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Post('set/:company_id')
+  @Post('add/:company_id')
   async set(@Request() request, @Param('company_id') company_id: number) {
     try {
       const result = await this.favService.set(request, company_id);
@@ -31,11 +31,22 @@ export class FavoritesController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Post('un-set/:id')
+  @Delete('delete/:id')
   async unSet(@Request() request, @Param('id') id: number) {
     try {
       const result = await this.favService.unSet(request, id);
       return WrapperDto.successfullCreated(result);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN, ROLE.USER)
+  @Get('find/:id')
+  async find(@Request() request, @Param('id') id: number) {
+    try {
+      const result = await this.favService.find(request.user.id, id);
+      return WrapperDto.successfull(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }

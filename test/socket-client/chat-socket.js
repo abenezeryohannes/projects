@@ -2,10 +2,10 @@ const socket = io('http://localhost:5000', {
   auth: {
     authorization: '123',
   },
-  query: {
-    page: 1,
-    limit: 1,
-  },
+  // query: {
+  //   page: 1,
+  //   limit: 1,
+  // },
   withCredentials: true,
   transports: ['websocket', 'polling'], // USE ['polling', 'websocket'] OR DELETED IT
 });

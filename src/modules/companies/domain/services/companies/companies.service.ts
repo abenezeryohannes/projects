@@ -1,24 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CompanyDto } from '../../dtos/company.dto';
-import { Any, DataSource, ILike, In, Like, Raw } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 import { Company } from '../../entities/company.entity';
 import { join } from 'path';
 import { Tag } from '../../entities/tag.entity';
-import { Util } from '../../../../../core/utils/util';
-import { User } from '../../../../users/domain/entities/user.entity';
 
 @Injectable()
 export class CompaniesService {
-  async get(request: any): Promise<Company[]> {
-    return this.dataSource
-      .getRepository(Company)
-      .find({ where: { user: request.user } });
-  }
-
   constructor(readonly dataSource: DataSource) {}
 
   async findAll(): Promise<Company[]> {
     return this.dataSource.getRepository(Company).find();
+  }
+
+  async findWithIds(request: any): Promise<any> {
+    const limit = request.query.limit ?? 5;
+    const page = request.query.page ?? 1;
+    const id = request.query.id ?? -1;
+    const ids = JSON.parse(request.query.ids) ?? [];
+
+    const [chats, count] = await this.dataSource
+      .getRepository(Company)
+      .findAndCount({
+        where: { id: In(ids) },
+        take: limit,
+        order: {
+          favoritesof: 'DESC',
+        },
+        skip: id > 0 ? 0 : limit * (page - 1),
+      });
+
+    return {
+      datas: chats,
+      count: count,
+    };
+  }
+
+  async get(request: any): Promise<Company[]> {
+    return this.dataSource
+      .getRepository(Company)
+      .find({ where: { user: request.user } });
   }
 
   async findOne(id: number): Promise<Company> | null {

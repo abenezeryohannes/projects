@@ -7,12 +7,14 @@ import { UsersService } from '../../../modules/users/domain/services/users.servi
 import { UserDto } from '../../../modules/users/domain/dtos/user.dto';
 import { WrapperDto } from '../../../core/dto/wrapper.dto';
 import { ROLE } from '../entities/roles';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private dataSource: DataSource,
     private usersService: UsersService,
+    private jwtService: JwtService,
   ) {}
 
   public async login(request: any, requestBody: UserDto): Promise<User> {
@@ -49,7 +51,7 @@ export class AuthService {
   }
 
   private async generateToken(user: any, requestBody: any, trans: any) {
-    const code = '1234'; //await this.jwtService.signAsync(user);
+    const code = await this.jwtService.signAsync({ user });
     const t = new Token();
     t.user = user;
     t.token = code.length < 254 ? code : code.substring(0, 254);

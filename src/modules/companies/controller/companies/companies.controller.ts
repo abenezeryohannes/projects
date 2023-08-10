@@ -85,12 +85,23 @@ export class CompaniesController {
     }
   }
 
-  @Roles(ROLE.ADMIN)
+  @Roles(ROLE.ADMIN, ROLE.USER)
   @Get('findAll')
   async findAll(@Request() request) {
     try {
       const result = await this.companiesService.findAll();
       return WrapperDto.paginate(result, request.query);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN, ROLE.USER)
+  @Get('findWithIds')
+  async findWithIds(@Request() request) {
+    try {
+      const result = await this.companiesService.findWithIds(request);
+      return WrapperDto.paginate(result['datas'], request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }

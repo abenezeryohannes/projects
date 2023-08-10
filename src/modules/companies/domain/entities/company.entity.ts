@@ -40,17 +40,21 @@ export class Company {
   @Column({ name: 'delivery_fee', nullable: true })
   deliveryFee: string;
 
+  @Column({ default: 0 })
+  liked: number;
+
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToMany(() => Tag, {
+  @ManyToMany(() => Tag, (tag) => tag.companies, {
+    nullable: true,
     cascade: true,
   })
-  @JoinTable({
-    name: 'companies_tags',
-    joinColumn: { name: 'companyId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'tagId', referencedColumnName: 'id' },
-  })
+  // @JoinTable({
+  //   name: 'company_tag_id',
+  //   joinColumn: { name: 'companyId', referencedColumnName: 'id' },
+  //   inverseJoinColumn: { name: 'tagId', referencedColumnName: 'id' },
+  // })
   tags: Tag[];
 
   @ManyToOne(() => User, (user) => user.companies)

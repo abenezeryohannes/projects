@@ -7,12 +7,15 @@ export class Chat {
   id: number;
 
   @Column({
-    length: 1000,
+    length: 5000,
   })
   data: string;
 
   @Column()
   type: string;
+
+  @Column({ nullable: true, length: 5000 })
+  context: string;
 
   @Column({ default: true })
   isActive: boolean;

@@ -29,6 +29,7 @@ export class CreateChatDto {
       chat.receiver = await dataSource
         .getRepository(User)
         .findOne({ where: { id: this.receiverID } });
+
     if (this.senderID != null || this.senderID != undefined)
       chat.sender = await dataSource
         .getRepository(User)

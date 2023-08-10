@@ -50,9 +50,9 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       },
       createChatDto,
     );
-    this.server.emit('GxcR9hm4SPau5sYQtrJAAkt8vnp2', JSON.stringify(chat));
-
-    //client.broadcast.emit('receiveMessage', JSON.stringify(chat));
+    this.server.emit(user.UID, JSON.stringify(chat));
+    const response = await this.chatsService.respondToClient(chat);
+    this.server.emit(user.UID, JSON.stringify(response));
   }
 
   @SubscribeMessage('findAllChats')
