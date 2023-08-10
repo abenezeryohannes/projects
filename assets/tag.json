@@ -1,0 +1,203 @@
+[
+    {
+        "type": "food",
+        "name": "pizza",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "burger",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "restaurant",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "hotel",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "5 star hotel",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "3 star hotel",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "cafe",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "pastery",
+        "desc": " "
+    },{
+        "type": "food",
+        "name": "donut",
+        "desc": " "
+    },{
+        "type": "delivery",
+        "name": "free delivery",
+        "desc": "free delivery available."
+    },{
+        "type": "delivery",
+        "name": "delivery",
+        "desc": "there is delivery service."
+    },{
+        "type": "delivery",
+        "name": "no delivery",
+        "desc": "no delivery service."
+    },{
+        "type": "delivery time",
+        "name": "1 hour",
+        "desc": "delivery time will take around 1 hour."
+    },{
+        "type": "delivery time",
+        "name": "2 hours",
+        "desc": "delivery will take around 2 hours."
+    },{
+        "type": "delivery time",
+        "name": "3 hours",
+        "desc": "delivery will take around 3 hours."
+    },{
+        "type": "delivery time",
+        "name": "4 hours",
+        "desc": "delivery will take around 4 hours."
+    },{
+        "type": "delivery time",
+        "name": "6 hours",
+        "desc": "delivery will take around 6 hours."
+    },{
+        "type": "delivery time",
+        "name": "a day",
+        "desc": "delivery will take around 6 hours."
+    },{
+        "type": "delivery time",
+        "name": "more than a day",
+        "desc": "delivery will take around 6 hours."
+    },{
+        "type": "price",
+        "name": "cheap",
+        "desc": "pricing is approximetly cheap"
+    },{
+        "type": "price",
+        "name": "midium",
+        "desc": "pricing is in mid range"
+    },{
+        "type": "price",
+        "name": "expensive",
+        "desc": "pricing is approximetly expensive"
+    },{
+        "type": "price",
+        "name": "lexury",
+        "desc": "the price is suitable for lexuries people"
+    },{
+        "type": "price",
+        "name": "less than 10 dollar",
+        "desc": "can buy items/service less than 10 dollar"
+    },{
+        "type": "price",
+        "name": "less than 100 dollar",
+        "desc": "can buy items/service less than 100 dollar"
+    },{
+        "type": "price",
+        "name": "less than 200 dollar",
+        "desc": "can buy items/service less than 200 dollar"
+    },{
+        "type": "price",
+        "name": "less than 600 dollar",
+        "desc": "can buy items/service less than 600 dollar"
+    },{
+        "type": "price",
+        "name": "less than 1000 dollar",
+        "desc": "can buy items/service less than 1000 dollar"
+    },{
+        "type": "price",
+        "name": "less than 10000 dollar",
+        "desc": "can buy items/service less than 10000 dollar"
+    },{
+        "type": "community service",
+        "name": " ",
+        "desc": " "
+    },{
+        "type": "business type",
+        "name": "government",
+        "desc": "governmental company"
+    },{
+        "type": "business type",
+        "name": "Community",
+        "desc": "community company"
+    },{
+        "type": "business type",
+        "name": "NGO",
+        "desc": "NGO company"
+    },{
+        "type": "business type",
+        "name": "private",
+        "desc": "private business"
+    },{
+        "type": "business type",
+        "name": "PLC",
+        "desc": "private limited company"
+    },{
+        "type": "industry",
+        "name": "",
+        "desc": " "
+    }, {
+        "type": "place",
+        "name": "United Arab Emirates",
+        "desc": "Around United Arab Emirates"
+    }, {
+        "type": "place",
+        "name": "Yemen",
+        "desc": "Around Yemen"
+    }, {
+        "type": "place",
+        "name": "Saudi Arabia",
+        "desc": "Around Saudi Arabia"
+    }, {
+        "type": "place",
+        "name": "Qatar",
+        "desc": "Around Qatar"
+    }, {
+        "type": "place",
+        "name": "Oman",
+        "desc": "Around Oman"
+    }, {
+        "type": "place",
+        "name": "kuwait",
+        "desc": "Around kuwait"
+    }, {
+        "type": "place",
+        "name": "Iraq",
+        "desc": "Around Iraq"
+    }, {
+        "type": "time",
+        "name": "24 hours",
+        "desc": "Working hours for 24 hours"
+    }, {
+        "type": "time",
+        "name": "12 hours",
+        "desc": "Open 12 hours each day"
+    }, {
+        "type": "time",
+        "name": "24/7",
+        "desc": "Open 24/7 hours"
+    }, {
+        "type": "time",
+        "name": "2:00 am - 5:00 pm",
+        "desc": "Open between 2:00 am - 5:00 pm."
+    }, {
+        "type": "time",
+        "name": "9:00 am - 5:00 pm",
+        "desc": "Open between 9:00 am - 5:00 pm."
+    }, {
+        "type": "time",
+        "name": "weekday",
+        "desc": "Open on week days"
+    }, {
+        "type": "time",
+        "name": "24 hours",
+        "desc": "Open 24 hours"
+    }
+]
