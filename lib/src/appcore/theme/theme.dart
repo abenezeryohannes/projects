@@ -33,6 +33,7 @@ ThemeData DarkThemeData = ThemeData(
     scaffoldBackgroundColor: const Color(0xFF212121),
     cardColor: const Color(0xFF212121),
     colorScheme: const ColorScheme.light(
+      onTertiary: Color(0xFFEA3557),
       secondary: Color(0xFFEA3557),
       onSecondary: Color(0xFFFFFFFF),
       onBackground: Color(0xFFFFFFFF),

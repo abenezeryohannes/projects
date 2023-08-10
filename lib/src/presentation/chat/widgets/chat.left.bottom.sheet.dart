@@ -18,16 +18,16 @@ import '../../../appcore/widgets/big.text.button.dart';
 import '../../user/favorites.page.dart';
 import '../history.page.dart';
 
-class ChatMoreBottomSheet extends StatefulWidget {
-  const ChatMoreBottomSheet({super.key, this.user});
+class ChatLeftBottomSheet extends StatefulWidget {
+  const ChatLeftBottomSheet({super.key, this.user});
   final UserEntity? user;
   @override
-  State<ChatMoreBottomSheet> createState() => _ChatMoreBottomSheetState();
+  State<ChatLeftBottomSheet> createState() => _ChatLeftBottomSheetState();
 }
 
 enum BottomSheetType { MAIN, USER_ACCOUNT }
 
-class _ChatMoreBottomSheetState extends State<ChatMoreBottomSheet> {
+class _ChatLeftBottomSheetState extends State<ChatLeftBottomSheet> {
   late BottomSheetType viewType = BottomSheetType.MAIN;
   @override
   void initState() {
@@ -56,92 +56,8 @@ class _ChatMoreBottomSheetState extends State<ChatMoreBottomSheet> {
                     color: Theme.of(context).disabledColor,
                     borderRadius: const BorderRadius.all(Radius.circular(20))),
               ),
-              if (viewType == BottomSheetType.MAIN)
-                ..._body(context)
-              else if (viewType == BottomSheetType.USER_ACCOUNT)
-                ..._myAccount(context)
+              ..._body(context)
             ]));
-  }
-
-  List<Widget> _myAccount(BuildContext context) {
-    return [
-      Row(
-        children: [
-          Padding(
-              padding: const EdgeInsets.only(left: 20.0, bottom: 5),
-              child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      viewType = BottomSheetType.MAIN;
-                    });
-                  },
-                  icon: Icon(
-                    Icons.chevron_left,
-                    size: 32,
-                    color: Theme.of(context).disabledColor,
-                  ))),
-        ],
-      ),
-      BottomSheetButton(
-          title: 'My Favourites',
-          padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * (2 / 12),
-              right: MediaQuery.of(context).size.width * (2 / 12),
-              bottom: 20),
-          icon: 'assets/icon/heart.png',
-          onClick: () {
-            context.pushTransparentRoute(const FavoritesPage());
-          }),
-      BottomSheetButton(
-          title: 'History',
-          icon: 'assets/icon/history.png',
-          onClick: () {
-            context.pushTransparentRoute(const HistoryPage());
-          }),
-      BottomSheetButton(
-          title: 'About Linko',
-          icon: 'assets/icon/about.png',
-          onClick: () {
-            context.pushTransparentRoute(const AboutBottomSheet());
-          }),
-      Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            BottomSheetButton(
-                title: 'Change language',
-                icon: 'assets/icon/language.png',
-                onClick: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) => const Dialog(
-                        insetPadding: EdgeInsets.only(bottom: 200),
-                        backgroundColor: Colors.transparent,
-                        child: ChangeLanguageDialog()),
-                  );
-                  // Get.dialog(const ChangeLanguageDialog());
-                }),
-            BottomSheetButton(
-                title: 'Privacy and terms',
-                icon: 'assets/icon/privacy_and_terms.png',
-                onClick: () {
-                  context.pushTransparentRoute(const PrivacyBottomSheet());
-                }),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Mayde by mo & mo',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(color: Theme.of(context).disabledColor),
-            )
-          ],
-        ),
-      )
-    ];
   }
 
   List<Widget> _body(BuildContext context) {
@@ -206,14 +122,18 @@ class _ChatMoreBottomSheetState extends State<ChatMoreBottomSheet> {
           children: [
             Column(
               children: [
+                const SizedBox(
+                  height: 6,
+                ),
                 BottomSheetButton(
                     title: 'My account',
                     icon: 'assets/icon/user.png',
                     onClick: () {
-                      setState(() {
-                        viewType = BottomSheetType.USER_ACCOUNT;
-                      });
+                      Navigator.maybePop<String>(context, 'profile');
                     }),
+                const SizedBox(
+                  height: 6,
+                ),
                 BottomSheetButton(
                     title: 'Sign Out',
                     icon: 'assets/icon/power.png',

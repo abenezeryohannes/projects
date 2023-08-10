@@ -94,6 +94,8 @@ class _Converter<T> implements JsonConverter<T, Object> {
       return FavoriteEntity.fromJson(json) as T;
     } else if (json is Array || json is List) {
       return {} as T;
+    } else if (json is int) {
+      return json as T;
     }
     return {json} as T;
   }

@@ -21,7 +21,8 @@ class ImageForm extends StatefulWidget {
       this.deletable = false,
       this.editable = true,
       this.iconSize = 24,
-      this.onSave});
+      this.onSave,
+      this.placeholder});
 
   final Color? backgroundColor;
   final double? radius;
@@ -33,6 +34,7 @@ class ImageForm extends StatefulWidget {
   final bool deletable;
   final bool editable;
   final double iconSize;
+  final Widget? placeholder;
 
   final String? localImage;
   final Function(String) onUpload;
@@ -68,9 +70,17 @@ class _ImageFormState extends State<ImageForm> {
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(widget.radius ?? 0),
                     child: _getImage(context, _getImageString()))
-                : null,
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(widget.radius ?? 0),
+                    child: InkWell(
+                        onTap: () async {
+                          await Util.GetImage(
+                              context, widget.isLoading, widget.onUpload);
+                        },
+                        child: widget.placeholder)),
           ),
-          if (widget.editable)
+          if (widget.editable &&
+              !(widget.placeholder != null && widget.image == null))
             Align(
               alignment: Alignment.center,
               child: _editing(),

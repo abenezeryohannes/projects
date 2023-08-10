@@ -74,47 +74,49 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * (5 / 12),
+        height: MediaQuery.of(context).size.height * (6 / 12),
         padding: const EdgeInsets.only(bottom: 34),
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(20)),
             color: Theme.of(context).scaffoldBackgroundColor),
-        child: Stack(
-          children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Obx(() => LoadingBar(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 2),
-                          show: controller.loading.value,
-                        )),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 60,
-                      height: 5,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).disabledColor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20))),
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Obx(() => LoadingBar(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 2),
+                            show: controller.loading.value,
+                          )),
                     ),
-                  ),
-                  ..._body(context)
-                ]),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 0, bottom: 20.0),
-                child: _toggleBeforeEditing(),
-              ),
-            )
-          ],
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: 60,
+                        height: 5,
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).disabledColor,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20))),
+                      ),
+                    ),
+                    ..._body(context)
+                  ]),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 0, bottom: 20.0),
+                  child: _toggleBeforeEditing(),
+                ),
+              )
+            ],
+          ),
         ));
   }
 

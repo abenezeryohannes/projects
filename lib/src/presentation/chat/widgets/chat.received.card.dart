@@ -46,11 +46,13 @@ class _ChatReceivedCardState extends State<ChatReceivedCard> {
               padding: const EdgeInsets.only(
                   left: 14, right: 14, top: 10, bottom: 10),
               decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
+                  color:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.1),
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                    bottomLeft: Radius.circular(12),
                   )),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -72,7 +74,7 @@ class _ChatReceivedCardState extends State<ChatReceivedCard> {
                         'Linko',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 14,
-                            color: Theme.of(context).dividerColor,
+                            color: Theme.of(context).hintColor,
                             fontWeight: FontWeight.bold),
                       )
                     ],
@@ -81,20 +83,20 @@ class _ChatReceivedCardState extends State<ChatReceivedCard> {
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0),
                     child: Text(widget.chat?.data ?? '',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.onBackground)),
                   ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: Text(time(),
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 10,
-                            color: Theme.of(context).colorScheme.onBackground)),
-                  ),
+                  // const SizedBox(
+                  //   height: 3,
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 30.0),
+                  //   child: Text(time(),
+                  //       style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  //           fontSize: 10,
+                  //           color: Theme.of(context).colorScheme.onBackground)),
+                  // ),
                 ],
               ),
             ),

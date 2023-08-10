@@ -1,4 +1,5 @@
 import 'package:dismissible_page/dismissible_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:linko/injectable/getit.dart';
@@ -10,6 +11,7 @@ import '../../appcore/widgets/big.text.button.dart';
 import '../../appcore/widgets/image.form.dart';
 import '../../appcore/widgets/loading.bar.dart';
 import '../../appcore/widgets/text.input.form.dart';
+import '../privacy.bottom.sheet.dart';
 
 class AddCompanyPage extends StatefulWidget {
   const AddCompanyPage({super.key});
@@ -62,10 +64,31 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0, right: 30),
                           child: ImageForm(
-                            image: Api.getMedia(controller.dto.value.banner ??
-                                'img/placeholder.jpg'),
+                            image: controller.dto.value.banner != null
+                                ? Api.getMedia(controller.dto.value.banner!)
+                                : null,
                             height: 130,
                             radius: 20,
+                            placeholder: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/icon/image_placeholder.png',
+                                  width: 42,
+                                  height: 42,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    tr('business_banner'),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(),
+                                  ),
+                                )
+                              ],
+                            ),
                             width:
                                 MediaQuery.of(context).size.width * (12 / 12),
                             isLoading: (bool val) {
@@ -84,41 +107,57 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                         const SizedBox(
                           height: 20,
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(
+                        //       left: 30, right: 30, bottom: 10),
+                        //   child: EditableTag(
+                        //     suggestions: controller.tags,
+                        //     placeholder: 'Add Tags',
+                        //     onSelected: (val) {
+                        //       if (!controller.tagsDto
+                        //           .contains(TagDto(name: val))) {
+                        //         setState(() {
+                        //           controller.tagsDto.add(TagDto(name: val));
+                        //         });
+                        //       }
+                        //     },
+                        //     searchOption: (val) {
+                        //       controller.findTags(search: val);
+                        //     },
+                        //     tags:
+                        //         controller.tagsDto.map((e) => e.name).toList(),
+                        //     validator: (x) => (x == null || ((x.length) < 4))
+                        //         ? 'Tag must be at least more th)atn 3 character'
+                        //         : null,
+                        //     onTagDelete: (tag) {
+                        //       setState(() {
+                        //         controller.tagsDto.removeWhere((element) =>
+                        //             element.name
+                        //                 .toLowerCase()
+                        //                 .startsWith(tag.toLowerCase()));
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 30, right: 30, bottom: 10),
-                          child: EditableTag(
-                            suggestions: controller.tags,
-                            placeholder: 'Add Tags',
-                            onSelected: (val) {
-                              if (!controller.tagsDto
-                                  .contains(TagDto(name: val))) {
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 30),
+                          child: TextInputForm(
+                              placeholder: 'Business Link',
+                              fillColor: Theme.of(context).cardColor,
+                              radius: 100,
+                              initialValue: controller.dto.value.name,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 20, top: 14, bottom: 14, right: 10),
+                              onChanged: (val) {
                                 setState(() {
-                                  controller.tagsDto.add(TagDto(name: val));
+                                  controller.dto.value.url = val;
                                 });
-                              }
-                            },
-                            searchOption: (val) {
-                              controller.findTags(search: val);
-                            },
-                            tags:
-                                controller.tagsDto.map((e) => e.name).toList(),
-                            validator: (x) => (x == null || ((x.length) < 4))
-                                ? 'Tag must be at least more th)atn 3 character'
-                                : null,
-                            onTagDelete: (tag) {
-                              setState(() {
-                                controller.tagsDto.removeWhere((element) =>
-                                    element.name
-                                        .toLowerCase()
-                                        .startsWith(tag.toLowerCase()));
-                              });
-                            },
-                          ),
+                              }),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 30),
+                              vertical: 10, horizontal: 30),
                           child: TextInputForm(
                               placeholder: 'Business Name',
                               fillColor: Theme.of(context).cardColor,
@@ -134,7 +173,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 30),
+                              vertical: 10, horizontal: 30),
                           child: TextInputForm(
                               placeholder: 'Business number',
                               fillColor: Theme.of(context).cardColor,
@@ -149,11 +188,12 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 30),
+                              vertical: 10, horizontal: 30),
                           child: TextInputForm(
-                              placeholder: 'Owner number',
+                              placeholder: 'Owner Number',
                               fillColor: Theme.of(context).cardColor,
                               radius: 100,
+                              initialValue: controller.dto.value.name,
                               contentPadding: const EdgeInsets.only(
                                   left: 20, top: 14, bottom: 14, right: 10),
                               onChanged: (val) {
@@ -162,54 +202,35 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                                 });
                               }),
                         ),
-                        Container(
-                          height: 70,
+                        Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 6),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: 75,
-                                width: MediaQuery.of(context).size.width *
-                                    (5 / 12),
-                                child: TextInputForm(
-                                    placeholder: 'Delivery time',
-                                    fillColor: Theme.of(context).cardColor,
-                                    radius: 100,
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 20,
-                                        top: 14,
-                                        bottom: 14,
-                                        right: 10),
-                                    onChanged: (val) {
-                                      setState(() {
-                                        controller.dto.value.deliveryTime = val;
-                                      });
-                                    }),
-                              ),
-                              SizedBox(
-                                height: 75,
-                                width: MediaQuery.of(context).size.width *
-                                    (5 / 12),
-                                child: TextInputForm(
-                                    placeholder: 'Delivery fees',
-                                    fillColor: Theme.of(context).cardColor,
-                                    radius: 100,
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 20,
-                                        top: 14,
-                                        bottom: 14,
-                                        right: 10),
-                                    onChanged: (val) {
-                                      setState(() {
-                                        controller.dto.value.deliveryFee = val;
-                                      });
-                                    }),
-                              ),
-                            ],
-                          ),
+                              vertical: 10, horizontal: 30),
+                          child: TextInputForm(
+                              placeholder: 'Delivery time',
+                              fillColor: Theme.of(context).cardColor,
+                              radius: 100,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 20, top: 14, bottom: 14, right: 10),
+                              onChanged: (val) {
+                                setState(() {
+                                  controller.dto.value.deliveryTime = val;
+                                });
+                              }),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 30),
+                          child: TextInputForm(
+                              placeholder: 'Delivery fees',
+                              fillColor: Theme.of(context).cardColor,
+                              radius: 100,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 20, top: 14, bottom: 14, right: 10),
+                              onChanged: (val) {
+                                setState(() {
+                                  controller.dto.value.deliveryFee = val;
+                                });
+                              }),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -219,6 +240,15 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                             children: [
                               Checkbox(
                                   value: check,
+                                  fillColor: MaterialStateProperty.all(
+                                      Theme.of(context).colorScheme.secondary),
+                                  checkColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  side: BorderSide(
+                                      width: 1.2,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary),
                                   shape: const RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
@@ -227,9 +257,29 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                                       check = !check;
                                     });
                                   }),
-                              Text(
-                                'I agree to the Terms & Privacy',
-                                style: Theme.of(context).textTheme.bodyMedium,
+                              Text.rich(
+                                TextSpan(
+                                    text: 'I agree to the ',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                    children: [
+                                      WidgetSpan(
+                                          child: InkWell(
+                                        onTap: () {
+                                          context.pushTransparentRoute(
+                                              const PrivacyBottomSheet());
+                                        },
+                                        child: Text('Terms & Privacy',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                                  fontSize: 14,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                )),
+                                      ))
+                                    ]),
                               )
                             ],
                           ),

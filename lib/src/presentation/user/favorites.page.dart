@@ -50,10 +50,15 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   AppBar _appBar() {
     return AppBar(
-      leading: Icon(
-        Icons.chevron_left,
-        size: 42,
-        color: Theme.of(context).disabledColor,
+      leading: InkWell(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: Icon(
+          Icons.chevron_left,
+          size: 42,
+          color: Theme.of(context).disabledColor,
+        ),
       ),
       title: Text(
         'My Favorites',

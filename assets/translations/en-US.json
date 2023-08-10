@@ -5,9 +5,7 @@
    "ar": "Arabic",
    "english": "English",
    "arabic": "Arabic", 
-   "msg":"{} are written in the {} language",
-   "msg_named":"Easy localization is written in the {lang} language",
-   "msg_mixed":"{} are written in the {lang} language",
+   "business_banner": "Business banner",
    "gender":{
       "male":"Hi man ;) {}",
       "female":"Hello girl :) {}",

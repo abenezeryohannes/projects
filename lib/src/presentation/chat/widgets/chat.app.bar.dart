@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:linko/src/presentation/chat/widgets/chat.right.bottom.sheet.dart';
 
 import '../../../appcore/network/api.dart';
 import '../../../domain/user/entities/user.entity.dart';
 import '../../auth/pages/auth.page.dart';
 import '../../user/profile.bottom.sheet.dart';
-import 'chat.more.bottom.sheet.dart';
+import 'chat.left.bottom.sheet.dart';
 
 class ChatAppBar extends StatefulWidget {
   const ChatAppBar({super.key, this.user});
@@ -37,11 +38,19 @@ class _ChatAppBarState extends State<ChatAppBar> {
                 } else {
                   showModalBottomSheet(
                       context: context,
-                      isScrollControlled: true,
-                      builder: (context) => Padding(
-                            padding: MediaQuery.of(context).viewInsets,
-                            child: const ProfileBottomSheet(),
-                          ));
+                      builder: (context) => ChatLeftBottomSheet(
+                            user: widget.user,
+                          )).then((value) {
+                    if (value == 'profile') {
+                      showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => Padding(
+                                padding: MediaQuery.of(context).viewInsets,
+                                child: const ProfileBottomSheet(),
+                              ));
+                    }
+                  });
                 }
               },
               child: CircleAvatar(
@@ -63,9 +72,19 @@ class _ChatAppBarState extends State<ChatAppBar> {
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
-                          builder: (context) => ChatMoreBottomSheet(
+                          builder: (context) => ChatRightBottomSheet(
                                 user: widget.user,
-                              ));
+                              )).then((value) {
+                        if (value == 'profile') {
+                          showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => Padding(
+                                    padding: MediaQuery.of(context).viewInsets,
+                                    child: const ProfileBottomSheet(),
+                                  ));
+                        }
+                      });
                     },
                     icon: Icon(
                       Icons.more_horiz,

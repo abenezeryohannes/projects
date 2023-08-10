@@ -141,7 +141,7 @@ class _TextInputFormState extends State<TextInputForm> {
               hintStyle: Theme.of(context)
                   .textTheme
                   .bodyLarge!
-                  .copyWith(color: Colors.grey.shade400),
+                  .copyWith(color: Colors.grey.shade700),
               enabledBorder: UnderlineInputBorder(
                   borderSide:
                       BorderSide(width: 0.3, color: Colors.grey.shade300),

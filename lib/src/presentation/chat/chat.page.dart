@@ -65,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
 
     socket.connect();
     socket.onConnect((_) {
-      print('Connection established');
+      // print('Connection established');
     });
     socket.onDisconnect((_) => print('Connection Disconnection'));
     socket.onConnectError((err) => print(err));

@@ -5,6 +5,7 @@ import 'package:linko/src/appcore/errors/failure.dart';
 import 'package:linko/src/appcore/network/network.info.dart';
 import 'package:linko/src/domain/chat/entities/chat.entity.dart';
 import 'package:linko/src/domain/chat/repositories/i.chat.repository.dart';
+import 'package:linko/src/domain/company/entities/company.entity.dart';
 import 'package:linko/src/infrastructure/chat/datasources/chat.local.datasource.dart';
 import 'package:linko/src/infrastructure/chat/datasources/chat.remote.datasource.dart';
 
@@ -64,6 +65,39 @@ class ChatRepositoryImp extends IChatRepository {
         if (response == null) return Left(UnExpectedFailure());
         //
         localDataSource.saveChat(true, null);
+        //
+        return Right(response);
+        //
+      } else {
+        throw NetworkFailure();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, WrapperDto<CompanyEntity>>?>? findAllCompaniesWithId(
+      {int? id, int? limit, int? page, required List<int> ids}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        //
+        final response = await remoteDataSource.findAllCompaniesWithId(
+            id: id, page: page, limit: limit, ids: ids);
+        //
+        if (response == null) return Left(UnExpectedFailure());
+        //
+        localDataSource.saveChatCompanies(response.datas);
         //
         return Right(response);
         //

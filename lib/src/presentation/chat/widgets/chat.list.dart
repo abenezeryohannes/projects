@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:linko/src/appcore/dtos/wrapper.dto.dart';
 import 'package:linko/src/domain/chat/entities/chat.entity.dart';
 import 'package:linko/src/domain/company/entities/company.entity.dart';
+import 'package:linko/src/presentation/chat/widgets/chat.company.list.dart';
 import 'package:linko/src/presentation/chat/widgets/chat.received.card.dart';
 import 'package:linko/src/presentation/company/business.card.dart';
 
@@ -69,22 +70,24 @@ class _ChatListState extends State<ChatList> {
     ChatEntity chat,
   ) {
     if (chat.type != 'text') {
-      if (chat.data == null || chat.data!.trim().isEmpty)
+      if (chat.data == null || chat.data!.trim().isEmpty) {
         return const SizedBox();
+      }
       final decoded = json.decode(chat.data!);
-      WrapperDto<CompanyEntity?> wrapper =
-          WrapperDto<CompanyEntity?>.fromJson(decoded);
+      WrapperDto<int?> wrapper = WrapperDto<int?>.fromJson(decoded);
       if (wrapper.datas == null) return const SizedBox();
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ...wrapper.datas!.map((company) {
-            return BusinessCard(
-              company: company,
-            );
-          })
-        ],
-      );
+      return ChatCompanyList(controller: widget.controller, chat: chat);
+      // return Column(
+      //   mainAxisSize: MainAxisSize.min,
+      //   children: [
+
+      //     // ...wrapper.datas!.map((company) {
+      //     //   return BusinessCard(
+      //     //     company: company,
+      //     //   );
+      //     // })
+      //   ],
+      // );
     } else {
       if (chat.sender == null) {
         return ChatReceivedCard(
