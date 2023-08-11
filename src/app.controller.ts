@@ -29,10 +29,10 @@ export class AppController {
     }
   }
 
-  // @Get()
-  // home(@Query() query: any, @Res() res) {
-  //   return res.send('Hello there !');
-  // }
+  @Get()
+  home(@Query() query: any, @Res() res) {
+    return res.send('Hello there !');
+  }
 
   // @Get('terms_and_conditions')
   // @Render('terms.and.condition.html')
