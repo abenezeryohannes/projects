@@ -12,6 +12,8 @@
     "migration:revert": "npm run typeorm -- -d ../linkoai/src/config/orm-migration.config.ts migration:revert",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config -n ../linkoai/src/config/orm-seed.config.ts",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -n ../linkoai/src/config/orm-seed.config.ts",
+    "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop -n ../linkoai/src/config/orm-seed.config.ts ",
+    "schema:sync": "ts-node ./node_modules/typeorm/cli.js schema:sync -n ../linkoai/src/config/orm-seed.config.ts",    
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -f ../linkoai/src/config/orm-migration-config.ts"
   },
