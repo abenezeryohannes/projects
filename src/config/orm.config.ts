@@ -10,6 +10,7 @@ import { ChatTrainer } from '../modules/chats/domain/entities/chat.trainer.entit
 dotenv.config({ path: '.env' });
 
 export const config = {
+  // name: 'linkoai',
   type: 'mysql',
   // driver: 'mysql',
   host: `${process.env.DATABASE_HOST}`,
