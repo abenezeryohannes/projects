@@ -340,7 +340,7 @@ export class ChatsService {
       if (
         data == undefined ||
         data == null ||
-        (data as string).endsWith(':0}')
+        (data as string).trim().endsWith(':0}')
       ) {
         type = 'text';
         data = 'empty';
