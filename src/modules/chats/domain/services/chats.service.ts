@@ -216,7 +216,7 @@ export class ChatsService {
     });
   }
 
-  async getBusinessesFromTags(tags: Tag[], context: any): Promise<any> {
+  async getBusinessesFromTags(tags: Tag[], context: any): Promise<any | null> {
     //
     const sql_query =
       'SELECT companyID as id FROM company_tag_id where tagID in ' +
@@ -253,11 +253,13 @@ export class ChatsService {
         select: ['id'],
         // skip: id > 0 ? 0 : limit * (page - 1),
       });
-    if (comps.length == 0) return null;
-    return {
-      datas: comps.length > 0 ? comps.map((c) => c.id) : comps,
-      count: count,
-    };
+    if (comps == null || count == null || comps.length == 0 || count == 0)
+      return null;
+    else
+      return {
+        datas: comps.length > 0 ? comps.map((c) => c.id) : comps,
+        count: count,
+      };
   }
 
   async processAIResponse(
