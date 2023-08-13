@@ -71,9 +71,19 @@ export class ChatTrainersService {
   ): Promise<ChatTrainer[]> {
     const op = [];
     for (let i = 0; i < bodies.length; i++) {
-      op.push(this.add(request, bodies[i]));
+      for (let j = 0; j < bodies[i].utterance.length; j++) {
+        const trainer = new ChatTrainer();
+        trainer.intent = bodies[i].intent;
+        trainer.language = bodies[i].language;
+        trainer.type = bodies[i].type;
+        trainer.name = bodies[i].name;
+        trainer.command = bodies[i].command;
+        trainer.slot = bodies[i].slot;
+        trainer.utterance = bodies[i].utterance[j];
+        op.push(this.dataSource.getRepository(ChatTrainer).save(trainer));
+      }
     }
-    return Promise.all(op);
+    return await Promise.all(op);
   }
 
   async delete(request: any, id: number): Promise<any> {
