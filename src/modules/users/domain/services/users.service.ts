@@ -62,7 +62,7 @@ export class UsersService {
     const userSaved = await this.dataSource.getRepository(User).save(result);
     return await this.dataSource.getRepository(User).findOne({
       where: { id: userSaved.id },
-      relations: ['token'],
+      relations: ['tokens'],
     });
   }
 

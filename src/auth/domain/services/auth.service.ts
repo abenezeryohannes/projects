@@ -23,7 +23,7 @@ export class AuthService {
 
     let user = await this.dataSource.getRepository(User).findOne({
       where: { phoneNumber: requestBody.phoneNumber },
-      relations: ['token'],
+      relations: ['tokens'],
     });
     if (user == null)
       user = await this.usersService.create(
