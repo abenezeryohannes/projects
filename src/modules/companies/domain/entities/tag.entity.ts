@@ -21,7 +21,7 @@ export class Tag {
   @Column({ default: 'industry' })
   type: string;
 
-  @Column({ length: 60000 })
+  @Column({ length: 15600 })
   desc: string;
 
   @Column()
