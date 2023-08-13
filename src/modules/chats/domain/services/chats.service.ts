@@ -62,19 +62,19 @@ export class ChatsService {
     }
 
     const jwt = auth_token.replace('Bearer ', '');
-    // const token = await this.dataSource.getRepository(Token).findOne({
-    //   where: { token: jwt },
-    //   relations: {
-    //     user: true,
-    //   },
-    // });
-
     const token = await this.dataSource.getRepository(Token).findOne({
-      where: { id: MoreThan(0) },
+      where: { token: jwt },
       relations: {
         user: true,
       },
     });
+
+    // const token = await this.dataSource.getRepository(Token).findOne({
+    //   where: { id: MoreThan(0) },
+    //   relations: {
+    //     user: true,
+    //   },
+    // });
 
     if (token == null) {
       throw new WsException('Invalid credentials.');
