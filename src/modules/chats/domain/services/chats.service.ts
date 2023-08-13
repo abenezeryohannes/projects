@@ -337,9 +337,13 @@ export class ChatsService {
     delete context['nluAnswers'];
 
     if (type != 'text') {
-      if (data == undefined || data == null) {
+      if (
+        data == undefined ||
+        data == null ||
+        (data as string).endsWith(':0}')
+      ) {
         type = 'text';
-        data = "Sorry i don't have any business with this condition yet";
+        data = 'empty';
       }
     }
     return [type, data, JSON.stringify(context)];
