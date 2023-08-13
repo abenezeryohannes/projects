@@ -142,12 +142,13 @@ export class ChatsService {
       previousChat?.context == null ? null : JSON.parse(previousChat.context),
     );
     if (chat.type == 'text') {
-      console.log(
-        '\ntext: ',
-        chat.data == null
-          ? 'Fallback'
-          : chat.data.replaceAll('{{name}}', receivedChat.sender.fullName),
-      );
+      // console.log(
+      //   '\ntext: ',
+      //   chat.data == null
+      //     ? 'Fallback'
+      //     : chat.data.replaceAll('{{name}}', receivedChat.sender.fullName),
+      // );
+      console.log('chat.data: ', chat.data);
       if (chat.data != null) {
         chat.data = chat.data.replaceAll(
           '{{name}}',
