@@ -187,8 +187,8 @@ export class ChatsService {
     });
     manager.import(data);
     const response = await manager.process(utterance.replaceAll('-', ' '));
-    console.log(response['intent']);
-    console.log(response['answer']);
+    console.log('intent', response['intent']);
+    console.log('response', response['answer']);
     return response;
   }
 
