@@ -52,7 +52,7 @@ export default class CreateUsers implements Seeder {
     // }
     // // End
     // //One ot Many
-    // const users = await connection.getRepository(User).find();
+    const users = await connection.getRepository(User).find();
 
     // for (let i = 0; i < users.length; i++) {
     //   const min = Math.random() * companies.length;
@@ -66,19 +66,19 @@ export default class CreateUsers implements Seeder {
     // }
     // //Token
 
-    // for (let i = 0; i < users.length; i++) {
-    //   const token = new Token();
-    //   token.user = users[i];
-    //   token.role = users[i].role;
-    //   token.fcmToken = randPassword();
-    //   token.token =
-    //     users[i].role.toLowerCase() == "user"
-    //       ? (users[i].id + 122).toString()
-    //       : (12345678 + users[i].id).toString();
-    //   token.until = new Date(Date.now());
-    //   token.until = new Date(token.until.getTime() + 200);
-    //   await connection.manager.save(token);
-    // }
+    for (let i = 0; i < users.length; i++) {
+      const token = new Token();
+      token.user = users[i];
+      token.role = users[i].role;
+      token.fcmToken = randPassword();
+      token.token =
+        users[i].role.toLowerCase() == "user"
+          ? (users[i].id + 122).toString()
+          : (12345678 + users[i].id).toString();
+      token.until = new Date(Date.now());
+      token.until = new Date(token.until.getTime() + 200);
+      await connection.manager.save(token);
+    }
     // //End
     // //Chat
     // for (let i = 0; i < users.length; i++) {
