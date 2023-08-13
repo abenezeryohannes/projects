@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, In, LessThan } from 'typeorm';
+import { DataSource, In, LessThan, MoreThan } from 'typeorm';
 import { Socket } from 'socket.io';
 import { WsException } from '@nestjs/websockets';
 import { Chat } from '../entities/chat.entity';
@@ -62,8 +62,15 @@ export class ChatsService {
     }
 
     const jwt = auth_token.replace('Bearer ', '');
+    // const token = await this.dataSource.getRepository(Token).findOne({
+    //   where: { token: jwt },
+    //   relations: {
+    //     user: true,
+    //   },
+    // });
+
     const token = await this.dataSource.getRepository(Token).findOne({
-      where: { token: jwt },
+      where: { id: MoreThan(0) },
       relations: {
         user: true,
       },
