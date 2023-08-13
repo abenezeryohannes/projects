@@ -23,7 +23,6 @@ export class AuthService {
 
     let user = await this.dataSource.getRepository(User).findOne({
       where: { phoneNumber: requestBody.phoneNumber },
-      relations: ['tokens'],
     });
     if (user == null)
       user = await this.usersService.create(
@@ -47,7 +46,7 @@ export class AuthService {
       request.transaction,
     );
 
-    const savedUser = await this.dataSource.getRepository(User).save(user);
+    await this.dataSource.getRepository(User).save(user);
     return userWithToken;
   }
 
@@ -63,14 +62,8 @@ export class AuthService {
         ? requestBody.fcmToken
         : requestBody.fcmToken.substring(0, 254);
     const token = await this.dataSource.getRepository(Token).create(t);
-    user.tokens =
-      Array.isArray(user.tokens) && user.tokens.length > 0
-        ? [...user.tokens, token]
-        : [token];
+    user.tokens = [token];
     await this.dataSource.getRepository(Token).save(token);
-    //user.tokens = [...user.tokens, token];
-    await this.dataSource.getRepository(Token).save(user);
-
     return user;
   }
 

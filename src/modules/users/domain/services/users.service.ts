@@ -59,11 +59,8 @@ export class UsersService {
     //     );
     //   result.locationId = location.id;
     // }
-    const userSaved = await this.dataSource.getRepository(User).save(result);
-    return await this.dataSource.getRepository(User).findOne({
-      where: { id: userSaved.id },
-      relations: ['tokens'],
-    });
+    await this.dataSource.getRepository(User).save(result);
+    return result;
   }
 
   async edit(request: any, dto: UserEditDto) {
