@@ -46,7 +46,7 @@ export class AuthService {
       request.transaction,
     );
 
-    await this.dataSource.getRepository(User).save(user);
+    const savedUser = await this.dataSource.getRepository(User).save(user);
     return userWithToken;
   }
 
@@ -62,8 +62,11 @@ export class AuthService {
         ? requestBody.fcmToken
         : requestBody.fcmToken.substring(0, 254);
     const token = await this.dataSource.getRepository(Token).create(t);
-    user.tokens = [token];
+    user.tokens = [...user.tokens, token];
     await this.dataSource.getRepository(Token).save(token);
+    //user.tokens = [...user.tokens, token];
+    await this.dataSource.getRepository(Token).save(user);
+
     return user;
   }
 

@@ -150,6 +150,9 @@ export class ChatsService {
       // );
       console.log('chat.data: ', chat.data);
       if (chat.data != null) {
+        if (chat.data == 'empty') {
+          chat.data = await this.getTrainedAiResponse('empty', previousChat);
+        }
         chat.data = chat.data.replaceAll(
           '{{name}}',
           receivedChat.sender.fullName,
@@ -250,6 +253,7 @@ export class ChatsService {
         select: ['id'],
         // skip: id > 0 ? 0 : limit * (page - 1),
       });
+    if (comps.length == 0) return null;
     return {
       datas: comps.length > 0 ? comps.map((c) => c.id) : comps,
       count: count,
@@ -283,9 +287,11 @@ export class ChatsService {
       } else if (currentTags.findIndex((val) => val.canDetermine) != -1) {
         type = 'companies';
         context = this.addPageNumberToContext(context, proviousAiResponse);
-        data = JSON.stringify(
-          await this.getBusinessesFromTags(currentTags, context),
-        );
+        const business = await this.getBusinessesFromTags(currentTags, context);
+        if (business == null) {
+          type = 'text';
+          data = 'empty';
+        } else data = JSON.stringify(business);
       } else if (currentTags.length > 0) {
         const previousTags = await this.parseTagFromEntities(
           proviousAiResponse == null ? [] : proviousAiResponse['entities'],
@@ -298,13 +304,14 @@ export class ChatsService {
             ...context['entities'],
             ...proviousAiResponse['entities'],
           ];
-
-          data = JSON.stringify(
-            await this.getBusinessesFromTags(
-              [...currentTags, ...previousTags],
-              context,
-            ),
+          const business = await this.getBusinessesFromTags(
+            [...currentTags, ...previousTags],
+            context,
           );
+          if (business == null) {
+            type = 'text';
+            data = 'empty';
+          } else data = JSON.stringify(business);
         } else {
           type = 'text';
           data = aiResponse['answer'] ?? 'Fallback';
