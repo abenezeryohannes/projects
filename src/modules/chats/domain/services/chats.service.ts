@@ -151,7 +151,12 @@ export class ChatsService {
       console.log('chat.data: ', chat.data);
       if (chat.data != null) {
         if (chat.data == 'empty') {
-          chat.data = await this.getTrainedAiResponse('empty', previousChat);
+          const emptyResp = await this.getTrainedAiResponse(
+            'empty',
+            previousChat,
+          );
+          chat.data =
+            emptyResp['answer'] ?? 'No business Found with this specification';
         }
         chat.data = chat.data.replaceAll(
           '{{name}}',
