@@ -46,6 +46,12 @@ export class Company {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ name: 'budge', nullable: true })
+  budge: string;
+
+  @Column({ name: 'budge_color', nullable: true })
+  budgeColor: string;
+
   @ManyToMany(() => Tag, (tag) => tag.companies, {
     nullable: true,
     cascade: true,

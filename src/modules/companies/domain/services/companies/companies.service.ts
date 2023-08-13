@@ -25,7 +25,7 @@ export class CompaniesService {
         where: { id: In(ids) },
         take: limit,
         order: {
-          favoritesof: 'DESC',
+          liked: 'DESC',
         },
         skip: id > 0 ? 0 : limit * (page - 1),
       });

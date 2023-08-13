@@ -146,6 +146,15 @@ export class ChatsService {
           '{{name}}',
           receivedChat.sender.fullName,
         );
+      } else {
+        const fallbackAIResp = await this.getTrainedAiResponse(
+          'fallback',
+          previousChat,
+        );
+        console.log('fallback resonse: ', fallbackAIResp['answer']);
+        chat.data =
+          fallbackAIResp['answer'] ??
+          'Sorry i am not trained yet to respond to this kind of queries';
       }
     } else {
       console.log('\ndata: ', chat.data);
