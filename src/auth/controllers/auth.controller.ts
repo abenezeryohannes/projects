@@ -35,7 +35,7 @@ export class AuthController {
   @Post('logout')
   async logOut(@Request() request) {
     try {
-      return await this.authService.logout(request.Token);
+      return await this.authService.logout(request.token);
     } catch (error) {
       //await request.transaction.rollback();
       return WrapperDto.figureOutTheError(error);

@@ -72,7 +72,7 @@ export class AuthService {
       await this.dataSource.getRepository(Token).delete({
         id: token.id,
       });
-    } else throw new Error('No session provided to logout from');
+    } //else throw new Error('No session provided to logout from');
     return WrapperDto.successfull('Logout Successfull');
   }
 

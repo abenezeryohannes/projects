@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { UserDto } from '../dtos/user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -75,28 +75,30 @@ export class UsersService {
   }
 
   async delete(request: any) {
-    const company = await this.dataSource.getRepository(Company).findOne({
-      where: { user: request.user },
+    const user = await this.dataSource
+      .getRepository(User)
+      .findOneBy({ id: request.user.id });
+    //
+    const companies = await this.dataSource.getRepository(Company).find({
+      where: { user: user },
     });
     //delete token
-    await this.dataSource.getRepository(Token).delete({ user: request.user });
-    //delete chat
-    await this.dataSource.getRepository(Chat).delete({ sender: request.user });
     await this.dataSource
-      .getRepository(Chat)
-      .delete({ receiver: request.user });
+      .getRepository(Token)
+      .delete({ token: request.token.token });
+    //delete chat
+    await this.dataSource.getRepository(Chat).delete({ sender: user });
+    await this.dataSource.getRepository(Chat).delete({ receiver: user });
     //delete fav
     await this.dataSource
       .getRepository(Favorite)
-      .delete({ user: request.user });
+      .delete({ company: In(companies) });
     //delete company
-    await this.dataSource.getRepository(Company).delete({ id: company.id });
+    await this.dataSource.getRepository(Company).delete({ user: user });
     //delete company fav
-    await this.dataSource
-      .getRepository(Favorite)
-      .delete({ company: request.user });
+    await this.dataSource.getRepository(Favorite).delete({ user: user });
     //delete user
-    await this.dataSource.getRepository(User).delete({ id: request.user });
+    await this.dataSource.getRepository(User).delete({ id: user.id });
     return true;
   }
 
