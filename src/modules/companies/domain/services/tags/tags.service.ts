@@ -9,7 +9,9 @@ export class TagsService {
   constructor(readonly dataSource: DataSource) {}
 
   async findAll(): Promise<Tag[]> {
-    return this.dataSource.getRepository(Tag).find();
+    return this.dataSource.getRepository(Tag).find({
+      select: ['id', 'name', 'type', 'canDetermine', 'color', 'isActive'],
+    });
   }
 
   async add(request: any, body: TagDto): Promise<Tag> {
