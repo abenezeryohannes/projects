@@ -276,6 +276,7 @@ export class ChatsService {
     let context = aiResponse;
     const currentTags = await this.parseTagFromEntities(aiResponse['entities']);
     if (
+      false &&
       proviousAiResponse != null &&
       proviousAiResponse['slotFill'] != null &&
       proviousAiResponse['slotFill']['currentSlot'] != null
