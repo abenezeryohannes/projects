@@ -5,7 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { DataSource } from 'typeorm';
+import { DataSource, IsNull } from 'typeorm';
 import { Token } from '../entities/token.entity';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class RolesGuard implements CanActivate {
     }
     const jwt = request.headers.authorization.replace('Bearer ', '');
 
-    const token = await this.dataSource.getRepository(Token).findOne({
+    let token = await this.dataSource.getRepository(Token).findOne({
       where: { token: jwt },
       relations: {
         user: true,
@@ -36,7 +36,15 @@ export class RolesGuard implements CanActivate {
     });
 
     if (token == null) return false;
-    else {
+    else if (token.user == null || token.user == undefined) {
+      await this.dataSource.getRepository(Token).delete({ user: IsNull() });
+      token = await this.dataSource.getRepository(Token).findOne({
+        where: { token: jwt },
+        relations: {
+          user: true,
+        },
+      });
+    } else {
       request.token = token;
       request.user = token.user;
       request.user.Token = token;
