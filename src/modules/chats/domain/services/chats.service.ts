@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, In, LessThan, MoreThan } from 'typeorm';
+import { DataSource, In, LessThan, MoreThan, MoreThanOrEqual } from 'typeorm';
 import { Socket } from 'socket.io';
 import { WsException } from '@nestjs/websockets';
 import { Chat } from '../entities/chat.entity';
@@ -50,6 +50,31 @@ export class ChatsService {
 
     return await this.dataSource.getRepository(Chat).delete({
       id: In(chats.map((c) => c.id)),
+    });
+  }
+
+  async clear(request: any): Promise<any> {
+    const user = await this.dataSource
+      .getRepository(User)
+      .findOneBy({ id: request.user.id });
+
+    const id = request.query.id;
+
+    const chats = await this.dataSource.getRepository(Chat).find({
+      where: [
+        { receiver: user, id: MoreThanOrEqual(id) },
+        { sender: user, id: MoreThanOrEqual(id) },
+      ],
+      take: 2,
+      relations: ['sender', 'receiver'],
+    });
+    if (chats.length == 0) return true;
+    const toDelete = [chats[0].id];
+    if (chats.length > 1 && chats[1].sender == null) {
+      toDelete.push(chats[1].id);
+    }
+    return await this.dataSource.getRepository(Chat).delete({
+      id: In(toDelete),
     });
   }
 

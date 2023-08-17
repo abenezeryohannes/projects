@@ -35,7 +35,7 @@ export class Company {
   ownerPhoneNumber: string;
 
   @Column({ name: 'delivery_time', nullable: true })
-  deliverTime: string;
+  deliveryTime: string;
 
   @Column({ name: 'delivery_fee', nullable: true })
   deliveryFee: string;
@@ -46,11 +46,11 @@ export class Company {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ name: 'budge', nullable: true })
-  budge: string;
+  @Column({ name: 'badge', nullable: true })
+  badge: string;
 
-  @Column({ name: 'budge_color', nullable: true })
-  budgeColor: string;
+  @Column({ name: 'badge_color', nullable: true })
+  badgeColor: string;
 
   @ManyToMany(() => Tag, (tag) => tag.companies, {
     nullable: true,

@@ -9,15 +9,21 @@ export class CompanyDto {
 
   banner: string;
 
+  url: string;
+
   phoneNumber: string;
 
   ownerPhoneNumber: string;
 
-  deliverTime: string;
+  deliveryTime: string;
 
   deliveryFee: string;
 
   isActive: boolean;
+
+  badge: string;
+
+  badgeColor: string;
 
   tags: string[];
 
@@ -25,15 +31,18 @@ export class CompanyDto {
     if (data == null) return;
 
     if (data.name != null) this.name = data.name;
+    if (data.url != null) this.url = data.url;
     if (data.id != null) this.id = data.id;
     if (data.userId != null) this.userId = data.userId;
     if (data.banner != null) this.banner = data.banner;
     if (data.phoneNumber != null) this.phoneNumber = data.phoneNumber;
     if (data.ownerPhoneNumber != null)
       this.ownerPhoneNumber = data.ownerPhoneNumber;
-    if (data.deliverTime != null) this.deliverTime = data.deliverTime;
+    if (data.deliveryTime != null) this.deliveryTime = data.deliveryTime;
     if (data.deliveryFee != null) this.deliveryFee = data.deliveryFee;
     if (data.isActive != null) this.isActive = data.isActive;
+    if (data.badge != null) this.isActive = data.badge;
+    if (data.badge_color != null) this.isActive = data.badge_color;
     if (data.tags != null)
       this.tags =
         typeof data.tags == 'string' ? JSON.parse(data.tags) : data.tags;
@@ -43,12 +52,15 @@ export class CompanyDto {
     const dto = new CompanyDto(null);
     dto.id = entity.id;
     dto.name = entity.name;
+    dto.url = entity.url;
     dto.userId = entity.userId;
     dto.banner = entity.banner;
     dto.ownerPhoneNumber = entity.ownerPhoneNumber;
-    dto.deliverTime = entity.deliverTime;
+    dto.deliveryTime = entity.deliveryTime;
     dto.deliveryFee = entity.deliveryFee;
     dto.phoneNumber = entity.phoneNumber;
+    dto.badge = entity.badge;
+    dto.badgeColor = entity.badgeColor;
     dto.isActive = entity.isActive;
     return dto;
   }
@@ -59,11 +71,14 @@ export class CompanyDto {
     entity.name = dto.name;
     entity.userId = dto.userId;
     entity.banner = dto.banner;
+    entity.url = dto.url;
     entity.phoneNumber = dto.phoneNumber;
     entity.ownerPhoneNumber = dto.ownerPhoneNumber;
-    entity.deliverTime = dto.deliverTime;
+    entity.deliveryTime = dto.deliveryTime;
     entity.deliveryFee = dto.deliveryFee;
     entity.isActive = dto.isActive;
+    entity.badge = dto.badge;
+    entity.badgeColor = dto.badgeColor;
     return entity;
   }
 }

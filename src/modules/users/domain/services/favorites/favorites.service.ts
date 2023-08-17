@@ -81,9 +81,12 @@ export class FavoritesService {
       .getRepository(User)
       .findOneBy({ id: user_id });
 
-    const result = await this.dataSource.getRepository(Favorite).findOneBy({
-      user: user,
-      company: company,
+    const result = await this.dataSource.getRepository(Favorite).findOne({
+      where: {
+        user: user,
+        company: company,
+      },
+      relations: ['user', 'company'],
     });
     return result;
   }

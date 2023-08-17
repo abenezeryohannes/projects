@@ -50,6 +50,17 @@ export class ChatsController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
+  @Delete('clear')
+  async clear(@Request() request) {
+    try {
+      const result = await this.service.clear(request);
+      return WrapperDto.successfull(result.data);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN, ROLE.USER)
   @Get('test/:utterance')
   async test(@Request() request, @Param('utterance') utterance: string) {
     try {

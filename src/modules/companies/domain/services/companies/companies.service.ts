@@ -59,8 +59,11 @@ export class CompaniesService {
 
     if (company == null) throw new Error('Sorry, Company not found to edit!');
 
-    if (companyDto.deliverTime != null && companyDto.deliverTime != undefined) {
-      company.deliverTime = companyDto.deliverTime;
+    if (
+      companyDto.deliveryTime != null &&
+      companyDto.deliveryTime != undefined
+    ) {
+      company.deliveryTime = companyDto.deliveryTime;
     }
 
     if (companyDto.deliveryFee != null && companyDto.deliveryFee != undefined) {
