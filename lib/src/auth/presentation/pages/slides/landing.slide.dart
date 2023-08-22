@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:rnginfra/src/core/animations/getstarted/button.size.animation.dart';
+import 'package:rnginfra/src/flavors.dart';
 
 import '../../../../core/animations/delayed.animation.dart';
 import '../../../../core/widgets/big.text.button.dart';
@@ -40,7 +42,9 @@ class LandingSlideState extends State<LandingSlide> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 50.0, vertical: 10),
                   child: Text(
-                    'RNG Supra Avenue security', //'Find friends all over the world',
+                    (Flavor.guards == FFF.appFlavor)
+                        ? 'RNG Supra Avenue security'
+                        : 'RNG Supra Avenue Management', //'Find friends all over the world',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                         color: Colors.grey.shade700,

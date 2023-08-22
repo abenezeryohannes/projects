@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/usecases/usecase.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
 @singleton

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
+import 'package:rnginfra/src/guards/activity/presentation/guests/controller/add.guest.activity.controller.dart';
+import 'package:rnginfra/src/guards/activity/presentation/guests/pages/guest.view.activity.page.dart';
+import 'package:rnginfra/src/guards/activity/presentation/guests/pages/scan.guest.activity.page.dart';
 
 import '../../../../../../main/injectable/getit.dart';
+import '../../../../../core/domain/entities/guest.visitation.entity.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failure.dart';
+import '../../../../../core/widgets/app.snackbar.dart';
 import '../../../../../core/widgets/show.error.dart';
 import '../bloc/guest_activity_bloc.dart';
 import '../widgets/cab.guest.activity.card.dart';
 import '../widgets/guest.activity.date.picker.dart';
+import 'add.uuid.dialog.dart';
+import 'choose.adding.guest.method.dialog.dart';
 
 class GuardGuestActivityPage extends StatefulWidget {
   GuardGuestActivityPage({super.key});
@@ -46,11 +53,54 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
     super.initState();
   }
 
+  void _postScan(String qr) async {
+    try {
+      await getIt<AddGuestActivityController>()
+          .checkGuestActivity(uuid: qr, page: widget);
+    } catch (e) {
+      AppSnackBar.failure(failure: Failure(message: e.toString()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+              onPressed: () {
+                Get.dialog(const ChooseAddingGuestMethodDialog()).then((value) {
+                  if (value == null) return;
+                  if (value == 'qr') {
+                    Get.to(() => const ScanGuestActivityPage())?.then((value) {
+                      if (value != null) {
+                        _postScan(value);
+                      }
+                    });
+                  } else if (value == 'text') {
+                    Get.dialog<String?>(const AddUUIDDialog()).then((value) {
+                      if (value != null && value.isNotEmpty) {
+                        // _postScan(value);
+                        widget.reload();
+                      }
+                    });
+                  }
+                });
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) =>
+                //             const ScanGuestActivityPage())).then((value) async {
+                //   if (value != null) {
+                //     _postScan(value);
+                //   }
+                // });
+              },
+              icon: Icon(
+                Icons.qr_code,
+                size: 24,
+                color: Theme.of(context).colorScheme.secondary,
+              )),
           IconButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -72,7 +122,7 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
                 Icons.calendar_month,
                 size: 24,
                 color: Theme.of(context).colorScheme.secondary,
-              ))
+              )),
         ],
         centerTitle: false,
         elevation: 0.3,
@@ -110,7 +160,7 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
                             activityBloc.pagingController.refresh();
                           }
                         },
-                        child: PagedListView<int, GuestActivityEntity?>(
+                        child: PagedListView<int, GuestVisitationEntity?>(
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
                             pagingController: activityBloc.pagingController,
@@ -158,17 +208,27 @@ class _GuardGuestActivityPageState extends State<GuardGuestActivityPage> {
                                               : 0,
                                           left: 16,
                                           right: 16),
-                                      child: CabGuestActivityCard(
-                                          activity: item,
-                                          showDate: index == 0 ||
-                                              (index > 0 &&
-                                                  activityBloc.pagingController
-                                                          .itemList![index - 1]!
-                                                          .createdAt()
-                                                          .difference(
-                                                              item!.createdAt())
-                                                          .inDays !=
-                                                      0)),
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (item != null) {
+                                            Get.dialog(GuestViewActivityPage(
+                                                activity: item));
+                                          }
+                                        },
+                                        child: CabGuestActivityCard(
+                                            activity: item,
+                                            showDate: index == 0 ||
+                                                (index > 0 &&
+                                                    activityBloc
+                                                            .pagingController
+                                                            .itemList![
+                                                                index - 1]!
+                                                            .createdAt()
+                                                            .difference(item!
+                                                                .createdAt())
+                                                            .inDays !=
+                                                        0)),
+                                      ),
                                     )))),
                       ),
                     ),

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../firebase/guards/firebase_options.dart' as FirebaseGuards;
-import '../firebase/visitors/firebase_options.dart' as FirebaseVisitors;
+import '../firebase/residents/firebase_options.dart' as FirebaseResidents;
 import '../src/app.dart';
 import '../src/flavors.dart';
 import 'injectable/getit.dart';
@@ -20,20 +20,20 @@ Future<void> preRunApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Flutter initialization for auth and messaging
-  switch (F.appFlavor) {
+  switch (FFF.appFlavor) {
     case Flavor.guards:
       await Firebase.initializeApp(
-          options: FirebaseVisitors.DefaultFirebaseOptions.currentPlatform);
+          options: FirebaseResidents.DefaultFirebaseOptions.currentPlatform);
 
       break;
-    case Flavor.visitors:
+    case Flavor.residents:
       await Firebase.initializeApp(
           options: FirebaseGuards.DefaultFirebaseOptions.currentPlatform);
 
       break;
     default:
       await Firebase.initializeApp(
-          options: FirebaseVisitors.DefaultFirebaseOptions.currentPlatform);
+          options: FirebaseResidents.DefaultFirebaseOptions.currentPlatform);
   }
 
   // Loads contents from .env into memory.

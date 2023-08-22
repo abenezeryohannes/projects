@@ -1,22 +1,21 @@
 enum Flavor {
-  visitors,
+  residents,
   guards,
 }
 
-class F {
+class FFF {
   static Flavor? appFlavor;
 
   static String get name => appFlavor?.name ?? '';
 
   static String get title {
     switch (appFlavor) {
-      case Flavor.visitors:
+      case Flavor.residents:
         return 'RNG Supra Avenue management';
       case Flavor.guards:
         return 'RNG Supra Avenue security';
       default:
-        return 'title';
+        return 'RNG Supra Avenue management';
     }
   }
-
 }

@@ -13,6 +13,7 @@ import 'package:rnginfra/src/guards/activity/presentation/staffs/pages/guard.sta
 import 'package:rnginfra/src/guards/patroll/presentation/scan_patrolls/page/scan.patroll.page.dart';
 
 import '../core/animations/animate.dart';
+import 'activity/presentation/guests/pages/scan.guest.result.activity.dialog.dart';
 
 class GuardMainPage extends StatefulWidget {
   const GuardMainPage({super.key});
@@ -223,6 +224,13 @@ class _GuardMainPageState extends State<GuardMainPage>
                               child: FloatingActionButton(
                                   heroTag: 'GUEST_ACTIVITY',
                                   onPressed: () {
+                                    // showDialog(
+                                    //     context: context,
+                                    //     builder: (BuildContext context) {
+                                    //       return const ScanGuestResultActivity(
+                                    //         activity: null,
+                                    //       );
+                                    //     });
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {

@@ -1,16 +1,16 @@
 flavors:
-  visitors:
+  residents:
     app:
       name: "RNG management"
       icon: "assets/icon/logo.png"
 
     android:
-      applicationId: "com.technikh.rnginfra.visitors"  
+      applicationId: "com.technikh.rnginfra.residents"  
       # firebase:
       #   config: "./lib/firebase/visitors/google-services.json"
       
     ios:
-      bundleId: "com.technikh.rnginfra.visitors"  
+      bundleId: "com.technikh.rnginfra.residents"  
       # firebase:
       #   config: "./lib/firebase/visitors/GoogleService-Info.plist"
 

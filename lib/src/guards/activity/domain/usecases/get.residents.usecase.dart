@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/core/data/pagination.dto.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/usecases/usecase.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/resident.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
 @singleton

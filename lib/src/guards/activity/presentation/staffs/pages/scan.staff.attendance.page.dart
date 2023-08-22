@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '../../../../../core/widgets/app.snackbar.dart';
 import '../../../../../core/widgets/custom.shimmer.dart';
 import '../../../../../core/widgets/loading.bar.dart';
 
@@ -94,7 +92,7 @@ class _ScanStaffAttendancePageState extends State<ScanStaffAttendancePage> {
                       child: (result == null)
                           ? InkWell(
                               onTap: () {
-                                _postScan('258', context);
+                                // _postScan('258', context);
                               },
                               child: CustomShimmer(
                                 show: true,

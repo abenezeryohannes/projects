@@ -1,14 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rnginfra/src/auth/domain/entities/user.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/guest.visitation.entity.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/network/network.info.dart';
 import 'package:rnginfra/src/guards/activity/data/datasources/activity.local.datasource.dart';
 import 'package:rnginfra/src/guards/activity/data/datasources/activity.remote.datasource.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/activity.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/activity.type.entity.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/resident.entity.dart';
+import 'package:rnginfra/src/guards/activity/domain/entities/file.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.activity.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
@@ -28,12 +29,13 @@ class ActivityRepository extends IActivityRepository {
       required this.localDataSource});
 
   @override
-  Future<Either<Failure, Pagination<GuestActivityEntity>>?>? getGuestActivities(
-      {int? page,
-      int? limit,
-      String? type,
-      DateTime? startTime,
-      DateTime? endTime}) async {
+  Future<Either<Failure, Pagination<GuestVisitationEntity>>?>?
+      getGuestActivities(
+          {int? page,
+          int? limit,
+          String? type,
+          DateTime? startTime,
+          DateTime? endTime}) async {
     try {
       if (await networkInfo.isConnected!) {
         final result = await remoteDataSource.listGuestActivity(
@@ -55,7 +57,7 @@ class ActivityRepository extends IActivityRepository {
         if (result == null) {
           throw CacheException();
         }
-        return Right(Pagination<GuestActivityEntity>.fill(results: result));
+        return Right(Pagination<GuestVisitationEntity>.fill(results: result));
       }
     } on ServerSideException catch (e) {
       return Left(ServerFailure(message: e.message));
@@ -391,7 +393,7 @@ class ActivityRepository extends IActivityRepository {
   }
 
   @override
-  Future<Either<Failure, Pagination<GuestActivityEntity>>?>?
+  Future<Either<Failure, Pagination<GuestVisitationEntity>>?>?
       getLocalGuestActivities(
           {int? page,
           int? limit,
@@ -404,7 +406,7 @@ class ActivityRepository extends IActivityRepository {
       if (result == null) {
         throw CacheException();
       }
-      return Right(Pagination<GuestActivityEntity>.fill(results: result));
+      return Right(Pagination<GuestVisitationEntity>.fill(results: result));
     } on ServerSideException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on NetworkException catch (e) {
@@ -435,6 +437,62 @@ class ActivityRepository extends IActivityRepository {
         throw CacheException();
       }
       return Right(Pagination<StaffAttendanceEntity>.fill(results: result));
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Pagination<GuestVisitationEntity>>?>?
+      checkVisitorPasscode({required String uuid}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await remoteDataSource.checkVisitorPasscode(uuid: uuid);
+        if (result == null) {
+          throw NoDataException();
+        }
+        return Right(result);
+      } else {
+        throw NetworkException();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, FileEntity>?>? uploadFile(
+      {required String file}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        final result = await remoteDataSource.uploadFile(fileURL: file);
+        if (result == null) {
+          throw NoDataException();
+        }
+        return Right(result);
+      } else {
+        throw NetworkException();
+      }
     } on ServerSideException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on NetworkException catch (e) {

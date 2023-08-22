@@ -1,6 +1,0 @@
-#include "Generated.xcconfig"
-
-FLUTTER_TARGET=lib/main/visitors.dart
-ASSET_PREFIX=visitors
-BUNDLE_NAME=RNG management
-BUNDLE_DISPLAY_NAME=RNG management

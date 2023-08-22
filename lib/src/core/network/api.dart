@@ -15,6 +15,9 @@ class Api {
   static String? hostUrl() =>
       "${isProduction() ? dotenv.env['PROD_HOST_URL'] : dotenv.env['DEV_HOST_URL']}${dotenv.env['HOST_URL_PREFIX'] != null ? '/${dotenv.env['HOST_URL_PREFIX']}' : ''}";
 
+  static String? imageUrl() =>
+      "${isProduction() ? dotenv.env['PROD_IMAGE_HOST_URL'] : dotenv.env['PROD_IMAGE_HOST_URL']}${dotenv.env['HOST_URL_PREFIX'] != null ? '/${dotenv.env['HOST_URL_PREFIX']}' : ''}";
+
   static Uri request(String path) => Uri.parse("${hostUrl()}/$path");
 //
   static Uri getRequestWithParams(String path, Map<String, dynamic> query) =>

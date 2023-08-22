@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:rnginfra/main/themes/themes.dart';
 import 'package:rnginfra/src/auth/presentation/pages/auth.page.dart';
 import 'package:rnginfra/src/guards/guard.main.page.dart';
+import 'package:rnginfra/src/residents/visitors/presentation/residents.main.page.dart';
 import 'flavors.dart';
 
 class App extends StatelessWidget {
@@ -13,11 +14,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-        initTheme: lightDriverThemeData,
+        initTheme: (FFF.appFlavor == Flavor.residents)
+            ? lightResidentThemeData
+            : lightDriverThemeData,
         builder: (context, myTheme) {
           return GetMaterialApp(
-            title: F.title,
-            theme: lightDriverThemeData,
+            title: FFF.title,
+            theme: (FFF.appFlavor == Flavor.residents)
+                ? lightResidentThemeData
+                : lightDriverThemeData,
             debugShowCheckedModeBanner: false,
             home: FirebaseAuth.instance.currentUser == null
                 ? AuthPage(
@@ -28,7 +33,9 @@ class App extends StatelessWidget {
                               builder: (context) => const GuardMainPage()));
                     },
                   )
-                : const GuardMainPage(),
+                : (Flavor.residents == FFF.appFlavor)
+                    ? const ResidentMainPage()
+                    : const GuardMainPage(),
           );
         });
   }
@@ -40,7 +47,7 @@ class App extends StatelessWidget {
       show
           ? Banner(
               location: BannerLocation.topStart,
-              message: F.name,
+              message: FFF.name,
               color: Colors.green.withOpacity(0.6),
               textStyle: const TextStyle(
                   fontWeight: FontWeight.w700,

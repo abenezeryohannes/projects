@@ -5,28 +5,28 @@
     "version": "0.2.0",
     "configurations": [ 
         {
-            "name": "Visitors",
+            "name": "Residents",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "args": ["--flavor", "visitors"],
-            "program": "lib/main/visitors.dart"
+            "args": ["--flavor", "residents"],
+            "program": "lib/main/residents.dart"
         },
         {
-            "name": "Visitors (profile mode)",
+            "name": "Residents (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "args": ["--flavor", "visitors"],,
-            "program": "lib/main/visitors.dart"
+            "args": ["--flavor", "residents"],
+            "program": "lib/main/residents.dart"
         },
         {
-            "name": "Visitors (release mode)",
+            "name": "Residents (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "args": ["--flavor", "visitors"],
-            "program": "lib/main/visitors.dart"
+            "args": ["--flavor", "residents"],
+            "program": "lib/main/residents.dart"
         }, 
         {
             "name": "Guards",

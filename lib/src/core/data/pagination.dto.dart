@@ -2,8 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:rnginfra/src/auth/domain/entities/user.entity.dart';
 import 'package:rnginfra/src/core/data/pager.dto.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/guest.activity.entity.dart';
-import 'package:rnginfra/src/guards/activity/domain/entities/resident.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/guest.visitation.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/resident.entity.dart';
+import 'package:rnginfra/src/core/domain/entities/visitation.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.entity.dart';
 
 import '../../guards/patroll/domain/entitites/patroll.entity.dart';
@@ -48,9 +49,22 @@ class _Converter<T> implements JsonConverter<T, Object> {
         json.containsKey('scanned_qr_code_id')) {
       return PatrollEntity.fromJson(json) as T;
     } else if (json is Map<String, dynamic> &&
+        json.containsKey('field_guest_frequent_start') &&
+        json.containsKey('field_guest_frequent_end') &&
+        json.containsKey('field_short_notes')) {
+      return VisitationEntity.fromJson(json) as T;
+    }
+    //  else if (json is Map<String, dynamic> &&
+    //     json.containsKey('guest_frequent_start') &&
+    //     json.containsKey('guest_frequent_end') &&
+    //     json.containsKey('short_notes')) {
+    //   final res = GuestVisitationEntity.fromJson(json) as T;
+    //   return res;
+    // }
+    else if (json is Map<String, dynamic> &&
         json.containsKey('residents') &&
         json.containsKey('guest_type')) {
-      return GuestActivityEntity.fromJson(json) as T;
+      return GuestVisitationEntity.fromJson(json) as T;
     } else if (json is Map<String, dynamic> &&
         json.containsKey('unit_number') &&
         json.containsKey('uid') &&
@@ -73,6 +87,12 @@ class _Converter<T> implements JsonConverter<T, Object> {
     if (object is PatrollEntity) {
       return (object).toJson();
     }
+    if (object is VisitationEntity) {
+      return (object).toJson();
+    }
+    if (object is GuestVisitationEntity) {
+      return (object).toJson();
+    }
     if (object is UserEntity) {
       return (object).toJson();
     }
@@ -82,9 +102,9 @@ class _Converter<T> implements JsonConverter<T, Object> {
     if (object is ResidentEntity) {
       return (object).toJson();
     }
-    if (object is GuestActivityEntity) {
-      return (object).toJson();
-    }
+    // if (object is GuestVisitationEntity) {
+    //   return (object).toJson();
+    // }
     return {};
   }
 }

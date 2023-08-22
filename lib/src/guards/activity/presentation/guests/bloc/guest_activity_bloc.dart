@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/domain/entities/guest.visitation.entity.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../patroll/domain/entitites/patroll.entity.dart';
-import '../../../domain/entities/activity.entity.dart';
-import '../../../domain/entities/guest.activity.entity.dart';
+import '../../../../../core/domain/entities/activity.entity.dart';
 import '../../../domain/usecases/get.guests.activities.usecase.dart';
 part 'guest_activity_event.dart';
 part 'guest_activity_state.dart';
@@ -19,7 +19,7 @@ class GuestActivityBloc extends Bloc<GuestActivityEvent, GuestActivityState> {
   final int pageLimit = 25;
   DateTime? selectedDay;
 
-  final PagingController<int, GuestActivityEntity?> pagingController =
+  final PagingController<int, GuestVisitationEntity?> pagingController =
       PagingController(firstPageKey: 0);
 
   GuestActivityBloc(this._getGuestsActivityUseCase)

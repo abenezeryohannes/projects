@@ -54,8 +54,8 @@ class _CustomeTimePickerState extends State<CustomeTimePicker> {
     DateTime? time,
   }) {
     return Container(
-      width: widget.width ?? 140,
-      height: widget.height ?? 140,
+      width: widget.width ?? 120,
+      height: widget.height ?? 120,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(

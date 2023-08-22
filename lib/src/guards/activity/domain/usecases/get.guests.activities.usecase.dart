@@ -6,22 +6,23 @@ import 'package:rnginfra/src/core/errors/failure.dart';
 import 'package:rnginfra/src/core/usecases/usecase.dart';
 import 'package:rnginfra/src/guards/activity/domain/repositories/i.activities.repository.dart';
 
-import '../entities/guest.activity.entity.dart';
+import '../../../../core/domain/entities/guest.visitation.entity.dart';
 
 @singleton
 class GetGuestsActivitiesUseCase
-    extends UseCase<Pagination<GuestActivityEntity>, GetGuestActivityParam> {
+    extends UseCase<Pagination<GuestVisitationEntity>, GetGuestActivityParam> {
   final IActivityRepository repo;
   GetGuestsActivitiesUseCase({required this.repo});
 
   @override
-  Future<Either<Failure, Pagination<GuestActivityEntity>>?>? call(
+  Future<Either<Failure, Pagination<GuestVisitationEntity>>?>? call(
       GetGuestActivityParam param) {
-    return repo.getGuestActivities(
+    final result = repo.getGuestActivities(
         page: param.page,
         limit: param.limit,
         startTime: param.startTime,
         endTime: param.endTime);
+    return result;
   }
 }
 

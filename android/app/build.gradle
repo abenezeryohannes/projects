@@ -33,9 +33,9 @@ android {
     flavorDimensions "flavor-type"
 
     productFlavors {
-        visitors {
+        residents {
             dimension "flavor-type"
-            applicationId "com.technikh.rnginfra.visitors"
+            applicationId "com.technikh.rnginfra.residents"
             resValue "string", "app_name", "RNG management"
         }
         guards {

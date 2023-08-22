@@ -4,7 +4,7 @@ import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.en
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../../core/widgets/custom.shimmer.dart';
-import '../../../../core/widgets/entry.and.exit.time.dart';
+import '../../../../../core/widgets/entry.and.exit.time.dart';
 import '../pages/edit.staff.attendance.page.dart';
 
 class StaffAttendanceCard extends StatefulWidget {
@@ -153,30 +153,30 @@ class _StaffAttendanceCardState extends State<StaffAttendanceCard> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        InkWell(
-                          onTap: () {},
-                          child: CustomShimmer(
-                            show: widget.attendance == null,
-                            child: Container(
-                              height: 50,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 40),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                top: BorderSide(
-                                    color: Theme.of(context).dividerColor,
-                                    width: 1),
-                                right: BorderSide(
-                                    color: Theme.of(context).dividerColor,
-                                    width: 1),
-                              )),
-                              child: Icon(
-                                Icons.phone,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                        ),
+                        // InkWell(
+                        //   onTap: () {},
+                        //   child: CustomShimmer(
+                        //     show: widget.attendance == null,
+                        //     child: Container(
+                        //       height: 50,
+                        //       padding:
+                        //           const EdgeInsets.symmetric(horizontal: 40),
+                        //       decoration: BoxDecoration(
+                        //           border: Border(
+                        //         top: BorderSide(
+                        //             color: Theme.of(context).dividerColor,
+                        //             width: 1),
+                        //         right: BorderSide(
+                        //             color: Theme.of(context).dividerColor,
+                        //             width: 1),
+                        //       )),
+                        //       child: Icon(
+                        //         Icons.phone,
+                        //         color: Theme.of(context).colorScheme.secondary,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Expanded(
                           child: InkWell(
                             onTap: () async {
@@ -222,7 +222,7 @@ class _StaffAttendanceCardState extends State<StaffAttendanceCard> {
                                     ),
                                   ),
                                   const SizedBox(
-                                    width: 10,
+                                    width: 20,
                                   ),
                                   CustomShimmer(
                                     show: widget.attendance == null,

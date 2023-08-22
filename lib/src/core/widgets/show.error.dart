@@ -58,18 +58,18 @@ class _ShowErrorState extends State<ShowError> {
     if (widget.failure.runtimeType == CacheFailure ||
         widget.failure.runtimeType == NetworkFailure) {
       return Image.asset(
-        "assets/img/no_connection.png",
+        "assets/icon/no_connection.png",
         height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
       );
     }
     if (widget.failure.runtimeType == NoDataFailure) {
       return Image.asset(
-        "assets/img/empty.png",
+        "assets/icon/empty.png",
         height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
       );
     } else {
       return Image.asset(
-        "assets/img/error.png",
+        "assets/icon/error.png",
         height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
       );
     }

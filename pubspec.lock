@@ -349,10 +349,10 @@ packages:
     dependency: "direct main"
     description:
       name: easy_stepper
-      sha256: "34f70371eac024658c7c782b63995939a4592f3608be3cd8dc204411c5c5a6a5"
+      sha256: "4df1e4e5bb979bd4ede9e4162e47e68133eaada74885424e4f7cec3f144c4b3b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.2"
+    version: "0.7.3"
   equatable:
     dependency: "direct main"
     description:
@@ -765,6 +765,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  im_stepper:
+    dependency: "direct main"
+    description:
+      name: im_stepper
+      sha256: "84ca411f7c4666cb8762a6dd6eec0353c96c67f674124614263875d0570ca634"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1+1"
   image:
     dependency: transitive
     description:
@@ -1173,6 +1181,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   qr_code_scanner:
     dependency: "direct main"
     description:
@@ -1181,6 +1197,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  qr_flutter:
+    dependency: "direct main"
+    description:
+      name: qr_flutter
+      sha256: "5095f0fc6e3f71d08adef8feccc8cea4f12eec18a2e31c2e8d82cb6019f4b097"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   recase:
     dependency: transitive
     description:
@@ -1290,6 +1314,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.10"
+  social_share:
+    dependency: "direct main"
+    description:
+      name: social_share
+      sha256: eb19a0f6f5a29c7bb71e5bb1991145eb52472184363b6e2da70695befd8be041
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   source_gen:
     dependency: transitive
     description:

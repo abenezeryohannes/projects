@@ -6,6 +6,7 @@ import 'package:rnginfra/src/core/widgets/custom.shimmer.dart';
 import 'package:rnginfra/src/core/widgets/loading.bar.dart';
 import 'package:rnginfra/src/flavors.dart';
 import 'package:rnginfra/src/guards/guard.main.page.dart';
+import 'package:rnginfra/src/residents/visitors/presentation/residents.main.page.dart';
 
 import '../../../../main/injectable/getit.dart';
 import '../../domain/entities/country.entity.dart';
@@ -76,7 +77,7 @@ class _AuthPageState extends State<AuthPage> {
           body: Stack(
             children: [
               Image.asset(
-                  'assets/img/${F.appFlavor == Flavor.guards ? "guards" : "visitors"}_landing.jpg',
+                  'assets/img/${FFF.appFlavor == Flavor.guards ? "guards" : "visitors"}_landing.jpg',
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * (8 / 12),
                   fit: BoxFit.cover),
@@ -209,7 +210,9 @@ class _AuthPageState extends State<AuthPage> {
           context,
           PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  const GuardMainPage(),
+                  (FFF.appFlavor == Flavor.residents)
+                      ? const ResidentMainPage()
+                      : const GuardMainPage(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 const begin = Offset(0.0, 1.0);

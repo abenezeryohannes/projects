@@ -99,7 +99,9 @@ class _BigTextButtonState extends State<BigTextButton> {
                     ? Text(
                         widget.text!,
                         style: TextStyle(
-                            color: widget.textColor,
+                            color: widget.enabled
+                                ? widget.textColor
+                                : Theme.of(context).disabledColor,
                             fontSize: widget.fontSize,
                             fontWeight: widget.fontWight),
                       )

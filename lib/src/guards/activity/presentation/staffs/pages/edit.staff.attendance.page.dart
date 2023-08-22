@@ -2,7 +2,6 @@ import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:intl/intl.dart';
 import 'package:rnginfra/main/injectable/getit.dart';
 import 'package:rnginfra/src/core/animations/delayed.animation.dart';
 import 'package:rnginfra/src/core/widgets/big.text.button.dart';

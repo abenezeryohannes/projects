@@ -1,12 +1,31 @@
 import 'dart:io';
-import 'package:flutter/services.dart' show rootBundle;
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/app.snackbar.dart';
+
 class Util {
   static Future<String> loadJsonAsset(String path) async {
     return await rootBundle.loadString(path);
+  }
+
+  static Future<Uint8List?> capturePng(GlobalKey globalKey) async {
+    try {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage();
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+      return pngBytes;
+      // print(pngBytes);
+    } catch (e) {
+      AppSnackBar.error(message: e.toString());
+    }
   }
 
   static String readTestFixture(String name) =>
@@ -33,17 +52,21 @@ class Util {
 
   static Future GetImage(BuildContext context, Function(bool) isLoading,
       Function(String) onUpload) async {
-    File image;
-    var imagePicker =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    isLoading(true);
-    if (imagePicker != null) {
-      image = File(imagePicker.path);
-      if (await image.exists()) {
-        onUpload(imagePicker.path);
+    try {
+      File image;
+      var imagePicker =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      isLoading(true);
+      if (imagePicker != null) {
+        image = File(imagePicker.path);
+        if (await image.exists()) {
+          onUpload(imagePicker.path);
+        }
       }
+      isLoading(false);
+    } catch (e) {
+      print('Image picking error: $e');
     }
-    isLoading(false);
   }
 
   static String GetTimeZoneOffset() {

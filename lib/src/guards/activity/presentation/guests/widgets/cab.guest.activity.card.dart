@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rnginfra/src/guards/core/widgets/entry.and.exit.time.dart';
+import 'package:rnginfra/src/core/widgets/entry.and.exit.time.dart';
 
+import '../../../../../core/domain/entities/guest.visitation.entity.dart';
+import '../../../../../core/network/api.dart';
 import '../../../../../core/widgets/custom.shimmer.dart';
-import '../../../../core/entities/guest.activity.types.dart';
-import '../../../domain/entities/guest.activity.entity.dart';
+import '../../../../../core/domain/entities/guest.activity.types.dart';
 
 class CabGuestActivityCard extends StatefulWidget {
   const CabGuestActivityCard({super.key, this.activity, this.showDate = true});
-  final GuestActivityEntity? activity;
+  final GuestVisitationEntity? activity;
   final bool showDate;
 
   @override
@@ -51,82 +52,101 @@ class _CabGuestActivityCardState extends State<CabGuestActivityCard> {
                             padding: const EdgeInsets.all(6.0),
                             child: CustomShimmer(
                               show: widget.activity == null,
-                              child: Container(
-                                padding: const EdgeInsets.all(5.0),
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
+                              child: (widget.activity?.guest_image != null &&
+                                      widget.activity!.guest_image!
+                                          .trim()
+                                          .isNotEmpty)
+                                  ? CircleAvatar(
+                                      backgroundColor:
+                                          Theme.of(context).cardColor,
+                                      radius: 16,
+                                      backgroundImage: NetworkImage(
+                                          '${Api.imageUrl()}${widget.activity!.guest_image!}'))
+                                  : Container(
+                                      padding: const EdgeInsets.all(5.0),
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Color(int.parse(
+                                                  GuestActivityTypes.getType(widget
+                                                                  .activity
+                                                                  ?.guest_type ??
+                                                              '')
+                                                          ?.color ??
+                                                      '0xFF444336'))),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(1000))),
+                                      child: Image.asset(
+                                        GuestActivityTypes.getType(widget
+                                                        .activity?.guest_type ??
+                                                    '')
+                                                ?.icon ??
+                                            'assets/img/user_account.png',
+                                        width: 24,
+                                        height: 24,
                                         color: Color(int.parse(
                                             GuestActivityTypes.getType(widget
                                                             .activity
                                                             ?.guest_type ??
                                                         '')
                                                     ?.color ??
-                                                '0xFF444336'))),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(1000))),
-                                child: Image.asset(
-                                  GuestActivityTypes.getType(
-                                              widget.activity?.guest_type ?? '')
-                                          ?.icon ??
-                                      'assets/img/user_account.png',
-                                  width: 24,
-                                  height: 24,
-                                  color: Color(int.parse(
-                                      GuestActivityTypes.getType(
-                                                  widget.activity?.guest_type ??
-                                                      '')
-                                              ?.color ??
-                                          '0xFF444336')),
-                                ),
-                              ),
+                                                '0xFF444336')),
+                                      ),
+                                    ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 12.0, left: 5),
+                            padding: const EdgeInsets.only(top: 8.0, left: 5),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CustomShimmer(
-                                      show: widget.activity == null,
-                                      child: Text(
-                                        GuestActivityTypes.getType(widget
-                                                        .activity?.guest_type ??
-                                                    '')
-                                                ?.name ??
-                                            '',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(
-                                                backgroundColor:
-                                                    widget.activity == null
-                                                        ? Theme.of(context)
-                                                            .hintColor
-                                                        : null),
-                                      ),
+                                CustomShimmer(
+                                  show: widget.activity == null,
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        (8 / 12),
+                                    child: Text.rich(
+                                      TextSpan(
+                                          text: GuestActivityTypes.getType(
+                                                      widget.activity
+                                                              ?.guest_type ??
+                                                          '')
+                                                  ?.name ??
+                                              '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  backgroundColor:
+                                                      widget.activity == null
+                                                          ? Theme.of(context)
+                                                              .hintColor
+                                                          : null),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  ' ( ${widget.activity?.residents ?? 'Unknown'} ) ',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall!
+                                                  .copyWith(
+                                                      // overflow:
+                                                      //     TextOverflow.ellipsis,
+                                                      backgroundColor: widget
+                                                                  .activity ==
+                                                              null
+                                                          ? Theme.of(context)
+                                                              .hintColor
+                                                          : null),
+                                            )
+                                          ]),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
                                     ),
-                                    CustomShimmer(
-                                      show: widget.activity == null,
-                                      child: Text(
-                                        ' ( ${widget.activity?.residents ?? 'Unknown'} ) ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall!
-                                            .copyWith(
-                                                backgroundColor:
-                                                    widget.activity == null
-                                                        ? Theme.of(context)
-                                                            .hintColor
-                                                        : null),
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
                                 Padding(
                                   padding:

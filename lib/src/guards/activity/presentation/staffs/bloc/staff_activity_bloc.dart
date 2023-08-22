@@ -8,7 +8,7 @@ import 'package:rnginfra/src/guards/activity/domain/usecases/get.staffs.activiti
 import '../../../../../core/data/pagination.dto.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failure.dart';
-import '../../../domain/entities/activity.entity.dart';
+import '../../../../../core/domain/entities/activity.entity.dart';
 import '../../../domain/entities/staff.attendance.entity.dart';
 
 part 'staff_activity_event.dart';

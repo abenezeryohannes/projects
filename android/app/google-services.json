@@ -184,6 +184,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:664368582662:android:e67e798544c552887cf387",
+        "android_client_info": {
+          "package_name": "com.technikh.rnginfra.residents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "664368582662-0fl5vbkaiav2djir46g7atv3u6ddip6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDITy9BCiVeB7kxRwomPtKIDelwpdBux7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664368582662-0fl5vbkaiav2djir46g7atv3u6ddip6g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "664368582662-5b84l7o8ld0saclvcfnvpeuokuhguh29.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.konrad.bandeja"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:664368582662:android:d3e7476dbbd882f37cf387",
         "android_client_info": {
           "package_name": "com.technikh.rnginfra.visitors"
