@@ -69,6 +69,24 @@ class ChatRemoteDataSource {
     WrapperDto<CompanyEntity> responseDto =
         WrapperDto<CompanyEntity>.fromJson(json.decode(response.body));
 
+    if (responseDto.success && responseDto.statusCode == 200) {
+      return responseDto;
+    } else {
+      throw ServerFailure(message: responseDto.message);
+    }
+  }
+
+  clear({required int chatId}) async {
+    Map<String, String> query = <String, String>{};
+    query.addEntries({"id": chatId.toString()}.entries);
+
+    http.Response response = await client.delete(
+      Api.getRequestWithParams("chats/clear", query),
+      headers: Api.getHeader(GetStorage().read('token')),
+    );
+
+    WrapperDto responseDto = WrapperDto.fromJson(json.decode(response.body));
+
     if (responseDto.success) {
       return responseDto;
     } else {

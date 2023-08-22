@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dismissible_page/dismissible_page.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class AboutBottomSheet extends StatefulWidget {
@@ -21,6 +22,7 @@ class _AboutBottomSheetState extends State<AboutBottomSheet> {
   Future loadFromJson(BuildContext context) async {
     String data = await DefaultAssetBundle.of(context)
         .loadString("assets/fixture/about.json");
+    // "assets/fixture/about${context.locale.languageCode.contains('ar') ? '.ar.' : ''}.json");
     final j = jsonDecode(data);
     setState(() {
       about = j['value'];
@@ -63,7 +65,7 @@ class _AboutBottomSheetState extends State<AboutBottomSheet> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            'About Linko',
+                            ('about_linko').tr,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!

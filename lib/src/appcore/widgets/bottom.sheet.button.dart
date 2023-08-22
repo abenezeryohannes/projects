@@ -9,11 +9,13 @@ class BottomSheetButton extends StatefulWidget {
       this.color,
       this.cheviron = true,
       this.onClick,
-      this.padding});
+      this.padding,
+      this.icaonBackgroundColor});
   final String? title;
   final String? icon;
   final bool cheviron;
   final Function? onClick;
+  final Color? icaonBackgroundColor;
   final Color? color;
   final EdgeInsets? padding;
   @override
@@ -43,7 +45,8 @@ class _BottomSheetButtonState extends State<BottomSheetButton> {
                   if (widget.icon != null)
                     CircleAvatar(
                       radius: 16,
-                      backgroundColor: Theme.of(context).cardColor,
+                      backgroundColor: widget.icaonBackgroundColor ??
+                          Theme.of(context).cardColor,
                       child: Image.asset(
                         widget.icon ?? 'asseta/icon/logo.png',
                         width: 18,

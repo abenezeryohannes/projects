@@ -17,6 +17,8 @@ class CompanyEntity extends Equatable {
   String? ownerPhoneNumber;
   String? deliveryTime;
   String? deliveryFee;
+  String? badge;
+  String? badgeColor;
   int? liked;
   String? url;
   bool isActive;
@@ -32,6 +34,8 @@ class CompanyEntity extends Equatable {
       this.banner,
       this.phoneNumber,
       this.ownerPhoneNumber,
+      this.badge,
+      this.badgeColor,
       this.url,
       this.liked,
       this.deliveryFee,
@@ -55,6 +59,8 @@ class CompanyEntity extends Equatable {
         user,
         favoritesof,
         deliveryFee,
+        badge,
+        badgeColor,
         deliveryTime,
         isActive
       ];

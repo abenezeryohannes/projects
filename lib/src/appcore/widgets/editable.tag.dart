@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:linko/src/appcore/widgets/autocomplete.text.form.dart';
 
 class EditableTag extends StatefulWidget {
@@ -111,7 +112,7 @@ class _EditableTagState extends State<EditableTag> {
         borderRadius: const BorderRadius.all(
           Radius.circular(20.0),
         ),
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).colorScheme.tertiary,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: Row(
@@ -119,7 +120,7 @@ class _EditableTagState extends State<EditableTag> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '#$tag',
+            '#${tag.capitalizeFirst ?? ''}',
             style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
           ),
           const SizedBox(width: 4.0),

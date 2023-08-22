@@ -35,7 +35,7 @@ class _FavoriteIdentifierState extends State<FavoriteIdentifier> {
               widget.onClick();
             },
             child: Icon(
-              widget.fav == null ? Icons.favorite : Icons.favorite_outline,
+              widget.fav == null ? Icons.favorite_outline : Icons.favorite,
               size: widget.size,
               color: Theme.of(context).colorScheme.secondary,
             ),

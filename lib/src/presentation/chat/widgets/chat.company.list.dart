@@ -28,12 +28,14 @@ class ChatCompanyList extends StatefulWidget {
 
 class _ChatCompanyListState extends State<ChatCompanyList> {
   late ChatCompanyListController controller;
+  int totalItemsCount = 1;
   @override
   void initState() {
     controller = getIt<ChatCompanyListController>();
     if (widget.chat.data != null) {
       WrapperDto<int> wrapperDto =
           WrapperDto<int>.fromJson(json.decode(widget.chat.data!));
+      totalItemsCount = wrapperDto.datas?.length ?? 0;
       controller.pagingController.addPageRequestListener((pageKey) {
         controller.findAll(page: pageKey, ids: wrapperDto.datas ?? []);
       });
@@ -58,26 +60,29 @@ class _ChatCompanyListState extends State<ChatCompanyList> {
           pagingController: controller.pagingController,
           builderDelegate: PagedChildBuilderDelegate<CompanyEntity?>(
               noItemsFoundIndicatorBuilder: (context) => Padding(
-                  padding: const EdgeInsets.only(top: 200.0),
+                  padding:
+                      const EdgeInsets.only(top: 200.0, left: 20, right: 20),
                   child: ShowError(
                       failure:
                           NoDataFailure(message: NoDataException().message))),
-              firstPageErrorIndicatorBuilder: (_) => Padding(
-                    padding: const EdgeInsets.only(top: 100.0),
+              firstPageErrorIndicatorBuilder: (_) => Container(
+                    height: 400,
+                    padding:
+                        const EdgeInsets.only(top: 100.0, left: 20, right: 20),
                     child: ShowError(
                         failure: controller.pagingController.error as Failure),
                   ),
-              firstPageProgressIndicatorBuilder: (_) => ListView(
+              firstPageProgressIndicatorBuilder: (_) => ListView.builder(
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(top: 0.0),
-                    children: const [
-                      BusinessCard(),
-                      BusinessCard(),
-                      BusinessCard(),
-                      BusinessCard(),
-                      BusinessCard(),
-                      BusinessCard(),
-                    ],
+                    physics: const ClampingScrollPhysics(),
+                    itemCount:
+                        totalItemsCount > ChatCompanyListController.pageSize
+                            ? ChatCompanyListController.pageSize
+                            : totalItemsCount,
+                    itemBuilder: (BuildContext context, int index) {
+                      return const BusinessCard();
+                    },
                   ),
               itemBuilder: (context, item, index) => BusinessCard(
                     company: item,
@@ -85,7 +90,8 @@ class _ChatCompanyListState extends State<ChatCompanyList> {
         ),
         Obx(() => Padding(
               padding: const EdgeInsets.only(right: 20, bottom: 10),
-              child: controller.isLastPage.value
+              child: controller.isLastPage.value &&
+                      controller.pagingController.error == null
                   ? const SizedBox()
                   : TextButton(
                       onPressed: () {

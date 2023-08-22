@@ -23,7 +23,7 @@ class ChatCompanyListController extends GetxController {
   RxList favorites = RxList.empty();
   Rx<WrapperDto<CompanyEntity>?> wrapper = Rx<WrapperDto<CompanyEntity>?>(null);
 
-  static const _pageSize = 10;
+  static const pageSize = 10;
 
   RxBool isLastPage = false.obs;
   RxInt nextPageKey = 1.obs;
@@ -38,7 +38,7 @@ class ChatCompanyListController extends GetxController {
   }
 
   Future findAll(
-      {int limit = _pageSize, int page = 1, required List<int> ids}) async {
+      {int limit = pageSize, int page = 1, required List<int> ids}) async {
     final result = await _findCompaniesWithId(
         param:
             FindAllChatCompanyUsecaseParam(ids: ids, page: page, limit: limit));
@@ -50,11 +50,15 @@ class ChatCompanyListController extends GetxController {
         pagingController.error = l;
       }, (r) {
         wrapper.value = r;
-        isLastPage.value = (r.datas?.length ?? 0) < (_pageSize);
+        isLastPage.value = (r.datas?.length ?? 0) < (pageSize);
         nextPageKey.value = page + 1;
         if (isLastPage.value) {
           if (r.datas != null) {
             pagingController.appendLastPage(r.datas!.cast<CompanyEntity?>());
+          } else {
+            pagingController.error = Failure(message: NoDataFailure().message);
+
+            // pagingController.notifyStatusListeners(PagingStatus.completed);
           }
         } else {
           if (r.datas != null) {

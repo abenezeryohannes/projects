@@ -9,6 +9,7 @@ import 'package:linko/src/presentation/company/business.card.dart';
 import '../../appcore/errors/exceptions.dart';
 import '../../appcore/errors/failure.dart';
 import '../../appcore/widgets/show.error.dart';
+import 'package:get/get.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -44,7 +45,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
       startingOpacity: 0.2,
       direction: DismissiblePageDismissDirection.down,
       isFullScreen: true,
-      child: Scaffold(appBar: _appBar(), body: body()),
+      child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Scaffold(appBar: _appBar(), body: body())),
     );
   }
 
@@ -61,7 +64,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         ),
       ),
       title: Text(
-        'My Favorites',
+        'my_favorites'.tr,
         style: Theme.of(context)
             .textTheme
             .titleMedium!

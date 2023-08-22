@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:linko/src/application/chat/chat.controller.dart';
@@ -27,26 +28,30 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+//
   late ChatController controller;
   late IO.Socket socket;
   TextInputForm? textInputForm;
-  ChatBottom? _bottomChat;
-
+//
+// xxx
+////
   @override
   void initState() {
+    FlutterNativeSplash.remove();
+
     controller = getIt<ChatController>();
     controller.scrollController = ScrollController();
     controller.findUser(local: true);
-    Future.delayed(const Duration(seconds: 4), () => controller.findAll());
+    Future.delayed(
+        const Duration(milliseconds: 5000), () => controller.findAll());
     initSocket();
     super.initState();
   }
 
   @override
   void dispose() {
-    socket.disconnect();
-    socket.dispose();
     controller.scrollController.dispose();
+    killSocket();
     super.dispose();
   }
 
@@ -64,12 +69,12 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     socket.connect();
-    socket.onConnect((_) {
-      // print('Connection established');
+    socket.onConnect((x) {
+      print('Connection established $x');
     });
-    socket.onDisconnect((_) => print('Connection Disconnection'));
-    socket.onConnectError((err) => print(err));
-    socket.onError((err) => print(err));
+    socket.onDisconnect((error) => print('SocketDisconnection: $error'));
+    socket.onConnectError((err) => print('socketOnConnectionError: $err'));
+    socket.onError((err) => print('socketOnError: $err'));
 
     final uid = GetStorage().read('UID');
     if (uid != null) {
@@ -80,7 +85,7 @@ class _ChatPageState extends State<ChatPage> {
             if (chat.sender?.id == controller.user.value?.id &&
                 chat.data == controller.text.value) controller.text.value = '';
             {
-              _bottomChat?.clear();
+              textController.clear();
             }
             controller.chatList.insert(0, chat);
           });
@@ -89,13 +94,24 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void killSocket() {
+    socket.disconnect();
+    socket.dispose();
+  }
+
+  // ChatDto? lastSent = null;
   sendMessage(ChatDto message) {
-    socket.emit('sendMessage', message);
+    print('sending ${message.data}');
+    if (socket.active && socket.connected) {
+      socket.emit('sendMessage', message);
+    } else {
+      killSocket();
+      initSocket();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _bottomChat ??= bottomChat();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -108,8 +124,8 @@ class _ChatPageState extends State<ChatPage> {
               child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
                   child: Obx(() => AnimatedOpacity(
-                      duration: const Duration(milliseconds: 400),
-                      opacity: controller.chatList.isEmpty ? 1 : 0.1,
+                      duration: const Duration(milliseconds: 100),
+                      opacity: controller.chatList.isEmpty ? 1 : 0,
                       child: const LinkoAnime()))),
             ),
           ),
@@ -123,6 +139,9 @@ class _ChatPageState extends State<ChatPage> {
                 Obx(() => SizedBox(
                     height: 70,
                     child: ChatAppBar(
+                      onRefresh: () {
+                        controller.refresh();
+                      },
                       user: controller.user.value,
                     ))),
                 Expanded(
@@ -134,12 +153,24 @@ class _ChatPageState extends State<ChatPage> {
                               id: controller.chatList.isEmpty
                                   ? null
                                   : controller.chatList.last.id),
+                          removeChat: (int id) {
+                            // final remove = removable(id);
+                            // for (var e in remove) {
+                            //   controller.chatList.remove(e);
+                            // }
+
+                            // setState(() {
+                            //   controller.chatList.refresh();
+                            // });
+                            controller.refresh();
+                            Navigator.maybePop(context);
+                          },
                         ))),
                 Container(
                     constraints: const BoxConstraints(
                       minHeight: 80,
                     ),
-                    child: _bottomChat!)
+                    child: bottomChat())
               ],
             ),
           ),
@@ -148,22 +179,67 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  ChatBottom bottomChat() {
-    return ChatBottom(sendMessage: (cDto) {
-      print("chat token${GetStorage().read('token')}");
-      if (FirebaseAuth.instance.currentUser == null ||
-          GetStorage().read('token') == null) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => AuthPage(onAuthentication: () {
-                      Get.offAll(const ChatPage());
-                    })));
-      } else {
-        if (cDto.data == null || cDto.data!.trim().isEmpty) return;
-        sendMessage(ChatDto(
-            senderID: controller.user.value?.id ?? -1, data: cDto.data));
+  void clearAll() {
+    controller.chatList.clear();
+    controller.chatWrapper.value = null;
+    //
+    controller.chatWrapper.refresh();
+    controller.chatList.refresh();
+  }
+
+  List<ChatEntity> removable(int id) {
+    final List<ChatEntity> removable = [];
+    for (int i = 0; i < controller.chatList.length; i++) {
+      if (controller.chatList[i].id == id) {
+        removable.add(controller.chatList[i]);
+        for (int j = i - 1; j >= 0; j--) {
+          if (controller.chatList[j].id > id &&
+              controller.chatList[j].sender == null) {
+            removable.add(controller.chatList[j]);
+          } else {
+            return removable;
+          }
+        }
       }
-    });
+    }
+    return removable;
+  }
+
+  TextEditingController textController = TextEditingController(text: '');
+  ChatBottom bottomChat() {
+    return ChatBottom(
+      sendMessage: (cDto) {
+        // print("chat token${GetStorage().read('token')}");
+        if (FirebaseAuth.instance.currentUser == null ||
+            GetStorage().read('token') == null) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => AuthPage(onAuthentication: () {
+                        Get.offAll(const ChatPage());
+                      })));
+        } else {
+          // print("chat data: ${cDto.data}");
+          if (cDto.data == null || cDto.data!.trim().isEmpty) return;
+          sendMessage(ChatDto(
+              senderID: controller.user.value?.id ?? -1, data: cDto.data));
+        }
+      },
+      controller: textController,
+      user: controller.user.value,
+      setText: (String? x) {
+        if (x == null || x.trim().isEmpty) {
+          setState(() {
+            textController.clear();
+          });
+        } else {
+          final updatedText = x;
+          textController.value = textController.value.copyWith(
+            text: updatedText,
+            selection: TextSelection.collapsed(offset: updatedText.length),
+          );
+        }
+      },
+    );
   }
 }

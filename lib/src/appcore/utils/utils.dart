@@ -112,4 +112,9 @@ class Util {
               'Can\'t call the number ($contactNumber) due to unknown reason');
     }
   }
+
+  static Color HexColor(String s) {
+    String color = s.replaceAll('#', '0xFF');
+    return Color(int.parse(color));
+  }
 }

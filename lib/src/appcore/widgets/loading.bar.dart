@@ -42,12 +42,15 @@ class _LoadingBarState extends State<LoadingBar> with TickerProviderStateMixin {
     if (widget.show) {
       return Padding(
         padding: widget.padding,
-        child: LinearProgressIndicator(
-          backgroundColor:
-              widget.backColor ?? Theme.of(context).colorScheme.secondary,
-          valueColor: AlwaysStoppedAnimation(
-              widget.color ?? Theme.of(context).scaffoldBackgroundColor),
-          minHeight: 5,
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: LinearProgressIndicator(
+            backgroundColor:
+                widget.backColor ?? Theme.of(context).colorScheme.secondary,
+            valueColor: AlwaysStoppedAnimation(
+                widget.color ?? Theme.of(context).scaffoldBackgroundColor),
+            minHeight: 5,
+          ),
         ),
       );
     } else {

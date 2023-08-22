@@ -9,10 +9,12 @@ part 'tag.entity.g.dart';
 @JsonSerializable()
 class TagEntity extends Equatable {
   int id;
+  String? type;
   String name;
   String? desc;
   String? color;
-  bool isDefault;
+  bool? isDefault;
+  bool canDetermine;
   bool isActive;
 
   List<CompanyEntity>? companies;
@@ -21,16 +23,28 @@ class TagEntity extends Equatable {
   TagEntity(
       {required this.id,
       required this.name,
+      this.type,
       this.desc,
       this.color,
+      this.isDefault,
       this.isActive = true,
-      this.isDefault = false,
+      this.canDetermine = false,
       this.companies,
       this.user});
 
   @override
-  List<Object?> get props =>
-      [id, name, desc, color, isDefault, isActive, companies, user];
+  List<Object?> get props => [
+        id,
+        name,
+        desc,
+        type,
+        color,
+        canDetermine,
+        isDefault,
+        isActive,
+        companies,
+        user
+      ];
 
   factory TagEntity.fromJson(Map<String, dynamic> json) =>
       _$TagEntityFromJson(json);

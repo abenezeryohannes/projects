@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:linko/src/appcore/widgets/loading.bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
@@ -14,6 +15,8 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   late WebViewController controller;
+  bool isLoading = true;
+  int progress = 0;
 
   @override
   void initState() {
@@ -25,7 +28,21 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
-      body: SafeArea(child: WebViewWidget(controller: controller)),
+      body: SafeArea(
+          child: Stack(
+        alignment: Alignment.center,
+        children: [
+          WebViewWidget(
+            controller: controller,
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: LoadingBar(
+              show: isLoading,
+            ),
+          ),
+        ],
+      )),
     );
   }
 
@@ -63,10 +80,18 @@ class _WebViewPageState extends State<WebViewPage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            // Update loading bar.
+            progress = progress;
           },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
+          onPageStarted: (String url) {
+            setState(() {
+              isLoading = true;
+            });
+          },
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
             // if (request.url.startsWith('https://www.youtube.com/')) {

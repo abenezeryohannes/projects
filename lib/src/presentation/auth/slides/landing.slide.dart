@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../appcore/animations/button.size.animation.dart';
 import '../../../appcore/animations/delayed.animation.dart';
@@ -23,41 +24,55 @@ class LandingSlideState extends State<LandingSlide> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              DelayedAnimation(
-                delay: delayed - 400,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 20),
-                  child: Text(
-                    'Linko', //'Find friends all over the world',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        color: Colors.grey.shade700,
-                        fontFamily: 'Malik-Heavy',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 28),
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DelayedAnimation(
+                  delay: delayed - 400,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30, bottom: 20),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'linko.'.tr, //'Find friends all over the world',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge!
+                              .copyWith(
+                                  color: Colors.black,
+                                  fontFamily: 'Malik-Heavy',
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              DelayedAnimation(
-                delay: delayed - 500,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40.0, vertical: 0),
-                  child: Text(
-                    "Simple AI service for the field of commerce and e-commerce sites.", //'Find friends all over the world',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
+                DelayedAnimation(
+                  delay: delayed - 500,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40.0, vertical: 0),
+                    child: Text(
+                      "landing_desc".tr, //'Find friends all over the world',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(
+                              color: Colors.grey.shade700,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -72,7 +87,7 @@ class LandingSlideState extends State<LandingSlide> {
                     padding: const EdgeInsets.only(
                         top: 8.0, left: 10.0, right: 10.0, bottom: 0),
                     child: Text(
-                      'Already have an account?',
+                      'already_have_account'.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -96,7 +111,7 @@ class LandingSlideState extends State<LandingSlide> {
                         padding: const EdgeInsets.only(
                             top: 8.0, bottom: 0.0, left: 10, right: 10),
                         child: Text(
-                          'Or',
+                          'or'.tr.capitalize ?? 'Or',
                           style: TextStyle(color: Colors.grey.shade500),
                         ),
                       ),
@@ -117,13 +132,14 @@ class LandingSlideState extends State<LandingSlide> {
                   onClick: () {
                     widget.onGetStarted();
                   },
-                  text: 'Get Started',
+                  text: 'get_started'.tr,
                   fontSize: 20,
                   backgroudColor: Theme.of(context).colorScheme.secondary,
+                  borderColor: Theme.of(context).colorScheme.secondary,
                   fontWight: FontWeight.bold,
                   horizontalMargin:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
                   cornerRadius: 26,
                 ),
               ),

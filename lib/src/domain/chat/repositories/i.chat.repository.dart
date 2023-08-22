@@ -13,4 +13,5 @@ abstract class IChatRepository {
       {int? id, int? limit, int? page, required List<int> ids});
 
   Future<Either<Failure, WrapperDto>?>? clearAll();
+  Future<Either<Failure, WrapperDto>?>? clear({required int chatId});
 }

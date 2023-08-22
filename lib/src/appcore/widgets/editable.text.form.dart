@@ -32,8 +32,8 @@ class _EditableTextFormState extends State<EditableTextForm> {
   late String text;
   @override
   void initState() {
-    if (!widget.editing) {
-      editing = false;
+    if (widget.editing) {
+      editing = true;
     }
     text = widget.text;
     super.initState();
@@ -47,9 +47,9 @@ class _EditableTextFormState extends State<EditableTextForm> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            width: (widget.iconSize ?? 16) * 4,
-          ),
+          // SizedBox(
+          //   width: (widget.iconSize ?? 16) * 4,
+          // ),
           SizedBox(
               width: widget.textEditorWidth,
               child: TextInputForm(
@@ -57,19 +57,29 @@ class _EditableTextFormState extends State<EditableTextForm> {
                   setState(() {
                     text = val;
                   });
+                  if (widget.onSaveClicked != null) {
+                    widget.onSaveClicked!(val);
+                  }
                 },
-                contentPadding: EdgeInsets.zero,
+                textAlign: TextAlign.center,
+                enabled: widget.editing,
+                fillColor: (widget.editing)
+                    ? Theme.of(context).cardColor
+                    : Colors.transparent,
+                contentPadding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 14, bottom: 14),
+                radius: 20,
                 initialValue: widget.text,
                 placeholder: widget.placeholder ?? widget.text,
               )),
-          const SizedBox(
-            width: 8,
-          ),
-          _saveButton(),
-          const SizedBox(
-            width: 15,
-          ),
-          _cancelButton()
+          // const SizedBox(
+          //   width: 8,
+          // ),
+          // _saveButton(),
+          // const SizedBox(
+          //   width: 15,
+          // ),
+          // _cancelButton()
         ],
       );
     }

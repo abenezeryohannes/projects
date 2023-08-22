@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:linko/src/appcore/dtos/wrapper.dto.dart';
+import 'package:linko/src/appcore/errors/failure.dart';
+import 'package:linko/src/appcore/widgets/app.snackbar.dart';
 import 'package:linko/src/domain/chat/entities/chat.entity.dart';
-import 'package:linko/src/domain/company/entities/company.entity.dart';
+import 'package:linko/src/domain/chat/usecases/clear.history.usecase.dart';
 import 'package:linko/src/presentation/chat/widgets/chat.company.list.dart';
 import 'package:linko/src/presentation/chat/widgets/chat.received.card.dart';
-import 'package:linko/src/presentation/company/business.card.dart';
 
+import '../../../../injectable/getit.dart';
 import 'chat.sent.card.dart';
 
 class ChatList extends StatefulWidget {
@@ -17,9 +19,11 @@ class ChatList extends StatefulWidget {
       required this.controller,
       this.isAllLoaded = false,
       required this.chatList,
-      required this.onLoadMoreChat});
+      required this.onLoadMoreChat,
+      required this.removeChat});
   final ScrollController controller;
   final bool isAllLoaded;
+  final Function(int) removeChat;
   final List<ChatEntity> chatList;
   final Function onLoadMoreChat;
   @override
@@ -42,28 +46,33 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        reverse: true,
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(0.0),
-        controller: widget.controller,
-        itemCount: (widget.isAllLoaded || widget.chatList.isEmpty)
-            ? widget.chatList.length
-            : widget.chatList.length + 1,
-        itemBuilder: (context, i) {
-          if (i > widget.chatList.length - 1) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: SizedBox(
-                    width: 24, height: 24, child: CircularProgressIndicator()),
-              ),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: ListView.builder(
+          reverse: true,
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(0.0),
+          controller: widget.controller,
+          itemCount: (widget.isAllLoaded || widget.chatList.isEmpty)
+              ? widget.chatList.length
+              : widget.chatList.length + 1,
+          itemBuilder: (context, i) {
+            if (i > widget.chatList.length - 1) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator()),
+                ),
+              );
+            }
+            return showChatItem(
+              widget.chatList[i],
             );
-          }
-          return showChatItem(
-            widget.chatList[i],
-          );
-        });
+          }),
+    );
   }
 
   Widget showChatItem(
@@ -77,24 +86,33 @@ class _ChatListState extends State<ChatList> {
       WrapperDto<int?> wrapper = WrapperDto<int?>.fromJson(decoded);
       if (wrapper.datas == null) return const SizedBox();
       return ChatCompanyList(controller: widget.controller, chat: chat);
-      // return Column(
-      //   mainAxisSize: MainAxisSize.min,
-      //   children: [
-
-      //     // ...wrapper.datas!.map((company) {
-      //     //   return BusinessCard(
-      //     //     company: company,
-      //     //   );
-      //     // })
-      //   ],
-      // );
     } else {
       if (chat.sender == null) {
         return ChatReceivedCard(
+          key: Key(chat.toString()),
           chat: chat,
         );
       } else {
-        return ChatSentCard(chat: chat);
+        return ChatSentCard(
+          chat: chat,
+          onClear: (int id) async {
+            final usecase = getIt<ClearHistoryUsecase>();
+
+            final result =
+                await usecase(param: const ClearHistoryUsecaseNoParam());
+            if (result == null) {
+              AppSnackBar.failure(
+                  failure: Failure(message: UnExpectedFailure().message));
+              return;
+            }
+            result.fold((l) {
+              AppSnackBar.failure(failure: l);
+            }, (r) {
+              widget.removeChat(id);
+              // AppSnackBar.success()
+            });
+          },
+        );
       }
     }
   }

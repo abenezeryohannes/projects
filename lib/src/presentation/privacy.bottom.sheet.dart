@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PrivacyBottomSheet extends StatefulWidget {
   const PrivacyBottomSheet({super.key});
@@ -63,7 +64,7 @@ class _PrivacyBottomSheetState extends State<PrivacyBottomSheet> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            'Privacy and Terms',
+                            ('privacy_and_terms').tr,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!

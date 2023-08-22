@@ -23,10 +23,11 @@ class Api {
   static Uri getRequestWithParams(String path, Map<String, dynamic> query) =>
       Uri.parse("${hostUrl()}/$path").replace(queryParameters: query);
 
-  static Map<String, String>? getHeader(String token, {String? firebaseID}) => {
+  static Map<String, String>? getHeader(String? token, {String? firebaseID}) =>
+      {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        "Authorization": token,
+        "Authorization": token ?? '',
       };
 
   static Map<String, String>? postHeader(String token, {String? firebaseID}) =>

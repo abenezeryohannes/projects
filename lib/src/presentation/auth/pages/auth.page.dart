@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:linko/src/presentation/chat/chat.page.dart';
 
 import '../../../../injectable/getit.dart';
@@ -75,7 +76,7 @@ class _AuthPageState extends State<AuthPage> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: Stack(
             children: [
-              Image.asset('assets/img/_landing.jpg',
+              Image.asset('assets/img/landing.png',
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * (8 / 12),
                   fit: BoxFit.cover),
@@ -246,7 +247,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget signUpSlide(AuthStateState state) {
     return SignupSlide(
-      hint: '0000000000',
+      hint: '00000000',
       onChanged: (String val) {
         authBloc.phoneNumber = val;
       },
@@ -324,7 +325,7 @@ class _AuthPageState extends State<AuthPage> {
                       authBloc.add(OnConfirmedEvent(user: authBloc.user!));
                     },
                     child: Text(
-                      'Wait a moment ...',
+                      'wait_a_moment'.tr,
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
@@ -360,7 +361,7 @@ class _AuthPageState extends State<AuthPage> {
                 padding: const EdgeInsets.all(20.0),
                 child: Center(
                     child: Text(
-                  'Successfully Signed in!',
+                  'signin_success'.tr,
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
@@ -404,7 +405,7 @@ class _AuthPageState extends State<AuthPage> {
                         }
                       }
                     },
-                    text: 'Retry',
+                    text: 'retry'.tr,
                     fontSize: 16,
                     fontWight: FontWeight.bold,
                     backgroudColor: Theme.of(context).scaffoldBackgroundColor,

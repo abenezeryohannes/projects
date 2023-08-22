@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../appcore/widgets/big.text.button.dart';
+import 'package:get/get.dart';
 
 class FillUserForm extends StatefulWidget {
   const FillUserForm({
@@ -56,7 +55,7 @@ class _FillUserFormState extends State<FillUserForm> {
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
                         child: Text(
-                      'Successfully Signed in!',
+                      'signin_success'.tr,
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme

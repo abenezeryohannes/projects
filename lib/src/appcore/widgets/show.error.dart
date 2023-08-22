@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../errors/failure.dart';
 
@@ -67,14 +68,10 @@ class _ShowErrorState extends State<ShowError> {
       );
     }
     if (widget.failure.runtimeType == NoDataFailure) {
-      return ColorFiltered(
-          colorFilter:
-              ColorFilter.mode(Colors.red.withOpacity(1), BlendMode.color),
-          child: Image.asset(
-            "assets/icon/empty.png",
-            height:
-                (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
-          ));
+      return Image.asset(
+        "assets/icon/empty.png",
+        height: (widget.ErrorShowType == ErrorShowType.Horizontal) ? 50 : 100,
+      );
     } else {
       return ColorFiltered(
         colorFilter:
@@ -92,7 +89,7 @@ class _ShowErrorState extends State<ShowError> {
       return Column(
         children: [
           Text(
-            widget.failure.message ?? "Soryy, No data here yet!!",
+            (widget.failure.message ?? "no_data_exception").tr,
             textAlign: TextAlign.center,
             style: const TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12),
@@ -102,7 +99,7 @@ class _ShowErrorState extends State<ShowError> {
     } else {
       return Column(
         children: [
-          Text(widget.failure.message ?? "Something Went Wrong!!",
+          Text(widget.failure.message?.tr ?? "Something Went Wrong!!".tr,
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Colors.redAccent,

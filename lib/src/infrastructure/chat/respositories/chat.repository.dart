@@ -118,4 +118,35 @@ class ChatRepositoryImp extends IChatRepository {
       return Left(Failure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, WrapperDto>?>? clear({required int chatId}) async {
+    try {
+      if (await networkInfo.isConnected!) {
+        //
+        final response = await remoteDataSource.clear(chatId: chatId);
+        //
+        if (response == null) return Left(UnExpectedFailure());
+        //
+        localDataSource.clear(chatId);
+        //
+        return Right(response);
+        //
+      } else {
+        throw NetworkFailure();
+      }
+    } on ServerSideException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } on NoDataException catch (e) {
+      return Left(NoDataFailure(message: e.message));
+    } on UnExpectedException catch (e) {
+      return Left(UnExpectedFailure(message: e.message));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
 }

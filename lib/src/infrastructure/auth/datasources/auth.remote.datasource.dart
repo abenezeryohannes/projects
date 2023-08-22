@@ -57,18 +57,17 @@ class AuthRemoteDataSource {
   Future<bool?>? signOut(IFirebaseAuthEntity? firebaseDto) async {
     http.Response response = await client.post(Api.request('auth/logout'),
         headers: Api.postHeader(GetStorage().read('token')));
-    WrapperDto<UserEntity> wrapper =
-        WrapperDto<UserEntity>.fromJson(json.decode(response.body));
-    switch (response.statusCode) {
-      case 200:
-      case 201:
-        // if (firebaseDto.user == null) return true;
-        await FirebaseAuth.instance.signOut();
-        GetStorage().write('token', 'null');
-        return FirebaseAuth.instance.currentUser == null;
-      default:
-        throw UnExpectedException(message: wrapper.message);
-    }
+    WrapperDto wrapper = WrapperDto.fromJson(json.decode(response.body));
+    // switch (response.statusCode) {
+    //   case 200:
+    //   case 201:
+    // if (firebaseDto.user == null) return true;
+    await FirebaseAuth.instance.signOut();
+    GetStorage().write('token', null);
+    return FirebaseAuth.instance.currentUser == null;
+    //   default:
+    //     throw UnExpectedException(message: wrapper.message);
+    // }
   }
 
   Future<WrapperDto<UserEntity>?> signup({required String phoneNumber}) async {

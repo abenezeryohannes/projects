@@ -1,36 +1,27 @@
 class CacheException implements Exception {
-  String? message =
-      "No connection, please connect to the Internet and try again.";
-  CacheException(
-      {this.message =
-          "No connection, please connect to the Internet and try again."});
+  String? message = "no_connection_error";
+  CacheException({this.message = "no_connection_error"});
 }
 
 class ServerSideException implements Exception {
-  String? message = "Sorry, an error occurred on our part. Try again later.";
+  String? message = "server_side_error";
 
-  ServerSideException(
-      {this.message =
-          "Sorry, an error occurred on our part. Try again later."});
+  ServerSideException({this.message = "server_side_error"});
 }
 
 class UnExpectedException implements Exception {
-  String? message = "Sorry, Something went wrong, please try again later!";
+  String? message = "un_expected_exception";
 
-  UnExpectedException(
-      {this.message = "Sorry, Something went wrong, please try again later!"});
+  UnExpectedException({this.message = "un_expected_exception"});
 }
 
 class NoDataException implements Exception {
-  String? message = "Sorry, there is no data here yet.";
-  NoDataException({this.message = "Sorry, there is no data here yet."});
+  String? message = "no_data_exception";
+  NoDataException({this.message = "no_data_exception"});
 }
 
 class NetworkException implements Exception {
-  String? message =
-      "No connection, please connect to the Internet and try again.";
+  String? message = "network_exception";
 
-  NetworkException(
-      {this.message =
-          "No connection, please connect to the Internet and try again."});
+  NetworkException({this.message = "network_exception"});
 }

@@ -26,7 +26,8 @@ class _BusinessCardState extends State<BusinessCard> {
   late FindFavoriteUsecase _findFavoriteUseCase;
   late SetFavoriteUsecase _setFavoriteUsecase;
   late UnsetFavoriteUsecase _removeFavoriteUseCase;
-  FavoriteEntity? favorite;
+  FavoriteEntity? favoriteXO;
+  int favCountToAdd = 0;
   @override
   void initState() {
     _findFavoriteUseCase = getIt<FindFavoriteUsecase>();
@@ -43,7 +44,7 @@ class _BusinessCardState extends State<BusinessCard> {
     result?.fold((l) {}, (r) {
       if (mounted) {
         setState(() {
-          favorite = r.data;
+          favoriteXO = r.data;
         });
       }
     });
@@ -56,7 +57,8 @@ class _BusinessCardState extends State<BusinessCard> {
     result?.fold((l) {}, (r) {
       if (mounted) {
         setState(() {
-          favorite = r.data;
+          favoriteXO = r.data;
+          favCountToAdd += 1;
         });
       }
     });
@@ -69,10 +71,19 @@ class _BusinessCardState extends State<BusinessCard> {
     result?.fold((l) {}, (r) {
       if (mounted) {
         setState(() {
-          favorite = null;
+          favoriteXO = null;
+          favCountToAdd -= 1;
         });
       }
     });
+  }
+
+  void onClick() {
+    if (widget.company == null || widget.company?.url == null) return;
+    Get.to(() => WebViewPage(
+          title: widget.company?.name,
+          uri: Uri.parse(widget.company?.url ?? 'https://google.com'),
+        ));
   }
 
   @override
@@ -81,12 +92,13 @@ class _BusinessCardState extends State<BusinessCard> {
       margin: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 10),
       child: InkWell(
         onTap: () {
-          if (widget.company == null || widget.company?.url == null) return;
-          Get.to(() => WebViewPage(
-                title: widget.company?.name,
-                uri: Uri.parse(widget.company?.url ?? 'https://google.com'),
-              ));
+          onClick();
         },
+        focusColor: Theme.of(context).scaffoldBackgroundColor,
+        hoverColor: Theme.of(context).scaffoldBackgroundColor,
+        overlayColor: null,
+        splashColor: Theme.of(context).scaffoldBackgroundColor,
+        highlightColor: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -112,14 +124,15 @@ class _BusinessCardState extends State<BusinessCard> {
                         padding: const EdgeInsets.all(8.0),
                         child: FavoriteIdentifier(
                             onClick: () {
-                              if (favorite == null) {
+                              if (favoriteXO == null) {
                                 addFavorite(widget.company);
                               } else {
-                                removeFavorite(favorite);
+                                removeFavorite(favoriteXO);
                               }
                             },
-                            fav: favorite,
-                            text: '(${widget.company?.liked ?? 0})'),
+                            fav: favoriteXO,
+                            text:
+                                '(${(widget.company?.liked ?? 0) + favCountToAdd})'),
                       )
                     ],
                   ),
@@ -147,19 +160,37 @@ class _BusinessCardState extends State<BusinessCard> {
                             // mainAxisSize: MainAxisSize.min,
                             // mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.company?.name ?? 'PICK',
-                                maxLines: 4,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall!
-                                    .copyWith(fontWeight: FontWeight.bold),
+                              CustomShimmer(
+                                show: widget.company == null,
+                                child: Text(
+                                  widget.company?.name ?? '-------------------',
+                                  maxLines: 4,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(
+                                          backgroundColor:
+                                              widget.company == null
+                                                  ? Colors.grey.shade100
+                                                  : Colors.transparent,
+                                          fontWeight: FontWeight.bold),
+                                ),
                               ),
                               CustomShimmer(
                                 show: widget.company == null,
-                                child: const TextBadge(
-                                    color: Colors.blueAccent,
-                                    text: 'CHEF PICK'),
+                                child: (widget.company?.badge != null)
+                                    ? TextBadge(
+                                        color:
+                                            (widget.company?.badgeColor != null)
+                                                ? Util.HexColor(
+                                                    widget.company!.badgeColor!)
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary
+                                                    .withOpacity(0.1),
+                                        text: widget.company?.badge ??
+                                            '---- ----')
+                                    : const SizedBox(),
                               )
                             ],
                           ),
@@ -200,24 +231,28 @@ class _BusinessCardState extends State<BusinessCard> {
                       SizedBox(
                         width: 100,
                         height: 40,
-                        child: CustomShimmer(
-                          show: widget.company == null,
-                          child: BigTextButton(
-                            onClick: () {
-                              if (widget.company != null &&
-                                  widget.company?.phoneNumber != null) {
-                                Util.dial(widget.company!.phoneNumber!);
-                              }
-                            },
-                            text: 'CALL',
-                            textColor: Theme.of(context).colorScheme.secondary,
-                            borderColor:
-                                Theme.of(context).colorScheme.secondary,
-                            borderWidth: 1,
-                            fontWight: FontWeight.w600,
-                            elevation: 0,
-                            cornerRadius: 8,
-                            backgroudColor: Colors.white,
+                        child: Theme(
+                          data: ThemeData(primarySwatch: Colors.grey),
+                          child: CustomShimmer(
+                            show: widget.company == null,
+                            child: BigTextButton(
+                              onClick: () {
+                                if (widget.company != null &&
+                                    widget.company?.phoneNumber != null) {
+                                  Util.dial(widget.company!.phoneNumber!);
+                                }
+                              },
+                              text: ('call').tr,
+                              textColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              borderColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              borderWidth: 1,
+                              fontWight: FontWeight.w600,
+                              elevation: 0,
+                              cornerRadius: 8,
+                              backgroudColor: Colors.white,
+                            ),
                           ),
                         ),
                       )
@@ -237,8 +272,9 @@ class _BusinessCardState extends State<BusinessCard> {
       children: [
         Image.asset(
           'assets/icon/$icon',
-          width: 24,
-          height: 24,
+          width: 20,
+          height: 20,
+          // color: Theme.of(context).highlightColor,
           fit: BoxFit.cover,
         ),
         const SizedBox(

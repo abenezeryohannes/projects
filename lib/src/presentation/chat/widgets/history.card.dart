@@ -80,7 +80,7 @@ class _HistoryCardState extends State<HistoryCard> {
           chat: chat,
         );
       } else {
-        return ChatSentCard(chat: chat);
+        return ChatSentCard(chat: chat, onClear: (id) {}, canClear: false);
       }
     }
   }
@@ -128,7 +128,8 @@ class _HistoryCardState extends State<HistoryCard> {
                         CustomShimmer(
                             show: widget.chat?.data == null,
                             child: Text(
-                              widget.chat?.data ?? '.........................',
+                              widget.chat?.data ??
+                                  '.................................................................',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium!

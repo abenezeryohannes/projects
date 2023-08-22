@@ -16,6 +16,7 @@ class TextInputForm extends StatefulWidget {
       this.elevation = 0,
       this.radius = 0,
       this.validator,
+      this.controller,
       this.minLines = 1,
       this.focusedBorderWidth,
       this.focusedBorderColor,
@@ -25,7 +26,8 @@ class TextInputForm extends StatefulWidget {
       this.keybardType,
       this.textInputAction,
       this.fillColor,
-      this.contentPadding})
+      this.contentPadding,
+      this.textAlign})
       : super(key: key);
 
   final Color? fillColor;
@@ -34,6 +36,7 @@ class TextInputForm extends StatefulWidget {
   final EdgeInsets? contentPadding;
   final int minLines;
   final bool enabled;
+  final TextAlign? textAlign;
   final bool obscureText;
   final double radius;
   final double elevation;
@@ -51,6 +54,7 @@ class TextInputForm extends StatefulWidget {
   final TextInputAction? textInputAction;
   final double? focusedBorderWidth;
   final Color? focusedBorderColor;
+  final TextEditingController? controller;
 
   final state = _TextInputFormState();
   void clear() {
@@ -70,7 +74,8 @@ class _TextInputFormState extends State<TextInputForm> {
   late TextEditingController controller;
   @override
   void initState() {
-    controller = TextEditingController(text: widget.initialValue);
+    controller =
+        widget.controller ?? TextEditingController(text: widget.initialValue);
     super.initState();
   }
 
@@ -112,7 +117,7 @@ class _TextInputFormState extends State<TextInputForm> {
             controller: controller,
             textDirection: TextDirection.ltr,
             validator: widget.validator,
-            textAlign: TextAlign.start,
+            textAlign: widget.textAlign ?? TextAlign.start,
             obscureText: widget.obscureText,
             textInputAction: widget.textInputAction ??
                 (widget.maxLines > 1

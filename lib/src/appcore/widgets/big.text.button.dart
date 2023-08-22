@@ -73,7 +73,10 @@ class _BigTextButtonState extends State<BigTextButton> {
         onPressed: () =>
             !widget.enabled || widget.isLoading ? null : {widget.onClick()},
         style: ButtonStyle(
-            elevation: MaterialStateProperty.all(widget.elevation),
+            // elevation: MaterialStateProperty.all(widget.elevation),
+            overlayColor: null,
+            shadowColor: null,
+            surfaceTintColor: null,
             side: MaterialStateProperty.all(BorderSide(
                 color: widget.borderColor,
                 width: widget.borderWidth,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
@@ -60,10 +61,12 @@ class UserRemoteDataSource {
 
       WrapperDto<UserEntity> responseDto =
           WrapperDto<UserEntity>.fromJson(json.decode(response.body));
-      if (responseDto.success) {
-        return responseDto;
-      } else {
-        throw ServerFailure(message: responseDto.message);
+      switch (response.statusCode) {
+        case 200:
+        case 201:
+          return responseDto;
+        default:
+          throw ServerFailure(message: responseDto.message);
       }
     } catch (e) {
       rethrow;
@@ -90,10 +93,13 @@ class UserRemoteDataSource {
       headers: Api.getHeader(GetStorage().read('token')),
     );
     WrapperDto responseDto = WrapperDto.fromJson(json.decode(response.body));
-    if (responseDto.success) {
-      return responseDto;
-    } else {
-      throw ServerFailure(message: responseDto.message);
-    }
+    // if (responseDto.success) {
+    await FirebaseAuth.instance.signOut();
+    GetStorage().write('token', null);
+    FirebaseAuth.instance.currentUser == null;
+    return responseDto;
+    // } else {
+    //   throw ServerFailure(message: responseDto.message);
+    // }
   }
 }

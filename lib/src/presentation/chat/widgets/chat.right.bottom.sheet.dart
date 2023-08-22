@@ -1,21 +1,16 @@
 import 'package:dismissible_page/dismissible_page.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:linko/injectable/getit.dart';
-import 'package:linko/src/appcore/widgets/app.snackbar.dart';
-import 'package:linko/src/domain/auth/usecases/sign.out.usecase.dart';
-import 'package:linko/src/domain/user/usecases/delete.user.usecase.dart';
-import 'package:linko/src/presentation/chat/chat.page.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:linko/src/presentation/privacy.bottom.sheet.dart';
 import 'package:linko/src/presentation/user/change.language.dialog.dart';
-import '../../../appcore/network/api.dart';
 import '../../../domain/user/entities/user.entity.dart';
 import '../../about.bottom.sheet.dart';
-import '../../company/add.company.page.dart';
 import '../../../appcore/widgets/bottom.sheet.button.dart';
-import '../../../appcore/widgets/big.text.button.dart';
+import '../../auth/pages/auth.page.dart';
 import '../../user/favorites.page.dart';
+import 'package:get/get.dart';
+import '../chat.page.dart';
 import '../history.page.dart';
 
 class ChatRightBottomSheet extends StatefulWidget {
@@ -44,20 +39,24 @@ class _ChatRightBottomSheetState extends State<ChatRightBottomSheet> {
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(20)),
             color: Theme.of(context).scaffoldBackgroundColor),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                width: 60,
-                height: 5,
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).disabledColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
-              ),
-              ..._myAccount(context)
-            ]));
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  width: 60,
+                  height: 5,
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).disabledColor,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
+                ),
+                ..._myAccount(context)
+              ]),
+        ));
   }
 
   List<Widget> _myAccount(BuildContext context) {
@@ -80,39 +79,58 @@ class _ChatRightBottomSheetState extends State<ChatRightBottomSheet> {
 
       Expanded(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             BottomSheetButton(
-                title: 'My Favourites',
+                title: ('my_favorites').tr,
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * (2 / 12),
                     right: MediaQuery.of(context).size.width * (2 / 12),
                     bottom: 20),
                 icon: 'assets/icon/heart.png',
                 onClick: () {
-                  context.pushTransparentRoute(const FavoritesPage());
+                  if (askFroAuth()) {
+                    context.pushTransparentRoute(const FavoritesPage());
+                  }
                 }),
+            Container(
+              color: Theme.of(context).hoverColor,
+              height: 1,
+              width: MediaQuery.of(context).size.width * (8 / 12),
+            ),
             BottomSheetButton(
-                title: 'History',
+                title: ('history').tr,
                 icon: 'assets/icon/history.png',
                 onClick: () {
-                  context.pushTransparentRoute(const HistoryPage());
+                  if (askFroAuth()) {
+                    context.pushTransparentRoute(const HistoryPage());
+                  }
                 }),
+            Container(
+              color: Theme.of(context).hoverColor,
+              height: 1,
+              width: MediaQuery.of(context).size.width * (8 / 12),
+            ),
             BottomSheetButton(
-                title: 'About Linko',
+                title: ('about_linko').tr,
                 icon: 'assets/icon/about.png',
                 onClick: () {
                   context.pushTransparentRoute(const AboutBottomSheet());
                 }),
+            Container(
+              color: Theme.of(context).hoverColor,
+              height: 1,
+              width: MediaQuery.of(context).size.width * (8 / 12),
+            ),
             const SizedBox(
-              height: 40,
+              height: 10,
             ),
             BottomSheetButton(
-                title: 'Change language',
+                title: ('change_language').tr,
                 icon: 'assets/icon/language.png',
                 onClick: () {
                   showDialog(
@@ -124,8 +142,13 @@ class _ChatRightBottomSheetState extends State<ChatRightBottomSheet> {
                   );
                   // Get.dialog(const ChangeLanguageDialog());
                 }),
+            Container(
+              color: Theme.of(context).hoverColor,
+              height: 1,
+              width: MediaQuery.of(context).size.width * (8 / 12),
+            ),
             BottomSheetButton(
-                title: 'Privacy and terms',
+                title: ('privacy_and_terms').tr,
                 icon: 'assets/icon/privacy_and_terms.png',
                 onClick: () {
                   context.pushTransparentRoute(const PrivacyBottomSheet());
@@ -134,7 +157,7 @@ class _ChatRightBottomSheetState extends State<ChatRightBottomSheet> {
               height: 20,
             ),
             Text(
-              'Mayde by mo & mo',
+              ('made_by').tr,
               style: Theme.of(context)
                   .textTheme
                   .bodySmall!
@@ -144,5 +167,20 @@ class _ChatRightBottomSheetState extends State<ChatRightBottomSheet> {
         ),
       )
     ];
+  }
+
+  bool askFroAuth() {
+    if (FirebaseAuth.instance.currentUser == null ||
+        GetStorage().read('token') == null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => AuthPage(onAuthentication: () {
+                    Get.offAll(const ChatPage());
+                  })));
+      return false;
+    } else {
+      return true;
+    }
   }
 }

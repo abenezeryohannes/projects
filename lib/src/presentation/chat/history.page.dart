@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:linko/injectable/getit.dart';
 import 'package:linko/src/appcore/errors/exceptions.dart';
-import 'package:linko/src/appcore/widgets/bottom.sheet.button.dart';
 import 'package:linko/src/application/chat/history.controller.dart';
+import 'package:linko/src/presentation/chat/widgets/chat.app.bar.dart';
 import 'package:linko/src/presentation/chat/widgets/history.card.dart';
 
 import '../../appcore/errors/failure.dart';
@@ -37,13 +37,15 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return DismissiblePage(
       onDismissed: () {
-        Navigator.of(context).maybePop();
+        Get.back(result: 'refresh');
       },
       backgroundColor: Theme.of(context).disabledColor,
       startingOpacity: 0.2,
       direction: DismissiblePageDismissDirection.down,
       isFullScreen: true,
-      child: Scaffold(appBar: _appBar(), body: body()),
+      child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Scaffold(appBar: _appBar(), body: body())),
     );
   }
 
@@ -60,7 +62,7 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ),
       title: Text(
-        'History',
+        'history'.tr,
         style: Theme.of(context)
             .textTheme
             .titleMedium!
@@ -70,25 +72,19 @@ class _HistoryPageState extends State<HistoryPage> {
       actions: [
         IconButton(
             onPressed: () {
-              Get.defaultDialog(
-                      onConfirm: () {
-                        Get.back<bool>(result: true);
-                      },
-                      onCancel: () {
-                        return;
-                      },
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      title: 'Are you sure?',
-                      middleText:
-                          'This will delete all you chat histories from the app!',
-                      textConfirm: 'Yes, am sure',
-                      textCancel: 'Nevermind')
-                  .then((value) {
-                if (value != null) {
-                  controller.clearAll();
-                }
-              });
+              openDialog(
+                  title: "are_you_sure".tr,
+                  body: "this_will_delete_all_chats".tr,
+                  yes: 'yes_am_sure'.tr,
+                  no: 'nevermind'.tr,
+                  onYes: () {
+                    ChatAppBar.refresh = true;
+                    Navigator.maybePop(context);
+                    controller.clearAll();
+                  },
+                  onNo: () {
+                    Navigator.maybePop(context);
+                  });
             },
             icon: Container(
               padding: const EdgeInsets.all(10),
@@ -147,9 +143,25 @@ class _HistoryPageState extends State<HistoryPage> {
                             HistoryCard(),
                           ],
                         ),
-                    itemBuilder: (context, item, index) => HistoryCard(
-                        chat: item,
-                        responses: getResponses(controller.chatList, item))),
+                    itemBuilder: (context, item, index) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            HistoryCard(
+                                chat: item,
+                                responses:
+                                    getResponses(controller.chatList, item)),
+                            if (index <
+                                (controller.pagingController.itemList?.length ??
+                                        0) -
+                                    1)
+                              Container(
+                                color: Theme.of(context).hoverColor,
+                                height: 1,
+                                width: MediaQuery.of(context).size.width *
+                                    (10 / 12),
+                              ),
+                          ],
+                        )),
               ),
             ),
           )
@@ -173,5 +185,51 @@ class _HistoryPageState extends State<HistoryPage> {
       }
     }
     return response;
+  }
+
+  openDialog(
+      {required String title,
+      required String body,
+      required String yes,
+      required String no,
+      required Function onYes,
+      required Function onNo}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: ThemeData(primarySwatch: Colors.grey),
+          child: AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: Text(title, style: Theme.of(context).textTheme.titleMedium),
+            content: Text(
+              body,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    onYes();
+                  },
+                  child: Text(
+                    yes,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    onNo();
+                  },
+                  child: Text(
+                    no,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(),
+                  )),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

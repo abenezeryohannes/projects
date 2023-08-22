@@ -1,26 +1,28 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:linko/injectable/getit.dart';
+import 'package:linko/src/appcore/language/localizations.dart' as localizations;
 import 'package:linko/src/presentation/chat/chat.page.dart';
 import 'package:linko/src/appcore/theme/theme.dart';
 import 'firebase_options.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await GetStorage.init();
-  await EasyLocalization.ensureInitialized();
+  // await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // Loads contents from .env into memory.
-  await dotenv.load();
 
   // Locks app orientation
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -48,13 +50,18 @@ void main() async {
       overlays: [SystemUiOverlay.top]);
 
   configureDependencies();
+  // Loads contents from .env into memory.
+  await dotenv.load();
 
-  runApp(EasyLocalization(
-      supportedLocales: const [Locale('en', 'US'), Locale('ar', 'KW')],
-      path:
-          'assets/translations', // <-- change the path of the translation files
-      fallbackLocale: const Locale('en', 'US'),
-      child: const MyApp()));
+  runApp(const MyApp());
+  // runApp(ProviderScope(
+  //   child: EasyLocalization(
+  //       supportedLocales: const [Locale('en', 'US'), Locale('ar', 'KW')],
+  //       path:
+  //           'assets/translations', // <-- change the path of the translation files
+  //       fallbackLocale: const Locale('en', 'US'),
+  //       child: const MyApp()),
+  // ));
 }
 
 class MyApp extends StatelessWidget {
@@ -62,10 +69,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = GetStorage().read('lang');
     return GetMaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      debugShowCheckedModeBanner: false,
+      translations: localizations.Localizations(),
+      fallbackLocale: const Locale('en', 'US'),
+      supportedLocales: const [
+        Locale('en', 'US'), // English
+        Locale('ar', 'KW'), // Spanish
+      ],
+      // localizationsDelegates: context.localizationDelegates,
+      // supportedLocales: context.supportedLocales,
+      locale:
+          lang == 'ar' ? const Locale('ar', 'KW') : const Locale('en', 'US'),
       theme: LightThemeData,
       home: const ChatPage(),
     );

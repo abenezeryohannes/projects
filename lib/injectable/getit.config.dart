@@ -18,36 +18,37 @@ import 'package:linko/injectable/external.package.injection.dart' as _i3;
 import 'package:shared_preferences/shared_preferences.dart' as _i5;
 
 import '../src/appcore/network/network.info.dart' as _i14;
-import '../src/application/auth/auth.state.bloc.dart' as _i51;
-import '../src/application/chat/chat.company.list.controller.dart' as _i52;
-import '../src/application/chat/chat.controller.dart' as _i53;
-import '../src/application/chat/history.controller.dart' as _i49;
-import '../src/application/company/company.controller.dart' as _i54;
-import '../src/application/user/favorite.controller.dart' as _i55;
-import '../src/application/user/profile.controller.dart' as _i50;
+import '../src/application/auth/auth.state.bloc.dart' as _i52;
+import '../src/application/chat/chat.company.list.controller.dart' as _i53;
+import '../src/application/chat/chat.controller.dart' as _i54;
+import '../src/application/chat/history.controller.dart' as _i50;
+import '../src/application/company/company.controller.dart' as _i55;
+import '../src/application/user/favorite.controller.dart' as _i56;
+import '../src/application/user/profile.controller.dart' as _i51;
 import '../src/domain/auth/respositories/i.auth.repository.dart' as _i20;
 import '../src/domain/auth/usecases/confirm.phone.confirmation.code.dart'
-    as _i40;
+    as _i41;
 import '../src/domain/auth/usecases/resend.phone.confirmation.code.usecase.dart'
     as _i32;
 import '../src/domain/auth/usecases/sign.out.usecase.dart' as _i34;
 import '../src/domain/auth/usecases/sign.up.usecase.dart' as _i35;
 import '../src/domain/auth/usecases/verify.phone.usecase.dart' as _i37;
 import '../src/domain/chat/repositories/i.chat.repository.dart' as _i22;
-import '../src/domain/chat/usecases/clear.history.usecase.dart' as _i39;
-import '../src/domain/chat/usecases/findAll.chat.company.usecase.dart' as _i43;
-import '../src/domain/chat/usecases/findAll.chat.usecase.dart' as _i44;
+import '../src/domain/chat/usecases/clear.chata.usecase.dart' as _i39;
+import '../src/domain/chat/usecases/clear.history.usecase.dart' as _i40;
+import '../src/domain/chat/usecases/findAll.chat.company.usecase.dart' as _i44;
+import '../src/domain/chat/usecases/findAll.chat.usecase.dart' as _i45;
 import '../src/domain/company/repositories/i.company.repository.dart' as _i24;
 import '../src/domain/company/repositories/i.tag.repository.dart' as _i28;
 import '../src/domain/company/usecases/add.company.usecase.dart' as _i38;
-import '../src/domain/company/usecases/find.tag.usecase.dart' as _i47;
+import '../src/domain/company/usecases/find.tag.usecase.dart' as _i48;
 import '../src/domain/user/repositories/i.favorite.repository.dart' as _i26;
 import '../src/domain/user/repositories/i.user.repository.dart' as _i30;
-import '../src/domain/user/usecases/delete.user.usecase.dart' as _i41;
-import '../src/domain/user/usecases/edit.user.usecase.dart' as _i42;
-import '../src/domain/user/usecases/find.favorite.usecase.dart' as _i45;
-import '../src/domain/user/usecases/find.favorites.usecase.dart' as _i46;
-import '../src/domain/user/usecases/get.user.usecase.dart' as _i48;
+import '../src/domain/user/usecases/delete.user.usecase.dart' as _i42;
+import '../src/domain/user/usecases/edit.user.usecase.dart' as _i43;
+import '../src/domain/user/usecases/find.favorite.usecase.dart' as _i46;
+import '../src/domain/user/usecases/find.favorites.usecase.dart' as _i47;
+import '../src/domain/user/usecases/get.user.usecase.dart' as _i49;
 import '../src/domain/user/usecases/set.favorites.usecase.dart' as _i33;
 import '../src/domain/user/usecases/unset.favorites.usecase.dart' as _i36;
 import '../src/infrastructure/auth/datasources/auth.local.datasource.dart'
@@ -167,60 +168,62 @@ extension GetItInjectableX on _i1.GetIt {
         signInRepository: gh<_i20.IAuthRepository>()));
     gh.lazySingleton<_i38.AddCompanyUsecase>(() => _i38.AddCompanyUsecase(
         companyRepository: gh<_i24.ICompanyRepository>()));
-    gh.lazySingleton<_i39.ClearHistoryUsecase>(() =>
-        _i39.ClearHistoryUsecase(chatRepository: gh<_i22.IChatRepository>()));
-    gh.singleton<_i40.ConfirmPhoneConfirmationCodeUseCase>(
-        _i40.ConfirmPhoneConfirmationCodeUseCase(
+    gh.lazySingleton<_i39.ClearChatUsecase>(() =>
+        _i39.ClearChatUsecase(chatRepository: gh<_i22.IChatRepository>()));
+    gh.lazySingleton<_i40.ClearHistoryUsecase>(() =>
+        _i40.ClearHistoryUsecase(chatRepository: gh<_i22.IChatRepository>()));
+    gh.singleton<_i41.ConfirmPhoneConfirmationCodeUseCase>(
+        _i41.ConfirmPhoneConfirmationCodeUseCase(
             signInRepository: gh<_i20.IAuthRepository>()));
-    gh.lazySingleton<_i41.DeleteUserUsecase>(() =>
-        _i41.DeleteUserUsecase(userRepository: gh<_i30.IUserRepository>()));
-    gh.lazySingleton<_i42.EditUserUsecase>(
-        () => _i42.EditUserUsecase(userRepository: gh<_i30.IUserRepository>()));
-    gh.lazySingleton<_i43.FindAllChatCompanyUsecase>(() =>
-        _i43.FindAllChatCompanyUsecase(
+    gh.lazySingleton<_i42.DeleteUserUsecase>(() =>
+        _i42.DeleteUserUsecase(userRepository: gh<_i30.IUserRepository>()));
+    gh.lazySingleton<_i43.EditUserUsecase>(
+        () => _i43.EditUserUsecase(userRepository: gh<_i30.IUserRepository>()));
+    gh.lazySingleton<_i44.FindAllChatCompanyUsecase>(() =>
+        _i44.FindAllChatCompanyUsecase(
             chatRepository: gh<_i22.IChatRepository>()));
-    gh.lazySingleton<_i44.FindAllChatUsecase>(() =>
-        _i44.FindAllChatUsecase(chatRepository: gh<_i22.IChatRepository>()));
-    gh.lazySingleton<_i45.FindFavoriteUsecase>(() => _i45.FindFavoriteUsecase(
+    gh.lazySingleton<_i45.FindAllChatUsecase>(() =>
+        _i45.FindAllChatUsecase(chatRepository: gh<_i22.IChatRepository>()));
+    gh.lazySingleton<_i46.FindFavoriteUsecase>(() => _i46.FindFavoriteUsecase(
         favoriteRepository: gh<_i26.IFavoriteRepository>()));
-    gh.lazySingleton<_i46.FindFavoritesUsecase>(() => _i46.FindFavoritesUsecase(
+    gh.lazySingleton<_i47.FindFavoritesUsecase>(() => _i47.FindFavoritesUsecase(
         favoriteRepository: gh<_i26.IFavoriteRepository>()));
-    gh.lazySingleton<_i47.FindTagUsecase>(
-        () => _i47.FindTagUsecase(tagRepository: gh<_i28.ITagRepository>()));
-    gh.lazySingleton<_i48.GetUserUsecase>(
-        () => _i48.GetUserUsecase(userRepository: gh<_i30.IUserRepository>()));
-    gh.factory<_i49.HistoryController>(() => _i49.HistoryController(
-          gh<_i48.GetUserUsecase>(),
-          gh<_i44.FindAllChatUsecase>(),
-          gh<_i39.ClearHistoryUsecase>(),
+    gh.lazySingleton<_i48.FindTagUsecase>(
+        () => _i48.FindTagUsecase(tagRepository: gh<_i28.ITagRepository>()));
+    gh.lazySingleton<_i49.GetUserUsecase>(
+        () => _i49.GetUserUsecase(userRepository: gh<_i30.IUserRepository>()));
+    gh.factory<_i50.HistoryController>(() => _i50.HistoryController(
+          gh<_i49.GetUserUsecase>(),
+          gh<_i45.FindAllChatUsecase>(),
+          gh<_i40.ClearHistoryUsecase>(),
         ));
-    gh.factory<_i50.ProfileController>(() => _i50.ProfileController(
-          gh<_i48.GetUserUsecase>(),
-          gh<_i42.EditUserUsecase>(),
+    gh.factory<_i51.ProfileController>(() => _i51.ProfileController(
+          gh<_i49.GetUserUsecase>(),
+          gh<_i43.EditUserUsecase>(),
         ));
-    gh.factory<_i51.AuthStateBloc>(() => _i51.AuthStateBloc(
+    gh.factory<_i52.AuthStateBloc>(() => _i52.AuthStateBloc(
           verifyPhoneNumber: gh<_i37.VerifyPhoneNumberUseCase>(),
           signUp: gh<_i35.SignUpUseCase>(),
           resendPhoneConfirmationCode:
               gh<_i32.ResendPhoneConfirmationCodeUseCase>(),
           signOut: gh<_i34.SignOutUseCase>(),
           confirmPhoneConfirmationCode:
-              gh<_i40.ConfirmPhoneConfirmationCodeUseCase>(),
+              gh<_i41.ConfirmPhoneConfirmationCodeUseCase>(),
         ));
-    gh.factory<_i52.ChatCompanyListController>(() =>
-        _i52.ChatCompanyListController(gh<_i43.FindAllChatCompanyUsecase>()));
-    gh.factory<_i53.ChatController>(() => _i53.ChatController(
-          gh<_i48.GetUserUsecase>(),
-          gh<_i44.FindAllChatUsecase>(),
+    gh.factory<_i53.ChatCompanyListController>(() =>
+        _i53.ChatCompanyListController(gh<_i44.FindAllChatCompanyUsecase>()));
+    gh.factory<_i54.ChatController>(() => _i54.ChatController(
+          gh<_i49.GetUserUsecase>(),
+          gh<_i45.FindAllChatUsecase>(),
         ));
-    gh.factory<_i54.CompanyController>(() => _i54.CompanyController(
+    gh.factory<_i55.CompanyController>(() => _i55.CompanyController(
           gh<_i38.AddCompanyUsecase>(),
-          gh<_i48.GetUserUsecase>(),
-          gh<_i47.FindTagUsecase>(),
+          gh<_i49.GetUserUsecase>(),
+          gh<_i48.FindTagUsecase>(),
         ));
-    gh.factory<_i55.FavoriteController>(() => _i55.FavoriteController(
-          gh<_i48.GetUserUsecase>(),
-          gh<_i46.FindFavoritesUsecase>(),
+    gh.factory<_i56.FavoriteController>(() => _i56.FavoriteController(
+          gh<_i49.GetUserUsecase>(),
+          gh<_i47.FindFavoritesUsecase>(),
         ));
     return this;
   }

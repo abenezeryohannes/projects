@@ -173,6 +173,7 @@ class AuthStateBloc extends Bloc<AuthStateEvent, AuthStateState>
       }
       result!.fold((l) => emit(GettingTokenFailureAuthState(failure: l)), (r) {
         if ((r.data as UserEntity).tokens?[0].token == null) {
+          emit(GettingTokenFailureAuthState(failure: UnExpectedFailure()));
           return;
         }
         emit(GettingTokenSuccessAuthState(

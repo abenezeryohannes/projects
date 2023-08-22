@@ -1,13 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:linko/src/appcore/network/api.dart';
+import 'package:linko/src/appcore/widgets/big.text.button.dart';
 import 'package:linko/src/appcore/widgets/editable.text.form.dart';
 import 'package:linko/src/appcore/widgets/loading.bar.dart';
 import 'package:linko/src/application/user/profile.controller.dart';
 import '../../../injectable/getit.dart';
 import '../../appcore/widgets/image.form.dart';
 import '../../infrastructure/user/dtos/user.dto.dart';
+import '../chat/widgets/chat.app.bar.dart';
 
 class ProfileBottomSheet extends StatefulWidget {
   const ProfileBottomSheet({super.key});
@@ -18,7 +19,7 @@ class ProfileBottomSheet extends StatefulWidget {
 
 class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
   late ProfileController controller;
-  bool _editing = false;
+  bool _editing = true;
 
   @override
   void initState() {
@@ -27,11 +28,8 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
     super.initState();
   }
 
-  final List<Widget> states = <Widget>[
-    Text('View'),
-    Text('Edit'),
-  ];
-  final List<Widget> statesOnEdit = <Widget>[Text('Save'), Text('Cancel')];
+  late List<Widget> states;
+  late List<Widget> statesOnEdit;
 
   Widget _toggleBeforeEditing() {
     return ToggleButtons(
@@ -72,6 +70,12 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    statesOnEdit = <Widget>[Text(('save').tr), Text(('cancel').tr)];
+    states = <Widget>[
+      Text(('view').tr),
+      Text(('edit').tr),
+    ];
+
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * (6 / 12),
@@ -112,7 +116,19 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 0, bottom: 20.0),
-                  child: _toggleBeforeEditing(),
+                  child: BigTextButton(
+                    onClick: () {
+                      _save();
+                    },
+                    backgroudColor: Theme.of(context).colorScheme.secondary,
+                    borderColor: Theme.of(context).colorScheme.secondary,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    cornerRadius: 20,
+                    horizontalMargin: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width * (2 / 12)),
+                    text: 'save'.tr,
+                  ),
                 ),
               )
             ],
@@ -133,9 +149,10 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
   }
 
   void _save() async {
+    ChatAppBar.refresh = true;
     await controller.save(userDto: controller.userDto.value!);
     await controller.save(userDto: controller.userDto.value!);
-    _cancel();
+    // _cancel();
   }
 
   List<Widget> _body(BuildContext context) {
@@ -150,7 +167,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
             children: [
               ImageForm(
                 image: Api.getMedia(
-                    controller.user.value?.avatar ?? 'img/placeholder.jpg'),
+                    controller.user.value?.avatar ?? 'icon/user.png'),
                 width: 120,
                 height: 120,
                 radius: 500,
@@ -176,21 +193,36 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
             ],
           )),
       const SizedBox(
+        height: 16,
+      ),
+      Obx(
+        () => Text(
+          controller.user.value?.fullName ?? controller.name.value,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
+      const SizedBox(
         height: 30,
       ),
       Obx(
         () => EditableTextForm(
-          controller.user.value?.fullName ?? 'Full Name',
+          controller.name.value.tr,
           onSaveClicked: (val) async {
+            ChatAppBar.refresh = true;
             if (val != null) {
-              controller.userDto.value ??=
-                  UserDto.fromEntity(controller.user.value);
-              controller.userDto.value?.fullName = val;
+              setState(() {
+                controller.name.value = val;
+                controller.userDto.value ??=
+                    UserDto.fromEntity(controller.user.value);
+                controller.userDto.value?.fullName = val;
+              });
               // await controller.save(userDto: controller.userDto.value!);
             }
           },
           editable: _editing,
-          textEditorWidth: 180,
+          editing: _editing,
+          placeholder: 'change_your_name'.tr,
+          textEditorWidth: MediaQuery.of(context).size.width * (8 / 12),
           style: Theme.of(context)
               .textTheme
               .titleMedium!
@@ -203,25 +235,25 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
     ];
   }
 
-  Widget _changeLocales(BuildContext context) {
-    return DropdownButton<Locale>(
-      value: context.locale,
-      icon: const Padding(
-        padding: EdgeInsets.fromLTRB(3.0, 0, 0, 0),
-        child: Icon(Icons.arrow_downward),
-      ),
-      underline: const SizedBox(height: 0),
-      elevation: 16,
-      items:
-          context.supportedLocales.map<DropdownMenuItem<Locale>>((Locale loc) {
-        return DropdownMenuItem<Locale>(
-            value: loc, child: Text(context.tr(loc.languageCode)));
-      }).toList(),
-      onChanged: (Locale? newValue) {
-        setState(() {
-          if (newValue != null) context.setLocale(newValue);
-        });
-      },
-    );
-  }
+  // Widget _changeLocales(BuildContext context) {
+  // return DropdownButton<Locale>(
+  //   value: context.locale,
+  //   icon: const Padding(
+  //     padding: EdgeInsets.fromLTRB(3.0, 0, 0, 0),
+  //     child: Icon(Icons.arrow_downward),
+  //   ),
+  //   underline: const SizedBox(height: 0),
+  //   elevation: 16,
+  //   items:
+  //       context.supportedLocales.map<DropdownMenuItem<Locale>>((Locale loc) {
+  //     return DropdownMenuItem<Locale>(
+  //         value: loc, child: Text((loc.languageCode)));
+  //   }).toList(),
+  //   onChanged: (Locale? newValue) {
+  //     setState(() {
+  //       if (newValue != null) context.setLocale(newValue);
+  //     });
+  //   },
+  // );
+  // }
 }

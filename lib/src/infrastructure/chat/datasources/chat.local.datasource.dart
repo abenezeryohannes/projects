@@ -65,4 +65,18 @@ class ChatLocalDataSource {
     return List<CompanyEntity>.from(
         l.map((model) => CompanyEntity.fromJson(model)));
   }
+
+  void clear(int chatId) async {
+    List<ChatEntity> chats = await loadChats();
+    for (int i = 0; i < chats.length; i++) {
+      if (chats[i].id == chatId) {
+        chats.remove(chats[i]);
+        if (i < chats.length - 1 && chats[i + 1].sender == null) {
+          chats.remove(chats[i + 1]);
+        }
+        break;
+      }
+    }
+    saveChat(true, chats);
+  }
 }

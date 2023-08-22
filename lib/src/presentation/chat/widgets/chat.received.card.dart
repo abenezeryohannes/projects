@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:linko/src/domain/chat/entities/chat.entity.dart';
-
+import 'package:intl/intl.dart' as intl;
 import '../../../appcore/network/api.dart';
 
 class ChatReceivedCard extends StatefulWidget {
@@ -25,29 +25,14 @@ class _ChatReceivedCardState extends State<ChatReceivedCard> {
             const SizedBox(
               width: 10,
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(right: 8),
-            //   child: (widget.showSender || true)
-            //       ? CircleAvatar(
-            //           radius: 20,
-            //           backgroundColor: Theme.of(context).colorScheme.background,
-            //           backgroundImage:
-            //               NetworkImage(Api.getMedia('img/logo.png')),
-            //         )
-            //       : const SizedBox(
-            //           width: 40,
-            //         ),
-            // ),
             Container(
               constraints: BoxConstraints(
-                  maxWidth:
-                      ((MediaQuery.of(context).size.width * (10 / 12) - 45))),
+                  maxWidth: ((MediaQuery.of(context).size.width * (10 / 12)))),
               margin: const EdgeInsets.only(bottom: 2),
               padding: const EdgeInsets.only(
                   left: 14, right: 14, top: 10, bottom: 10),
               decoration: BoxDecoration(
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                  color: Theme.of(context).colorScheme.tertiary,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
@@ -71,10 +56,10 @@ class _ChatReceivedCardState extends State<ChatReceivedCard> {
                         width: 5,
                       ),
                       Text(
-                        'Linko',
+                        ('Linko').tr,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 14,
-                            color: Theme.of(context).hintColor,
+                            color: Theme.of(context).colorScheme.onBackground,
                             fontWeight: FontWeight.bold),
                       )
                     ],
@@ -87,16 +72,6 @@ class _ChatReceivedCardState extends State<ChatReceivedCard> {
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.onBackground)),
                   ),
-                  // const SizedBox(
-                  //   height: 3,
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 30.0),
-                  //   child: Text(time(),
-                  //       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  //           fontSize: 10,
-                  //           color: Theme.of(context).colorScheme.onBackground)),
-                  // ),
                 ],
               ),
             ),
@@ -112,7 +87,7 @@ class _ChatReceivedCardState extends State<ChatReceivedCard> {
     if (widget.chat?.createdAt == null) {
       return 'sending...';
     } else {
-      return DateFormat('hh:mm a').format(widget.chat!.createdAt);
+      return intl.DateFormat('hh:mm a').format(widget.chat!.createdAt);
     }
   }
 }

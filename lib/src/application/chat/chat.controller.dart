@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:linko/src/appcore/dtos/wrapper.dto.dart';
 import 'package:linko/src/domain/chat/entities/chat.entity.dart';
@@ -10,6 +11,7 @@ import 'package:linko/src/domain/user/usecases/get.user.usecase.dart';
 import '../../appcore/errors/exceptions.dart';
 import '../../appcore/errors/failure.dart';
 import '../../domain/user/entities/user.entity.dart';
+import '../../presentation/chat/widgets/chat.app.bar.dart';
 
 @injectable
 class ChatController extends GetxController {
@@ -35,6 +37,8 @@ class ChatController extends GetxController {
       failure.refresh();
       loading.refresh();
     }
+
+    if (GetStorage().read('token') == null) return;
 
     final result = await _findAllChatUsecase(
         param: FindAllChatUsecaseParam(id: id, page: page, limit: limit));
@@ -72,6 +76,18 @@ class ChatController extends GetxController {
         // loading.refresh();
       });
     }
+  }
+
+  Future refresh() async {
+    chatList.clear();
+    chatList.refresh();
+
+    chatWrapper.value = null;
+    chatWrapper.refresh();
+
+    ChatAppBar.refresh = false;
+    await findUser();
+    return findAll();
   }
 
   Future findUser({bool local = true}) async {
