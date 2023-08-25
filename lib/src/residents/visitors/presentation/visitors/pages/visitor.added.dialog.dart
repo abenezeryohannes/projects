@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rnginfra/src/core/domain/entities/visitation.entity.dart';
+import 'package:share_screenshot_widget/share_screenshot_widget.dart';
 import 'package:social_share/social_share.dart';
 
 import 'package:flutter/services.dart';
@@ -39,61 +40,71 @@ class _VisitorAddedDialogState extends State<VisitorAddedDialog> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              RepaintBoundary(
-                key: globalKey,
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 60,
-                    ),
-                    QrImageView(
-                      data: widget.visitation?.uuid ?? '',
-                      version: 3,
-                      size: 150,
-                      gapless: false,
-                      errorStateBuilder: (cxt, err) {
-                        return const Center(
-                          child: Text(
-                            'Uh oh! Something went wrong try again later...',
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20.0, bottom: 20, left: 20, right: 20),
-                      child: Text(
-                        widget.visitation?.uuid ?? '',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground),
+              ShareTextAsImage(
+                globalKey: globalKey,
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        'Residential Entrance Pass Code',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.bold),
+                      QrImageView(
+                        data: widget.visitation?.uuid ?? '',
+                        version: 3,
+                        size: 150,
+                        gapless: false,
+                        errorStateBuilder: (cxt, err) {
+                          return const Center(
+                            child: Text(
+                              'Uh oh! Something went wrong try again later...',
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 20.0, left: 20, right: 20),
-                      child: Text(
-                        'Your guests (visitors) can use this QR code to be granted access to enter at the gate. Enjoy a smoother check-in process and enhanced security.',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, bottom: 20, left: 20, right: 20),
+                        child: Text(
+                          widget.visitation?.uuid ?? '',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 60,
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          'Residential Entrance Pass Code',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 20, right: 20),
+                        child: Text(
+                          'Your guests (visitors) can use this QR code to be granted access to enter at the gate. Enjoy a smoother check-in process and enhanced security.',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 60,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               BigTextButton(
@@ -102,29 +113,7 @@ class _VisitorAddedDialogState extends State<VisitorAddedDialog> {
                       loading = true;
                     });
                     try {
-                      Uint8List? img = await Util.capturePng(globalKey);
-                      if (img != null) {
-                        Directory appDocDirectory =
-                            await getApplicationDocumentsDirectory();
-
-                        await Directory('${appDocDirectory.path}/')
-                            .create(recursive: true);
-                        final file =
-                            await File('${appDocDirectory.path}/shareImage.jpg')
-                                .writeAsBytes(img);
-                        if (file.existsSync()) {
-                          SocialShare.checkInstalledAppsForShare();
-                          SocialShare.shareOptions(
-                              (widget.visitation?.field_short_notes ??
-                                  'Entrance Access'),
-                              imagePath: file.path);
-                        } else {
-                          SocialShare.checkInstalledAppsForShare();
-                          SocialShare.shareOptions(
-                              widget.visitation?.field_short_notes ??
-                                  'Entrance Access');
-                        }
-                      }
+                      shareWidgets(globalKey: globalKey);
                     } catch (_) {
                     } finally {
                       setState(() {

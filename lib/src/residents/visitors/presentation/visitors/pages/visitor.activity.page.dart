@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:rnginfra/src/core/domain/entities/visitation.entity.dart';
 import 'package:rnginfra/src/residents/visitors/presentation/visitors/controller/get.visitor.activities.controller.dart';
-import 'package:rnginfra/src/residents/visitors/presentation/visitors/pages/visitor.added.dialog.dart';
 
 import '../../../../../../main/injectable/getit.dart';
-import '../../../../../core/domain/entities/guest.activity.entity.dart';
 import '../../../../../core/domain/entities/guest.visitation.entity.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failure.dart';

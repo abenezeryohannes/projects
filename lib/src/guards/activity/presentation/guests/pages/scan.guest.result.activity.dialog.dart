@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rnginfra/main/injectable/getit.dart';
 import 'package:rnginfra/src/core/domain/entities/activity.entity.dart';
-import 'package:rnginfra/src/core/domain/entities/guest.activity.entity.dart';
 import 'package:rnginfra/src/core/domain/entities/guest.visitation.entity.dart';
 import 'package:rnginfra/src/core/errors/exceptions.dart';
 import 'package:rnginfra/src/core/errors/failure.dart';

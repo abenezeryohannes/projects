@@ -252,6 +252,7 @@ class _ConfirmSlideState extends State<ConfirmSlide> {
                       text: 'Confirm',
                       fontSize: 20,
                       fontWight: FontWeight.bold,
+                      borderColor: Theme.of(context).colorScheme.secondary,
                       backgroudColor: Theme.of(context).colorScheme.secondary,
                       horizontalMargin: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 10),
