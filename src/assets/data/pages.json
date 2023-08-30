@@ -1,0 +1,52 @@
+[
+    {
+        "path": "/",
+        "name": "Home",
+        "description": "Go to home directory"
+    },
+    {
+        "path": "/orders",
+        "name": "Bookings",
+        "description": "Go to customers orders lists"
+    },
+    {
+        "path": "/courts",
+        "name": "Courts",
+        "description": "Go to available padels lists"
+    },
+    {
+        "path": "/features",
+        "name": "features",
+        "description": "Go to features page"
+    },
+    {
+        "path": "/groups",
+        "name": "groups",
+        "description": "Go to padels groups list"
+    },
+    {
+        "path": "/addresses",
+        "name": "addresses",
+        "description": "Go to registered addresses list"
+    },
+    {
+        "path": "/ads",
+        "name": "ads",
+        "description": "Go to Ads page"
+    },
+    {
+        "path": "/admins",
+        "name": "admins",
+        "description": "Go to admins list"
+    },
+    {
+        "path": "/owners",
+        "name": "owners",
+        "description": "Go to owners list"
+    },
+    {
+        "path": "/customers",
+        "name": "customers",
+        "description": "Go to Customers list"
+    }
+]

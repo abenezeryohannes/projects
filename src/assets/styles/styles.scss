@@ -1,0 +1,69 @@
+@import 'animated-toogle';
+@import 'route-progress';
+
+/*
+* === BODY, APP BACKGROUND ETC. ===
+*/
+html, body {
+  height: 100%;
+}
+/* change navbar background color */
+nav.navbar.is-fixed-top {
+    transition: background-color 0.5s ease;
+    background: transparent;
+  }
+  
+  nav.navbar.is-fixed-top.isActive{
+    transition: background-color 0.5s ease;
+    background: white;
+  }
+  
+  /* add top overlay for more readable navbar text */
+  #overlay{
+    background: linear-gradient(to top, rgba(255, 255, 255, 255), rgba(255, 255, 255, 0.55));
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+    
+
+.app-background {
+  background-color: var(--app-background-color);
+}
+
+.dynamic-title {
+  color: var(--dynamic-title-color);
+}
+
+.dynamic-subtitle {
+  color: var(--dynamic-subtitle-color);
+  padding-top: 10px;
+}
+
+
+
+///toast
+
+$vt-color-success: #e8f5e9;
+$vt-text-color-success: #2e7d32;
+
+$vt-color-error: #ffebee;
+$vt-text-color-error: #c62828;
+
+$vt-color-default: #fafafa;
+$vt-text-color-default: #333;
+// $vt-color-progress-default: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55) !default;
+$vt-color-progress-default: #333;
+$checkbox-active-background-color: #798C35;
+
+// Import the regular Vue Toastification stylesheets (or create your own)
+@import "vue-toastification/src/scss/_variables";
+@import "vue-toastification/src/scss/_toastContainer";
+@import "vue-toastification/src/scss/_toast";
+@import "vue-toastification/src/scss/_closeButton";
+@import "vue-toastification/src/scss/_progressBar";
+@import "vue-toastification/src/scss/_icon";
+@import "vue-toastification/src/scss/animations/_bounce";

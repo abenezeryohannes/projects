@@ -1,0 +1,5 @@
+{
+    "hello": "Hello World",
+    "this_will_action_all_entity": "This will {action} all the selected {entity}.",
+    "log_out_from_this_computer": "Log out and terminate your session?"
+}

@@ -1,0 +1,213 @@
+<template>
+    <section>
+
+        <div class="w-full text-xs">
+
+            <div v-if="view == 'table'">
+                <my-table @on-select="onSelect" @on-action="onAction" @on-page-change="emit('on-page-change', $event)"
+                    @bulk-action="onBulkAction" @on-limit-change="emit('on-limit-change', $event)"
+                    @on-sort-change="emit('on-sort-change', $event)" @on-item-click="emit('on-item-click', $event)"
+                    :clickable="clickable" :loading="loading" :response="response" :list="tableData" :errors="errors"
+                    :bulkActions="bulkActions" :headers="headers" />
+            </div>
+            <div v-else>
+                <grid @on-select="onSelect" @on-action="onAction" @on-page-change="emit('on-page-change', $event)"
+                    @bulk-action="onBulkAction" @on-limit-change="emit('on-limit-change', $event)"
+                    @on-item-click="emit('on-item-click', $event)" item="order" :clickable="clickable"
+                    :loading="loading" :response="response" :list="gridData" :errors="errors"
+                    :bulkActions="bulkActions" />
+            </div>
+        </div>
+
+    </section>
+</template>
+  
+<script setup lang="ts">
+
+import Grid from '../../components/common/grid/grid.vue';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import myTable from '../../components/common/table/table.vue';
+import errorHandlerUtil from '../../data/util/error.handler.util';
+import RequestHandler from '../../data/util/request.handler';
+import { useI18n } from '../../i18n';
+import { DatetimeFormat } from 'vue-i18n';
+import { dd } from '../../util';
+
+const props = defineProps<{ list: any[], response?: any, view?: string | null, loading?: boolean, clickable?: boolean }>();
+const { t } = useI18n();
+
+const bulkActions = ref<any>([
+    // {
+    // name: 'Delete All', url: "orders/deleteAll", title: 'Are you sure?',
+    // description: 'This will delete all the selected orders.' 
+    // }
+]);
+
+const headers = ref<any[]>([
+    // { name: '#bulk#', width: '1', sortable: false },
+    { label: 'customer', name: 'user', width: '2', sortable: false, type: "text", editable: false, cls: 'justify-start' },
+
+    { label: 'padel', name: 'padel', width: '2', sortable: false, type: "text", cls: 'justify-start', editable: false },
+
+    { label: 'Booked Date', name: 'createdAt', width: '2', sortable: true, type: "text", cls: 'justify-start', editable: false },
+
+    { label: 'Scheduled Date', name: 'booked_date', width: '2', sortable: false, type: "text", cls: 'justify-start', editable: false },
+
+    { label: 'Scheduled Time', name: 'time', width: '2', sortable: false, type: "text", cls: 'justify-start', editable: false },
+
+    // { label:'promo', name:'promoCode', width:'1', sortable:true, type:"text", editable: false, cls: 'justify-start'}, 
+
+    { label: 'amount', name: 'amount', width: '1', sortable: true, type: "cash", cls: 'justify-start', editable: false },
+
+    { label: 'Payment-Date', name: 'paymentDate', width: '2', sortable: true, cls: 'justify-center text-center', type: "date", },
+
+    { label: 'status', name: 'status', width: '2', sortable: true, cls: 'justify-center text-center ', type: "text" },
+
+    // { label:'action', name:'#actions#', width:'1', sortable:false, actions:['edit', 'delete']}, 
+]);
+
+const tableData = ref<any[]>([]);
+const gridData = ref<any[]>([]);
+const errors = ref<any[]>([]);
+const search = ref<string | null>(null);
+const sort_by = ref<string | null>(null);
+const sort = ref<string | null>(null);
+
+watch(() => props.list, (newValue, old) => { map(newValue); errors.value = []; });
+watch(() => props.view, (nw, ol) => { map(props.list); errors.value = []; });
+const emit = defineEmits<{
+    (event: 'update-list'): void
+    (event: 'on-sort-change', param: any): void
+    (event: 'on-page-change', param: any): void
+    (event: 'on-item-click', param: any): void
+    (event: 'on-limit-change', param: any): void
+}>();
+async function onBulkAction(x: { selected: any, action: any }) {
+
+    console.log('on-bulk-action', x.selected, x.action, 'on-bulk-action-end')
+    let ids: any[] = [];
+    (x.selected as any[]).forEach(element => { ids.push(element.id); });
+    try {
+        let response = await new RequestHandler().postForm(x.action.url, { 'ids': JSON.stringify(ids) }, []);
+        console.log(response);
+        emit('update-list');
+    } catch (e: any) {
+        console.log(e.toString());
+        errorHandlerUtil.handle(e, useToast(), useRouter());
+    }
+}
+
+async function onAction(x: { index: number, body: any, action: string }) {
+    console.log('on-action', x.index, x.body, x.action, 'on-action-end');
+    if (props.list == null) return;
+
+    switch (x.action.toLowerCase()) {
+        case 'delete':
+            try {
+                emit('update-list');
+                await new RequestHandler().post('bookings/delete', { 'id': props.list![x.index].id });
+            } catch (e) {
+                errorHandlerUtil.handle(e, useToast(), useRouter());
+            }
+            break;
+        case 'edit':
+            try {
+                // console.log('request', x.body);
+                var response = await new RequestHandler().post('bookings/edit',
+                    x.body)
+                // console.log('request successfull', response.data);
+                emit('update-list');
+            } catch (e) {
+                errorHandlerUtil.handle(e, useToast(), useRouter());
+                errors.value[x.index] = {
+                    index: x.index,
+                    errors: errorHandlerUtil.handle(e, useToast(), useRouter()), body: x.body
+                };
+            }
+            break;
+        case 'cancel':
+            errors.value.splice(x.index, 1);
+            break
+    }
+}
+function onSelect(selected: any) {
+    console.log("on-select", selected, 'on-select-end')
+}
+
+function mapTableData(listPar: any[]) {
+    tableData.value = [];
+    listPar.forEach((element) => {
+        const status = element.status;
+        tableData.value[tableData.value.length] = {
+            id: element.id,
+            name: element.userId,
+            user: element.User.fullName,
+            padelId: element.padelId,
+            padel: element.Padel.name,
+            banner: element.Padel.banner,
+            padelSchduleId: element.padelScheduleId,
+            startTime: element.PadelSchedule.startTime,
+            endTime: element.PadelSchedule.endTime,
+            paymentId: element.paymentId,
+            promoCodeId: element.promoCodeId,
+            promoCode: element.PromoCode?.code,
+            amount: element.amount,
+            createdAt: dd(element.createdAt, 's'),
+            barCode: element.barCode,
+            booked_date: dd(element.statTime, 's'),
+            time: dd(element.PadelSchedule.startTime, 't') + ' - ' + dd(element.PadelSchedule.endTime, 't'),
+            paymentDate: element.paymentDate,
+            status: ((new Date((element.startTime))) < (new Date())) ? 'expired' : element.status,
+            enabled: element.enabled,
+            status_cls: [
+                { 'capitalize text-warning-light justify-center': status.toLowerCase().includes('waiting') },
+                // { 'capitalize text-error-light  ': status == 'defaulted' },
+                { 'capitalize text-red-500 justify-center': status == status.toLowerCase().includes('expired') },
+                // { 'capitalize text-gray-700  ': status == 'ended' },
+                {
+                    ' capitalize text-success-light justify-center': status.toLowerCase().includes('payed') || status.toLowerCase().includes('pay')
+                        || status.toLowerCase().includes('paid') || status.toLowerCase().includes('confirm') || status.toLowerCase().includes('approved')
+                }
+            ]
+        };
+    });
+}
+
+function mapGridData(listPar: any[]) {
+    gridData.value = [];
+    listPar.forEach((element) => {
+        const status = element.status;
+        gridData.value[gridData.value.length] = {
+            id: element.id,
+            customer: element.User.fullName,
+            padelId: element.padelId,
+            padel: element.Padel.name,
+            banner: element.Padel.banner,
+            padelSchduleId: element.padelScheduleId,
+            startTime: element.PadelSchedule.startTime,
+            endTime: element.PadelSchedule.endTime,
+            paymentId: element.paymentId,
+            promoCodeId: element.promoCodeId,
+            promoCode: element.PromoCode?.code,
+            amount: element.amount,
+            createdAt: dd(element.createdAt, 's'),
+            barCode: element.barCode,
+            booked_date: dd(element.startTime, 's'),
+            time: dd(element.PadelSchedule.startTime, 't') + ' - ' + dd(element.PadelSchedule.endTime, 't'),
+            paymentDate: dd(element.paymentDate, 's'),
+            status: ((new Date((element.startTime))) < (new Date())) ? 'expired' : element.status,
+            enabled: element.enabled,
+
+        };
+    });
+}
+
+function map(newValue: any) { (props.view == 'table') ? mapTableData(newValue) : mapGridData(newValue); }
+
+</script>
+  
+<style>
+
+</style>
