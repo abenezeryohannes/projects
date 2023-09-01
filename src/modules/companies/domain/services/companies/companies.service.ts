@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CompanyDto } from '../../dtos/company.dto';
-import { DataSource, In } from 'typeorm';
+import { DataSource, In, Like } from 'typeorm';
 import { Company } from '../../entities/company.entity';
 import { join } from 'path';
 import { Tag } from '../../entities/tag.entity';
@@ -9,8 +9,56 @@ import { Tag } from '../../entities/tag.entity';
 export class CompaniesService {
   constructor(readonly dataSource: DataSource) {}
 
-  async findAll(): Promise<Company[]> {
-    return this.dataSource.getRepository(Company).find();
+  async findAll(query: any): Promise<[Company[], number]> {
+    const limit = Number(query.limit ?? '25');
+    const page = Number(query.page ?? '1');
+    const search = query.search ?? '';
+
+    const sort = query.sort ?? 'desc';
+
+    let sort_by: any = { id: sort };
+    switch (query.sort_by) {
+      case 'like':
+        sort_by = { like: sort };
+        break;
+      case 'name':
+        sort_by = { name: sort };
+        break;
+      case 'arabicName':
+        sort_by = { arabicName: sort };
+        break;
+      case 'phoneNumber':
+        sort_by = { phoneNumber: sort };
+        break;
+      case 'deliveryFee':
+        sort_by = { deliveryFee: sort };
+        break;
+      case 'deliveryTime':
+        sort_by = { deliveryTime: sort };
+        break;
+      case 'badge':
+        sort_by = { badge: sort };
+        break;
+      case 'badgeColor':
+        sort_by = { badgeColor: sort };
+        break;
+      default:
+        sort_by = { id: sort };
+    }
+
+    const [data, count] = await this.dataSource
+      .getRepository(Company)
+      .findAndCount({
+        where: [
+          { name: Like('%' + search + '%') },
+          { deliveryFee: Like('%' + search + '%') },
+          { deliveryTime: Like('%' + search + '%') },
+        ],
+        order: sort_by,
+        take: limit,
+        skip: limit * (page - 1),
+      });
+    return [data, count];
   }
 
   async findWithIds(request: any): Promise<any> {
@@ -42,6 +90,24 @@ export class CompaniesService {
       .find({ where: { user: request.user } });
   }
 
+  async deleteAll(ids: number[]): Promise<any> {
+    const ops = [];
+    ids.forEach((id) => ops.push(this.delete(id)));
+    return await Promise.all(ops);
+  }
+
+  async delete(id: number): Promise<any> {
+    const company = await this.dataSource.getRepository(Company).findOne({
+      where: { id: id },
+    });
+
+    // await this.dataSource.getRepository(Tag).delete({
+    //   companies: [company],
+    // });
+
+    return await this.dataSource.getRepository(Company).remove(company);
+  }
+
   async findOne(id: number): Promise<Company> | null {
     return this.dataSource
       .getRepository(Company)
@@ -66,8 +132,27 @@ export class CompaniesService {
       company.deliveryTime = companyDto.deliveryTime;
     }
 
+    if (companyDto.arabicName != null && companyDto.arabicName != undefined) {
+      company.arabicName = companyDto.arabicName;
+    }
+
+    if (companyDto.badge != null && companyDto.badge != undefined) {
+      company.badge = companyDto.badge;
+    }
+
+    if (companyDto.badgeColor != null && companyDto.badgeColor != undefined) {
+      company.badgeColor = companyDto.badgeColor;
+    }
+
     if (companyDto.deliveryFee != null && companyDto.deliveryFee != undefined) {
       company.deliveryFee = companyDto.deliveryFee;
+    }
+
+    if (
+      companyDto.deliveryTime != null &&
+      companyDto.deliveryTime != undefined
+    ) {
+      company.deliveryTime = companyDto.deliveryTime;
     }
 
     if (companyDto.name != null && companyDto.name != undefined) {
@@ -76,6 +161,10 @@ export class CompaniesService {
 
     if (companyDto.phoneNumber != null && companyDto.phoneNumber != undefined) {
       company.phoneNumber = companyDto.phoneNumber;
+    }
+
+    if (companyDto.isActive != null && companyDto.isActive != undefined) {
+      company.isActive = companyDto.isActive;
     }
 
     if (
@@ -88,38 +177,12 @@ export class CompaniesService {
     if (request.file != null)
       company.banner = join('public', request.file.filename);
     await this.dataSource.getRepository(Company).save(company);
-    //tags
-    //get already saved tags
-    // const st: Tag[] = await this.dataSource
-    //   .getRepository(Tag)
-    //   .createQueryBuilder()
-    //   .where('id IN(:...names)', {
-    //     names: companyDto.tags.map((t) => t.toLowerCase()),
-    //   })
-    //   .execute();
-    // const savedTags = st.map((st) => st.name.toLowerCase());
-    // //filter not saved new tags
-    // const newTags: string[] = companyDto.tags.filter((t) =>
-    //   savedTags.includes(t.toLowerCase()),
-    // );
-    // //add the new tags
-    // await Promise.all(
-    //   newTags.map(async (name) => {
-    //     const tag = new Tag();
-    //     tag.name = name;
-    //     tag.user = request.user;
-    //     tag.isDefault = false;
-    //     tag.color = Util.randomColor();
-    //     tag.companies = [company];
-    //     await this.dataSource.getRepository(Tag).create(tag);
-    //   }),
-    // );
 
     return company;
   }
 
   async add(request: any, companyDto: CompanyDto): Promise<Company> {
-    let company = CompanyDto.toEntity(companyDto);
+    let company: Company = CompanyDto.toEntity(companyDto);
 
     company.userId = request.user.id;
     company.isActive = false;
@@ -130,53 +193,28 @@ export class CompaniesService {
     company = await this.dataSource.getRepository(Company).save(company);
     // tags
     // get already saved tags
-    const st = await this.dataSource
-      .getRepository(Tag)
-      .createQueryBuilder()
-      .where('LOWER(name) IN(:...names)', {
-        names: companyDto.tags.map((t) => t.toLowerCase()),
-      })
-      .execute();
+    if (
+      companyDto.tags != undefined &&
+      companyDto.tags != null &&
+      companyDto.tags.length > 0
+    ) {
+      const st = await this.dataSource
+        .getRepository(Tag)
+        .createQueryBuilder()
+        .where('LOWER(name) IN(:...names)', {
+          names: companyDto.tags.map((t) => t.toLowerCase()),
+        })
+        .execute();
 
-    const stt = await this.dataSource.getRepository(Tag).find({
-      where: {
-        id: In(st.map((x) => x.Tag_id)),
-      },
-    });
+      const stt = await this.dataSource.getRepository(Tag).find({
+        where: {
+          id: In(st.map((x) => x.Tag_id)),
+        },
+      });
 
-    company.tags = stt;
-    // const savedTags: string[] = stt.map((s) => s.name.toLowerCase());
-    // //filter not saved new tags
-    // const newTags: string[] = companyDto.tags.filter(
-    //   (t) => !savedTags.includes(t.toLowerCase()),
-    // );
-
-    // //
-    // // add the new tags
-    // if (newTags.length > 0) {
-    //   const user = await this.dataSource
-    //     .getRepository(User)
-    //     .findOne({ where: { id: request.user.id } });
-
-    //   const nTs: Tag[] = newTags.map((name) => {
-    //     const tag = new Tag();
-    //     tag.name = name;
-    //     tag.isDefault = false;
-    //     tag.color = Util.randomColor();
-    //     tag.companies = [company];
-    //     return tag;
-    //   });
-
-    //   const nTs = await this.dataSource.manager.save(tags);
-
-    //   const newTagsSaved = await this.dataSource.getRepository(Tag).find({
-    //     where: {
-    //       id: In(nTs.map((x) => x.id)),
-    //     },
-    //   });
-    //   company.tags = company.tags.concat(newTagsSaved);
-    // }
-
-    return await this.dataSource.getRepository(Company).save(company);
+      company.tags = stt;
+      return await this.dataSource.getRepository(Company).save(company);
+    }
+    return company;
   }
 }

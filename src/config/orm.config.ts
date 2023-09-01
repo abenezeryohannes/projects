@@ -6,6 +6,8 @@ import { Company } from '../modules/companies/domain/entities/company.entity';
 import { Favorite } from '../modules/users/domain/entities/favorite.entity';
 import { Tag } from '../modules/companies/domain/entities/tag.entity';
 import { ChatTrainer } from '../modules/chats/domain/entities/chat.trainer.entity';
+import { TagIdentifier } from '../modules/companies/domain/entities/tag.identifier.entity';
+import { CompanyIdentifier } from '../modules/companies/domain/entities/company.identifier.entity';
 
 dotenv.config({ path: '.env' });
 
@@ -20,7 +22,17 @@ export const config = {
   database: `${process.env.DATABASE_NAME}`,
   seeds: ['src/database/seeds/**/*{.ts,.js}'],
   factories: ['src/database/seeds/factories/**/*{.ts,.js}'],
-  entities: [User, Token, Tag, Company, Favorite, Chat, ChatTrainer],
+  entities: [
+    User,
+    Token,
+    Tag,
+    Company,
+    Favorite,
+    Chat,
+    ChatTrainer,
+    TagIdentifier,
+    CompanyIdentifier,
+  ],
   migrations: ['./src/database/migrations/*{.ts,.js}'],
   synchronize: true,
   cli: {

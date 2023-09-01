@@ -52,14 +52,18 @@ export class AuthService {
   }
 
   private async generateToken(user: any, requestBody: any, trans: any) {
-    const code = await this.jwtService.signAsync({ user });
+    const code = await this.jwtService.signAsync({
+      user: JSON.stringify(user),
+    });
     const t = new Token();
     t.user = user;
     t.token = code.length < 254 ? code : code.substring(0, 254);
     t.until = Moment().add(Moment.duration(12, 'months')).toDate();
     t.role = requestBody.role == null ? ROLE.USER : requestBody.role;
     t.fcmToken =
-      requestBody.fcmToken.length < 254
+      requestBody.fcmToken == undefined || requestBody.fcmToken == null
+        ? null
+        : requestBody.fcmToken.length < 254
         ? requestBody.fcmToken
         : requestBody.fcmToken.substring(0, 254);
     const token = await this.dataSource.getRepository(Token).create(t);

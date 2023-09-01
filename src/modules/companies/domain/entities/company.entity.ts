@@ -10,6 +10,7 @@ import {
 import { Tag } from './tag.entity';
 import { User } from '../../../users/domain/entities/user.entity';
 import { Favorite } from '../../../users/domain/entities/favorite.entity';
+import { CompanyIdentifier } from './company.identifier.entity';
 
 @Entity()
 export class Company {
@@ -18,6 +19,9 @@ export class Company {
 
   @Column()
   name: string;
+
+  @Column({ nullable: true })
+  arabicName: string;
 
   @Column({ name: 'user_id' })
   userId: number;
@@ -68,4 +72,9 @@ export class Company {
 
   @OneToMany(() => Favorite, (favorite) => favorite.company)
   favoritesof: Favorite[];
+
+  @OneToMany(() => CompanyIdentifier, (identifier) => identifier.company)
+  companyIdentifiers: CompanyIdentifier[];
+
+  //companyIdentifiers
 }

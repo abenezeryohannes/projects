@@ -5,6 +5,8 @@ export class CompanyDto {
 
   name: string;
 
+  arabicName: string;
+
   userId: number;
 
   banner: string;
@@ -29,8 +31,8 @@ export class CompanyDto {
 
   constructor(data: any) {
     if (data == null) return;
-
     if (data.name != null) this.name = data.name;
+    if (data.arabicName != null) this.arabicName = data.arabicName;
     if (data.url != null) this.url = data.url;
     if (data.id != null) this.id = data.id;
     if (data.userId != null) this.userId = data.userId;
@@ -41,8 +43,8 @@ export class CompanyDto {
     if (data.deliveryTime != null) this.deliveryTime = data.deliveryTime;
     if (data.deliveryFee != null) this.deliveryFee = data.deliveryFee;
     if (data.isActive != null) this.isActive = data.isActive;
-    if (data.badge != null) this.isActive = data.badge;
-    if (data.badge_color != null) this.isActive = data.badge_color;
+    if (data.badge != null) this.badge = data.badge;
+    if (data.badgeColor != null) this.badgeColor = data.badgeColor;
     if (data.tags != null)
       this.tags =
         typeof data.tags == 'string' ? JSON.parse(data.tags) : data.tags;
@@ -52,6 +54,7 @@ export class CompanyDto {
     const dto = new CompanyDto(null);
     dto.id = entity.id;
     dto.name = entity.name;
+    dto.arabicName = entity.arabicName;
     dto.url = entity.url;
     dto.userId = entity.userId;
     dto.banner = entity.banner;
@@ -69,6 +72,7 @@ export class CompanyDto {
     const entity = new Company();
     entity.id = dto.id;
     entity.name = dto.name;
+    entity.arabicName = dto.arabicName;
     entity.userId = dto.userId;
     entity.banner = dto.banner;
     entity.url = dto.url;

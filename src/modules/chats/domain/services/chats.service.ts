@@ -82,6 +82,7 @@ export class ChatsService {
     const auth_token =
       socket.handshake.auth.authorization ??
       socket.handshake.headers.authorization;
+
     if (auth_token == null || auth_token.length == 0) {
       throw new WsException('Invalid credentials.');
     }

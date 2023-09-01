@@ -14,19 +14,27 @@ const CORS_OPTIONS = {
   allowedHeaders: [
     'Access-Control-Allow-Origin',
     'Origin',
+    'Access-Control-Request-Headers',
     'X-Requested-With',
+    'X-Api-Key',
     'Accept',
     'Content-Type',
     'Authorization',
+    'Content-Range',
+    'token',
+    'X-Content-Range',
   ],
-  exposedHeaders: 'Authorization',
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
   credentials: true,
+
+  preflightContinue: true,
+  optionsSuccessStatus: 204,
   // crossOriginIsolated: false,
   methods: ['GET', 'PUT', 'OPTIONS', 'POST', 'DELETE', 'PATCH', 'HEAD'],
 };
 
 async function bootstrap() {
-  const adapter = new FastifyAdapter({ bodyLimit: 10048576 });
+  const adapter = new FastifyAdapter({ bodyLimit: 9007199254740991 });
   adapter.enableCors(CORS_OPTIONS);
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -39,7 +47,7 @@ async function bootstrap() {
   //   prefix: 'legal',
   // });
 
-  app.useGlobalPipes(new ValidateInputPipe());
+  //app.useGlobalPipes(new ValidateInputPipe());
   // const app = await NestFactory.create(AppModule);
   // app.enableCors(CORS_OPTIONS);
   await app.listen(process.env.PORT || 3000);

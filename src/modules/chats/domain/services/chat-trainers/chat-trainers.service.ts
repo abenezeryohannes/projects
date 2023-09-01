@@ -7,6 +7,7 @@ import * as fs from 'fs';
 import { resolve, join } from 'path';
 import { CreateChatTrainerDto } from '../../dto/create.chat.trainer.dto';
 import { Tag } from '../../../../companies/domain/entities/tag.entity';
+import { Company } from '../../../../companies/domain/entities/company.entity';
 
 @Injectable()
 export class ChatTrainersService {
@@ -109,7 +110,25 @@ export class ChatTrainersService {
     });
   }
 
+  async clearOnlyTraining(): Promise<any> {
+    const path = join(
+      __dirname.substring(0, __dirname.lastIndexOf('dist')),
+      '/linko-ai.nlp',
+    );
+    if (fs.existsSync(path))
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        }
+        console.log('Delete File successfully.');
+      });
+  }
+
   async train(): Promise<any> {
+    try {
+      await this.clearOnlyTraining();
+    } catch (e) {}
+    //
     const path = join(
       __dirname.substring(0, __dirname.lastIndexOf('dist')),
       '/linko-ai.nlp',
@@ -123,23 +142,40 @@ export class ChatTrainersService {
     //train about tags entity
     const tags = await this.dataSource
       .getRepository(Tag)
-      .find({ relations: ['companies'] });
+      .find({ relations: ['tagIdentifiers'] });
     for (let i = 0; i < tags.length; i++) {
       // for (let j = 0; j < tags[i].companies.length; j++) {
       manager.addNamedEntityText(
         tags[i].name,
         tags[i].name,
         ['en'],
-        [...tags[i].desc.split(','), tags[i].name.toLowerCase()],
+        [
+          ...tags[i].tagIdentifiers.map((ti) => ti.utterance),
+          tags[i].name.toLowerCase(),
+        ],
       );
-      // }
-      // manager.addNamedEntityText(
-      //   tags[i].type,
-      //   tags[i].name,
-      //   ['en'],
-      //   tags[i].companies.map((c) => c.name),
-      // );
     }
+
+    //train about companies entity
+    const companies = await this.dataSource
+      .getRepository(Company)
+      .find({ relations: ['companyIdentifiers'] });
+    for (let i = 0; i < companies.length; i++) {
+      // for (let j = 0; j < tags[i].companies.length; j++) {
+      manager.addNamedEntityText(
+        companies[i].name,
+        companies[i].name,
+        ['en'],
+        [
+          ...companies[i].companyIdentifiers.map((ci) => ci.utterance),
+          companies[i].name.toLowerCase(),
+        ],
+      );
+    }
+
+    ///
+    // Train with chatTrainer datas
+    ///
     manager.addAfterLastCondition('en', 'name', ['is', "I'm"]);
     const trainers = await this.dataSource.getRepository(ChatTrainer).find();
     for (let i = 0; i < trainers.length; i++) {
@@ -186,11 +222,6 @@ export class ChatTrainersService {
       }
     }
     await manager.train();
-    // console.log('saving to ', path);
     manager.save(path);
-
-    //for domain
-    //assigning
-    // //geting domain
   }
 }

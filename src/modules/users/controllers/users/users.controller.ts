@@ -77,7 +77,7 @@ export class UsersController {
   async findAllUsers(@Request() request) {
     try {
       const result = await this.userService.findAll(request);
-      return WrapperDto.paginate(result, request.query);
+      return WrapperDto.paginateHalf(result, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }

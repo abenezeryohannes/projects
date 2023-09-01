@@ -21,7 +21,7 @@ export class ChatsController {
   async findAll(@Request() request) {
     try {
       const result = await this.service.findAll(request);
-      return WrapperDto.paginate(result.data, request.query);
+      return WrapperDto.paginateHalf(result.data, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }
@@ -68,7 +68,7 @@ export class ChatsController {
         utterance,
         request.user,
       );
-      return WrapperDto.paginate(result.data, request.query);
+      return WrapperDto.paginateHalf(result.data, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }

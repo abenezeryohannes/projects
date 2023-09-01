@@ -69,6 +69,7 @@ export class FavoritesService {
     return this.dataSource.getRepository(Favorite).find({
       where: { user: user },
       relations: ['company', 'user'],
+      order: { id: 'desc' },
     });
   }
 

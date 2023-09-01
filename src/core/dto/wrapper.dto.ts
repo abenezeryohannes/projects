@@ -33,20 +33,40 @@ export class WrapperDto {
     const wrapper = new HttpException(message, statusCode);
     return wrapper;
   }
-  static paginate(data: any, query: any): WrapperDto {
+  static paginateHalf(data: any, query: any): WrapperDto {
     const wrapper = new WrapperDto();
     wrapper.page = Number.parseInt(query.page);
-    wrapper.page = 0;
+    // wrapper.page = 0;
     wrapper.limit = Util.getLimit(query);
     wrapper.success = true;
     wrapper.statusCode = 200;
     wrapper.count = data.length;
+    wrapper.sort = query.sort;
+    wrapper.sort_by = query.sort_by;
 
     wrapper.datas = data;
 
     // wrapper.total_pages = Math.ceil(total_items / wrapper.limit);
     return wrapper;
   }
+
+  static paginate(data: any[], count: number, query: any): WrapperDto {
+    const wrapper = new WrapperDto();
+    wrapper.page = Number.parseInt(query.page ?? 1);
+    // wrapper.page = 0;
+    wrapper.limit = Util.getLimit(query);
+    wrapper.success = true;
+    wrapper.statusCode = 200;
+    wrapper.total_pages = Math.floor(count / wrapper.limit);
+    wrapper.count = count;
+    wrapper.datas = data;
+    wrapper.sort = query.sort;
+    wrapper.sort_by = query.sort_by;
+
+    // wrapper.total_pages = Math.ceil(total_items / wrapper.limit);
+    return wrapper;
+  }
+
   static figureOutTheError(error: any) {
     if (typeof error == 'string') {
       return WrapperDto.error(413, error);

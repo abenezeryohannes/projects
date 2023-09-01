@@ -22,7 +22,7 @@ import { WrapperDto } from '../../../../core/dto/wrapper.dto';
 
 @Controller('companies')
 export class CompaniesController {
-  constructor(readonly companiesService: CompaniesService) {}
+  constructor(readonly service: CompaniesService) {}
 
   @Roles(ROLE.ADMIN, ROLE.USER)
   @Post('add')
@@ -42,7 +42,7 @@ export class CompaniesController {
     try {
       const companyDto = new CompanyDto(request.body);
       await validateOrReject(companyDto);
-      const result = await this.companiesService.add(request, companyDto);
+      const result = await this.service.add(request, companyDto);
       return WrapperDto.successfullCreated(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
@@ -50,7 +50,7 @@ export class CompaniesController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Post('edit/:id')
+  @Post(':id/edit')
   @UseInterceptors(
     FastifyFileInterceptor('banner', {
       storage: diskStorage({
@@ -67,7 +67,7 @@ export class CompaniesController {
     try {
       const companyDto = new CompanyDto(request.body);
       await validateOrReject(companyDto);
-      const result = await this.companiesService.edit(request, id, companyDto);
+      const result = await this.service.edit(request, id, companyDto);
       return WrapperDto.successfullCreated(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
@@ -78,7 +78,7 @@ export class CompaniesController {
   @Get(':id')
   async find(@Request() request, @Param('id') id: number) {
     try {
-      const result = await this.companiesService.findOne(id);
+      const result = await this.service.findOne(id);
       return WrapperDto.successfullCreated(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
@@ -86,11 +86,11 @@ export class CompaniesController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Get('findAll')
+  @Get()
   async findAll(@Request() request) {
     try {
-      const result = await this.companiesService.findAll();
-      return WrapperDto.paginate(result, request.query);
+      const [data, count] = await this.service.findAll(request.query);
+      return WrapperDto.paginate(data, count, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }
@@ -100,8 +100,8 @@ export class CompaniesController {
   @Get('findWithIds')
   async findWithIds(@Request() request) {
     try {
-      const result = await this.companiesService.findWithIds(request);
-      return WrapperDto.paginate(result['datas'], request.query);
+      const result = await this.service.findWithIds(request);
+      return WrapperDto.paginateHalf(result['datas'], request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }
@@ -111,8 +111,29 @@ export class CompaniesController {
   @Get('get')
   async get(@Request() request) {
     try {
-      const result = await this.companiesService.get(request);
-      return WrapperDto.paginate(result, request.query);
+      const result = await this.service.get(request);
+      return WrapperDto.paginateHalf(result, request.query);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+  @Roles(ROLE.ADMIN)
+  @Post('delete')
+  async delete(@Request() request) {
+    try {
+      const result = await this.service.delete(request.body.id);
+      return WrapperDto.successfull(result);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN)
+  @Post('delete_all')
+  async deleteAll(@Request() request) {
+    try {
+      const result = await this.service.deleteAll(JSON.parse(request.body.ids));
+      return WrapperDto.successfull(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }

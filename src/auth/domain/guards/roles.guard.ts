@@ -26,7 +26,9 @@ export class RolesGuard implements CanActivate {
         'Please login or signup to make this request!',
       );
     }
-    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const jwt =
+      request.headers.token ??
+      request.headers.authorization.replace('Bearer ', '');
 
     let token = await this.dataSource.getRepository(Token).findOne({
       where: { token: jwt },

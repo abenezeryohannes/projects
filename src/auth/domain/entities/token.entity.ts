@@ -12,7 +12,7 @@ export class Token {
   @Column()
   token: string;
 
-  @Column({ name: 'fcm_token' })
+  @Column({ name: 'fcm_token', nullable: true })
   fcmToken: string;
 
   @Column()

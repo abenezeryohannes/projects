@@ -4,11 +4,12 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   ManyToOne,
-  JoinColumn,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Company } from './company.entity';
 import { User } from '../../../users/domain/entities/user.entity';
+import { TagIdentifier } from './tag.identifier.entity';
 
 @Entity()
 export class Tag {
@@ -33,6 +34,9 @@ export class Tag {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: 0 })
+  training: number;
+
   @ManyToMany((type) => Company, (company) => company.tags, { nullable: true })
   @JoinTable({
     name: 'company_tag_id',
@@ -49,4 +53,7 @@ export class Tag {
 
   @ManyToOne(() => User, (user) => user.tags)
   user: User;
+
+  @OneToMany(() => TagIdentifier, (identifier) => identifier.tag)
+  tagIdentifiers: TagIdentifier[];
 }

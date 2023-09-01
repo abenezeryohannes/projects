@@ -21,7 +21,7 @@ export class ChatTrainersController {
   async findAll(@Request() request) {
     try {
       const result = await this.service.findAll(request);
-      return WrapperDto.paginate(result, request.query);
+      return WrapperDto.paginateHalf(result, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }
