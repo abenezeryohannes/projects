@@ -147,8 +147,8 @@ function switchTo(currentRoute?: string | null | undefined) {
       option: null,
       id: 1,
     };
-  else if (currentRoute?.startsWith("orders"))
-    selectedListItem.value = { subList: "Orders", option: null, id: 1 };
+  else if (currentRoute?.startsWith("businesses"))
+    selectedListItem.value = { subList: "Businesses", option: null, id: 1 };
   else if (currentRoute?.startsWith("addresses"))
     selectedListItem.value = { subList: "Addresses", option: null, id: 1 };
   else if (currentRoute?.startsWith("features"))
@@ -173,8 +173,8 @@ function onChange(event: any) {
     router.push({ name: "tags" });
   } else if (selectedListItem.value.subList.endsWith("Tag Identifiers")) {
     router.push({ name: "tag-identifiers" });
-  } else if (selectedListItem.value.subList.endsWith("Ads")) {
-    router.push({ name: "ads" });
+  } else if (selectedListItem.value.subList.endsWith("Businesses")) {
+    router.push({ name: "businesses" });
   } else if (selectedListItem.value.subList.endsWith("Features")) {
     router.push({ name: "features" });
   } else if (selectedListItem.value.subList.endsWith("Groups")) {

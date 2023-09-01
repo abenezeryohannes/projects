@@ -48,13 +48,13 @@ import { useToast } from "vue-toastification";
 import myTable from "../../components/common/table/table.vue";
 import errorHandlerUtil from "../../data/util/error.handler.util";
 import RequestHandler from "../../data/util/request.handler";
-import { Tag } from "../../domain/company/entity/tag.entity";
 import { WrapperDto } from "../../domain/wrapper.dto";
+import { Company } from "../../domain/company/entity/company.entity";
 // import { useI18n } from "../../i18n";
 // import { dd } from "../../util";
 const props = defineProps<{
-  list: Tag[];
-  response?: WrapperDto<Tag>;
+  list: Company[];
+  response?: WrapperDto<Company>;
   view?: string | null;
   loading?: boolean;
   clickable?: boolean;
@@ -64,13 +64,22 @@ const props = defineProps<{
 const bulkActions = ref<any>([
   {
     name: "Delete",
-    url: "tags/delete_all",
+    url: "companies/delete_all",
     title: "Are you sure?",
     description: "Do you Want to delete this data?",
   },
 ]);
 const headers = ref<any[]>([
   { name: "#bulk#", width: "1", sortable: false },
+  {
+    label: "banner",
+    name: "banner",
+    width: "1",
+    sortable: true,
+    type: "image",
+    cls: "justify-start",
+    editable: true,
+  },
   {
     label: "name",
     name: "name",
@@ -81,67 +90,80 @@ const headers = ref<any[]>([
     cls: "justify-start",
   },
   {
-    label: "type",
-    name: "type",
+    label: "Arabic Name",
+    name: "arabicName",
     width: "2",
     sortable: true,
-    type: "autocomplete",
-    link: "tags/types",
+    type: "text",
+    editable: true,
     cls: "justify-start",
-    option_name: "type",
+  },
+  // {
+  //   label: "Link",
+  //   name: "url",
+  //   width: "1",
+  //   sortable: true,
+  //   type: "text",
+  //   editable: true,
+  //   cls: "justify-start  overflow-clip pr-5",
+  // },
+  {
+    label: "Phone",
+    name: "phoneNumber",
+    width: "2",
+    sortable: false,
+    type: "text",
+    cls: "justify-start",
     editable: true,
   },
+
   {
-    label: "description",
-    name: "desc",
-    width: "3",
+    label: "Deliver Time",
+    name: "deliveryTime",
+    width: "2",
     sortable: false,
     type: "text",
     cls: "justify-start",
     editable: true,
   },
   {
-    label: "Is Determinant",
-    name: "canDetermine",
-    width: "2",
-    option: { positive: "yes", negative: "no" },
+    label: "Fee",
+    name: "deliveryFee",
+    width: "1",
+    sortable: true,
+    type: "text",
+    cls: "justify-start",
+    editable: true,
+  },
+
+  {
+    label: "Badge",
+    name: "badge",
+    width: "1",
     sortable: false,
-    type: "toggle",
+    type: "text",
     cls: "justify-start",
     editable: true,
   },
   {
-    label: "Training",
-    name: "training",
-    width: "2",
-    sortable: true,
-    type: "number",
+    label: "Color",
+    name: "badgeColor",
+    width: "1",
+    sortable: false,
+    type: "color",
     cls: "justify-start",
-    editable: false,
+    editable: true,
   },
   {
     label: "Active",
     name: "isActive",
-    width: "2",
+    width: "1",
     sortable: true,
     type: "toggle",
     option: { positive: "active", negative: "in-active" },
     editable: true,
-    cls: "justify-start",
+    cls: "justify-center",
   },
-  //   {
-  //     label: "status",
-  //     name: "approved",
-  //     width: "2",
-  //     sortable: true,
-  //     type: "toggle",
-  //     option: { positive: "Approved", negative: "Waiting" },
-  //     editable: true,
-  //     cls: "justify-start capitalize ",
-  //   },
-  // { label: 'status', name: 'status', width: '2', editable: true, sortable: false,
-  // option_name: 'name', options: [{ name: 'approve', show: 'waiting-approval' }, { name: 'dispprove', show: 'waiting-approval'},],
-  //  cls: 'justify-center text-center truncate', type: "dropdown_status", },
   {
     label: "action",
     name: "#actions#",
@@ -150,8 +172,8 @@ const headers = ref<any[]>([
     actions: ["edit", "delete"],
   },
 ]);
-const tableData = ref<any[]>([]);
-const gridData = ref<any[]>([]);
+const tableData = ref<Company[]>([]);
+const gridData = ref<Company[]>([]);
 const errors = ref<any[]>([]);
 // const search = ref<string | null>(null);
 // const sort_by = ref<string | null>(null);
@@ -178,6 +200,7 @@ const emit = defineEmits<{
   (event: "on-item-click", param: any): void;
   (event: "on-limit-change", param: any): void;
 }>();
+
 async function onBulkAction(x: { selected: any; action: any }) {
   // console.log('on-bulk-action', x.selected, x.action, 'on-bulk-action-end')
   let ids: any[] = [];
@@ -196,14 +219,19 @@ async function onBulkAction(x: { selected: any; action: any }) {
   }
 }
 
-async function onAction(x: { index: number; body: any; action: string }) {
+async function onAction(x: {
+  index: number;
+  body: any;
+  action: string;
+  files: any[];
+}) {
   console.log("on-action", x.index, x.body, x.action, "on-action-end");
   if (props.list == null) return;
 
   switch (x.action.toLowerCase()) {
     case "delete":
       try {
-        await new RequestHandler().post("tags/delete", {
+        await new RequestHandler().post("companies/delete", {
           id: props.list![x.index].id,
         });
         emit("update-list");
@@ -213,15 +241,27 @@ async function onAction(x: { index: number; body: any; action: string }) {
       break;
     case "edit":
       try {
-        console.log("request", x.body);
+        // console.log("request", x.body);
+        // console.log("files", x.files[0]);
 
-        if (x.body.owner != null) x.body.userId = x.body.owner.id;
-        if (x.body.approved) x.body.enabled = true;
+        const file =
+          x.files != undefined && x.files != null && x.files.length > 0
+            ? [{ name: "banner", file: x.files[0].file }]
+            : null;
 
-        var response = await new RequestHandler().post(
-          "tags/" + props.list![x.index].id + "/edit",
-          x.body
-        );
+        console.log("file", file);
+        var response =
+          file == null
+            ? await new RequestHandler().post(
+                "companies/" + props.list![x.index].id + "/edit",
+                x.body
+              )
+            : await new RequestHandler().postForm(
+                "companies/" + props.list![x.index].id + "/edit",
+                x.body,
+                file
+              );
+        console.log("response", response);
         if (response.message != null) {
           errors.value[x.index] = {
             index: x.index,
@@ -250,42 +290,25 @@ function onSelect(selected: any) {
   console.log("on-select", selected, "on-select-end");
 }
 
-function mapTableData(listPar: any[]) {
+function mapTableData(listPar: Company[]) {
   tableData.value = [];
   listPar.forEach((element) => {
-    // console.log("checking desc: ", element);
-    tableData.value[tableData.value.length] = {
-      id: element.id,
-      name: element.name,
-      type: element.type,
-      color: element.color,
-      training: element.training,
-      canDetermine: element.canDetermine,
-      isActive: element.isActive,
-      userId: element.userId,
-      desc: element.desc,
-    };
+    let index = tableData.value.length;
+    tableData.value[index] = element;
+    // tableData.value[index].banner = constants.MEDIA_LINK + element.banner;
   });
 }
 
-function mapGridData(listPar: any[]) {
+function mapGridData(listPar: Company[]) {
   gridData.value = [];
   listPar.forEach((element) => {
-    gridData.value[gridData.value.length] = {
-      id: element.id,
-      name: element.name,
-      type: element.type,
-      color: element.color,
-      training: element.training,
-      canDetermine: element.canDetermine,
-      isActive: element.isActive,
-      userId: element.userId,
-      desc: element.desc,
-    };
+    let index = gridData.value.length;
+    gridData.value[index] = element;
+    // gridData.value[index].banner = constants.MEDIA_LINK + element.banner;
   });
 }
 
-function map(newValue: any) {
+function map(newValue: Company[]) {
   props.view == "table" ? mapTableData(newValue) : mapGridData(newValue);
 }
 </script>

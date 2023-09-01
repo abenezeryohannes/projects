@@ -63,10 +63,10 @@ const props = defineProps<{
 
 const bulkActions = ref<any>([
   {
-    name: "Delete",
+    name: "Clear Trainings",
     url: "tags/delete_all",
     title: "Are you sure?",
-    description: "Do you Want to delete this data?",
+    description: "Do you Want to clear all trainings of these tags?",
   },
 ]);
 const headers = ref<any[]>([

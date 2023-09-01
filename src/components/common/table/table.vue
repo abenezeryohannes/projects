@@ -57,7 +57,11 @@
       <!-- pagination -->
       <div class="mt-5 pb-10 px-5 font-semibold text-xs">
         <pagination
-          v-if="response != null && response.count > response.limit"
+          v-if="
+            response != undefined &&
+            response != null &&
+            (response.count ?? 0) > (response.limit ?? 0)
+          "
           :response="response"
           :limit_controller="true"
           @on-limit-change="emit('on-limit-change', $event)"
@@ -98,9 +102,9 @@ const checkAll = ref<boolean>(false);
 const unCheckAll = ref<boolean>(false);
 const selecting = ref<boolean>(false);
 const selected = ref<any[]>([]);
-const search = ref<string | null>(null);
-const sort_by = ref<string | null>(null);
-const sort = ref<string | null>(null);
+// const search = ref<string | null>(null);
+// const sort_by = ref<string | null>(null);
+// const sort = ref<string | null>(null);
 const modal = ref<any>(null);
 
 const emit = defineEmits<{
@@ -116,7 +120,7 @@ const emit = defineEmits<{
 
 watch(
   () => selected.value,
-  (newVal, oldVal) => {
+  (newVal, __) => {
     selecting.value = newVal.length > 0;
     // console.log('on-select-all', selected.value);
   }
@@ -124,14 +128,14 @@ watch(
 
 watch(
   () => props.list,
-  (newVal, oldVal) => {
+  (_, __) => {
     clearSelection();
   }
 );
 
 watch(
   () => selecting.value,
-  (newVal, oldVal) => {
+  (newVal, __) => {
     emit("on-select", newVal);
   }
 );
@@ -187,6 +191,7 @@ function onAction(x: {
   item_body: any;
   action: string;
   orginal: any;
+  files: any[];
 }) {
   if (x.action == "delete") {
     modal.value.open({
@@ -197,6 +202,7 @@ function onAction(x: {
         item_body: x.item_body,
         action: x.action,
         index: x.index,
+        files: x.files,
       },
       type: "warning",
       title: "Are you sure?",
@@ -210,6 +216,7 @@ function onAction(x: {
       action: x.action,
       index: x.index,
       orginal: x.orginal,
+      files: x.files,
     });
 }
 

@@ -34,6 +34,15 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
+    path: "/businesses",
+    name: "businesses",
+    components: {
+      default: () => import("./pages/businesses.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+    // beforeEnter: (to, _, next) => {},
+  },
+  {
     path: "/tags/tag-identifiers",
     name: "tag-identifiers",
     components: {

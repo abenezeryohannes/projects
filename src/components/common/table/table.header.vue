@@ -133,7 +133,7 @@ import { ref, watch } from "vue";
 import { useI18n } from "../../../i18n";
 import { WrapperDto } from "../../../domain/wrapper.dto";
 const props = defineProps<{
-  response: WrapperDto<any>;
+  response?: WrapperDto<any>;
   headers: any;
   selecting: any;
   checkAll: any;

@@ -52,7 +52,7 @@
                   />
                   <!-- 
                                     <p v-show="action==='pay'" class="cursor-pointer my-auto dark:text-white">
-                                       {{$t(action)}} </p>  -->
+                                       {{t(action)}} </p>  -->
                 </div>
               </div>
             </div>
@@ -89,7 +89,7 @@
             class="flex justify-center items-center w-full h-full"
           >
             <p :class="data[header.name + '_cls']">
-              {{ $t(data[header.name]) }}
+              {{ t(data[header.name]) }}
             </p>
           </div>
 
@@ -111,7 +111,7 @@
             "
           >
             <p v-if="header.type === null && data != null" class="truncate">
-              {{ $t(data[header.name]) }}
+              {{ t(data[header.name]) }}
             </p>
 
             <text-form
@@ -246,15 +246,15 @@
 
             <image-form
               v-if="header.type === 'media' || header.type === 'image'"
-              :local_image_file="null"
+              :local_image_file="localImg"
               :deletable="false"
               @on-change="
                 icon = $event[$event.length - 1];
                 emit('on-action', {
-                  data: temp_data,
+                  body: temp_data,
                   action: 'edit',
                   index: props.index,
-                  files: icon == null ? [] : [{ name: 'icon', icon }],
+                  files: icon == null ? [] : [{ name: 'icon', file: icon }],
                 });
               "
               :editing="
@@ -263,8 +263,8 @@
               :link="data[header.name]"
               :padding="0"
               :editable="header.editable"
-              :width="5"
-              :height="5"
+              :width="10"
+              :height="10"
               rounded="rounded"
             />
           </div>
@@ -302,6 +302,7 @@ import TagInputForm from "../../forms/tag.input.form.vue";
 import { computed, ref, watch } from "vue";
 import errorHandlerUtil from "../../../data/util/error.handler.util";
 import AutocompleteForm from "../../forms/autocomplete.form.vue";
+import { useI18n } from "../../../i18n";
 
 const props = defineProps<{
   index: number;
@@ -315,6 +316,7 @@ const props = defineProps<{
   clickable?: boolean;
 }>();
 
+const t = useI18n();
 const temp_data = ref<any>({});
 const temp_item_data = ref<any>({});
 const editing = ref<boolean>(false);
@@ -322,6 +324,7 @@ const checked = ref<boolean>(false);
 const show_item = ref<boolean>(false);
 const itemRef = ref<any>({});
 const icon = ref<any>(null);
+const localImg = ref<any>(null);
 
 const dynamicComponent = computed(() => {
   return () => import(`./items/${props.item}.item.vue`);
@@ -335,7 +338,7 @@ const emit = defineEmits<{
 
 watch(
   () => props.error,
-  (e, old) => {
+  (e, _) => {
     if (e != null && e.body != null)
       temp_data.value = JSON.parse(JSON.stringify(e.body));
 
@@ -345,7 +348,7 @@ watch(
 
 watch(
   () => props.unCheckAll,
-  (newVal, oldVal) => {
+  (newVal, _) => {
     // console.log('uncheckall', newVal);
     if (newVal === true) checked.value = false;
   }
@@ -353,14 +356,15 @@ watch(
 
 watch(
   () => props.checkAll,
-  (newVal, oldVal) => {
+  (newVal, _) => {
     checked.value = newVal;
   }
 );
 
 watch(
   () => props.data,
-  (newVal, oldVal) => {
+  (_, __) => {
+    editing.value = false;
     temp_data.value = {};
     if (props.item != null && itemRef.value != null) {
       itemRef.value.load(false);
@@ -441,10 +445,10 @@ function dropdownValue(data: any, header: any) {
   return x;
 }
 
-function refresh() {
-  editing.value = false;
-  temp_data.value = {};
-}
+// function refresh() {
+//   editing.value = false;
+//   temp_data.value = {};
+//}
 
 function onActionClick(data: any, action: string) {
   if (action === "edit") {
