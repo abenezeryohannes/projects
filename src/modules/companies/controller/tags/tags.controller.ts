@@ -64,7 +64,7 @@ export class TagsController {
       return WrapperDto.figureOutTheError(error);
     }
   }
-  // // @Roles(ROLE.ADMIN)
+  // @Roles(ROLE.ADMIN)
   @Post('delete')
   async delete(@Request() request) {
     try {

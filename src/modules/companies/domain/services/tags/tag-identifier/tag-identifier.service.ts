@@ -66,6 +66,7 @@ export class TagIdentifierService {
 
     const ops = [];
     const obj = { tagId: Number, utterance: String };
+    if (body.clear) await this.deleteAllByTag(body.tagId);
     body.utterances.forEach((utterance) => {
       obj.tagId = body.tagId;
       obj.utterance = utterance;

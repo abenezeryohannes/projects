@@ -57,7 +57,7 @@ export class WrapperDto {
     wrapper.limit = Util.getLimit(query);
     wrapper.success = true;
     wrapper.statusCode = 200;
-    wrapper.total_pages = Math.floor(count / wrapper.limit);
+    wrapper.total_pages = Math.ceil(count / wrapper.limit);
     wrapper.count = count;
     wrapper.datas = data;
     wrapper.sort = query.sort;

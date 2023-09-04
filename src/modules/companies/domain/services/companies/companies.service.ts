@@ -111,7 +111,7 @@ export class CompaniesService {
   async findOne(id: number): Promise<Company> | null {
     return this.dataSource
       .getRepository(Company)
-      .findOne({ where: { id: id } });
+      .findOne({ where: { id: id }, relations: ['tags'] });
   }
 
   async edit(
@@ -172,6 +172,13 @@ export class CompaniesService {
       companyDto.ownerPhoneNumber != undefined
     ) {
       company.ownerPhoneNumber = companyDto.ownerPhoneNumber;
+    }
+
+    if (companyDto.tags != null && companyDto.tags != undefined) {
+      const tags = await this.dataSource.getRepository(Tag).find({
+        where: { id: In(companyDto.tags?.map((s) => Number.parseInt(s))) },
+      });
+      company.tags = tags;
     }
 
     if (request.file != null)
