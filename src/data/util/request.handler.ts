@@ -1,9 +1,10 @@
 // const axios = require('axios')
 import axios from "axios";
 import debug from "./debug.util.ts";
+import { constants } from "../../constants.ts";
 
 export default class RequestHandler {
-  base_url = "http://localhost:3000/api/v1";
+  base_url = constants.BASE_LINK; // "http://localhost:3000/api/v1";
 
   async get(path: string, params: any): Promise<any> {
     const url = this.base_url + "/" + path;
