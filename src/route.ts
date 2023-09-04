@@ -3,7 +3,7 @@ import "vue-router";
 //user module
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
+    path: "/admin",
     name: "home",
     components: {
       default: () => import("./pages/tags.page.vue"),
@@ -11,12 +11,12 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/auth",
+    path: "/admin/auth",
     name: "auth",
     component: () => import("./pages/auth/signin.page.vue"),
   },
   {
-    path: "/orders",
+    path: "/admin/orders",
     name: "orders",
     components: {
       default: () => import("./pages/orders.page.vue"),
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
-    path: "/tags",
+    path: "/admin/tags",
     name: "tags",
     components: {
       default: () => import("./pages/tags.page.vue"),
@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
-    path: "/businesses",
+    path: "/admin/businesses",
     name: "businesses",
     components: {
       default: () => import("./pages/businesses.page.vue"),
@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
-    path: "/tags/tag-identifiers",
+    path: "/admin/tags/tag-identifiers",
     name: "tag-identifiers",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
@@ -51,117 +51,10 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/tags/tag-identifiers/:id",
+    path: "/admin/tags/tag-identifiers/:id",
     name: "tag-identifiers-detail",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/features",
-    name: "features",
-    components: {
-      default: () => import("./pages/features.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-    // beforeEnter: (to, _, next) => {},
-  },
-  {
-    path: "/groups",
-    name: "groups",
-    components: {
-      default: () => import("./pages/courts.group.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-    // beforeEnter: (to, _, next) => {},
-  },
-  {
-    path: "/addresses",
-    name: "addresses",
-    components: {
-      default: () => import("./pages/addresses.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-    // beforeEnter: (to, _, next) => {},
-  },
-  {
-    path: "/posts",
-    name: "posts",
-    components: {
-      default: () => import("./pages/posts.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/types",
-    name: "types",
-    components: {
-      default: () => import("./pages/post.types.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/ads",
-    name: "ads",
-    components: {
-      default: () => import("./pages/ads.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/admins",
-    name: "admins",
-    components: {
-      default: () => import("./pages/admins.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/owners",
-    name: "owners",
-    components: {
-      default: () => import("./pages/owners.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/customers",
-    name: "customers",
-    components: {
-      default: () => import("./pages/customers.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/tags/tag/:id",
-    name: "court",
-    components: {
-      default: () => import("./pages/details/tag.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/orders/order/:id",
-    name: "order",
-    components: {
-      default: () => import("./pages/details/order.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/customers/customer/:id",
-    name: "customer",
-    components: {
-      default: () => import("./pages/details/customer.page.vue"),
-      sidebar: () => import("./layouts/home.sidebar.vue"),
-    },
-  },
-  {
-    path: "/owners/owner/:id",
-    name: "owner",
-    components: {
-      default: () => import("./pages/details/owner.page.vue"),
       sidebar: () => import("./layouts/home.sidebar.vue"),
     },
   },
