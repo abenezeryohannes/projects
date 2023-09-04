@@ -1,6 +1,8 @@
 <template>
   <div class="relative flex w-full h-screen mt-12">
     <tagInputForm
+      v-if="$route.params.id != null"
+      class=""
       :editing="editing ? true : false"
       :can_add="editing ? true : false"
       :deletable="editing ? true : false"
@@ -94,6 +96,7 @@ async function save() {
       await new httpClient().post(`tag-identifiers/addAll`, {
         tagId: route.params.id,
         utterances: tags.value,
+        clear: true,
       })
     ).data as WrapperDto<TagIdentifier>;
     console.log("response: ", res);
@@ -101,6 +104,7 @@ async function save() {
     if (res.success || res.datas != null) {
       response.value = res.datas;
       tags.value = res.datas?.map((data) => data.utterance ?? "") ?? [];
+      editing.value = false;
     } else throw Error(res.message);
   } catch (e) {
     response.value = null;

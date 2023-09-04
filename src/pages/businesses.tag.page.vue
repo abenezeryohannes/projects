@@ -4,8 +4,8 @@
       <route-indicator />
     </div>
 
-    <div class="flex pt-3">
-      <div class="relative mb-16 lg:w-6/12 md:2-5/12 sm-6/12 7/12">
+    <div class="md:flex block pt-3">
+      <div class="relative mb-16 lg:w-4/12 md:w-5/12">
         <search-table-form
           @on-change="
             search = $event;
@@ -23,7 +23,7 @@
           :response="response"
         />
 
-        <business-identifier-table
+        <business-simple-table
           :view="view"
           :response="response"
           :list="list"
@@ -51,7 +51,7 @@
                 <action-fab :loading="loading" action='add' @on-action="$router.push({ name: 'add_contract' })" />
             </div> -->
       </div>
-      <div class="w-full px-20">
+      <div class="md:w-5/12 md:pl-10">
         <business-tag-selector-page />
       </div>
     </div>
@@ -63,7 +63,7 @@ import errorHandlerUtil from "../data/util/error.handler.util";
 import RequestHandler from "../data/util/request.handler";
 import SearchTableForm from "../components/forms/search.table.form.vue";
 // import actionFab from "../components/common/action.fab.vue";
-import businessIdentifierTable from "./tables/businesses.simple.table.vue";
+import businessSimpleTable from "./tables/businesses.simple.table.vue";
 import RouteIndicator from "../components/common/route.indicator.vue";
 import { useRouter } from "vue-router";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";

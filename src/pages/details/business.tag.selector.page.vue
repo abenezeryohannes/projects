@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-screen mt-12">
+  <div class="relative w-full flex flex-wrap h-screen mt-12">
     <div class="" v-if="$route.params.id != null">
       <p class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg">
         {{ "selected tags" }}
@@ -21,7 +21,7 @@
       v-if="$route.params.id != null"
       v-for="type in tagTypes"
       :key="type"
-      class="block my-5"
+      class="my-5"
     >
       <div class="capitalize w-full">
         <p class="font-bold flex justify-start py-3">{{ type }}</p>

@@ -51,8 +51,16 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/tags/tag-identifiers/:id",
+    path: "/tags/tag-identifiers",
     name: "tag-identifiers-detail",
+    components: {
+      default: () => import("./pages/tags.identifiers.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/tags/tag-identifiers/:id",
+    name: "tag-identifiers-detail-id",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
       sidebar: () => import("./layouts/home.sidebar.vue"),

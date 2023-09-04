@@ -3,7 +3,7 @@
     <sidebar
       title="Linko"
       :screen="showType"
-      icon_link="icons/app_icon.png"
+      icon_link="icon/app_logo.png"
       @on-home-clicked="$router.push({ name: 'home' })"
       @on-sideview="onSidebarMenuClicked"
     >
@@ -22,7 +22,7 @@
         v-if="showAbsolute"
         title="Linko"
         screen="lg"
-        icon_link="icons/app_icon.png"
+        icon_link="icon/app_logo.png"
         @on-home-clicked="$router.push({ name: 'home' })"
         @on-sideview="onSidebarMenuClicked"
       >
@@ -64,37 +64,37 @@ const showType = computed(() => {
 const selectedListItem = ref<any>({ subList: "add", option: null, id: 0 });
 
 const dropdownList = ref<any>([
-  {
-    name: "main",
-    subList: [{ name: "Dashboard", options: null, id: 0, svg: "dashboard" }],
-  },
+  // {
+  //   name: "main",
+  //   subList: [{ name: "Dashboard", options: null, id: 0, svg: "dashboard" }],
+  // },
   {
     name: "Businesses",
     subList: [
       { name: "Businesses", options: null, id: 1, svg: "order" },
-      { name: "Tags", options: null, id: 2, svg: "order" },
+      { name: "Tags", options: null, id: 2, svg: "tag" },
     ],
   },
   {
     name: "AiTraining",
     subList: [
-      { name: "Tag Identifiers", options: null, id: 3, svg: "court" },
-      { name: "Business Tag Trainer", options: null, id: 4, svg: "features" },
-      { name: "Business Indentifiers", options: null, id: 5, svg: "features" },
-      { name: "Chat Training", options: null, id: 6, svg: "features" },
+      { name: "Tag Identifiers", options: null, id: 3, svg: "tagidentifier" },
+      { name: "Business Tag Trainer", options: null, id: 4, svg: "ad" },
+      // { name: "Business Indentifiers", options: null, id: 5, svg: "features" },
+      // { name: "Chat Training", options: null, id: 6, svg: "chattraining" },
     ],
   },
-  {
-    name: "chats",
-    subList: [{ name: "Chats", options: null, id: 7, svg: "ad" }],
-  },
-  {
-    name: "Users",
-    subList: [
-      { name: "Admins", options: null, id: 8, svg: "admin" },
-      { name: "Customers", options: null, id: 10, svg: "users" },
-    ],
-  },
+  // {
+  //   name: "chats",
+  //   subList: [{ name: "Chats", options: null, id: 7, svg: "chat" }],
+  // },
+  // {
+  //   name: "Users",
+  //   subList: [
+  //     { name: "Admins", options: null, id: 8, svg: "admin" },
+  //     { name: "Customers", options: null, id: 10, svg: "users" },
+  //   ],
+  // },
 ]);
 
 onMounted(() => {

@@ -5,7 +5,7 @@
     </div>
 
     <div class="flex pt-3">
-      <div class="relative mb-16 lg:w-6/12 md:2-5/12 sm-6/12 7/12">
+      <div class="relative mb-16 lg:w-6/12 md:w-5/12 sm-6/12 7/12">
         <search-table-form
           @on-change="
             search = $event;
@@ -118,7 +118,7 @@ function handleScroll() {
 function onItemClick(event: any) {
   console.log("-----clicked----", event);
   router.push({
-    name: "tag-identifiers-detail",
+    name: "tag-identifiers-detail-id",
     params: { id: list.value[event.index].id },
   });
 }
