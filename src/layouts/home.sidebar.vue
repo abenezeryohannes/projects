@@ -1,7 +1,7 @@
 <template>
   <div>
     <sidebar
-      title="Bandeja"
+      title="Linko"
       :screen="showType"
       icon_link="icons/app_icon.png"
       @on-home-clicked="$router.push({ name: 'home' })"
@@ -20,7 +20,7 @@
     <div class="absolute left-0 top-0 bottom-0 z-40">
       <sidebar
         v-if="showAbsolute"
-        title="Bandeja"
+        title="Linko"
         screen="lg"
         icon_link="icons/app_icon.png"
         @on-home-clicked="$router.push({ name: 'home' })"
@@ -79,8 +79,9 @@ const dropdownList = ref<any>([
     name: "AiTraining",
     subList: [
       { name: "Tag Identifiers", options: null, id: 3, svg: "court" },
-      { name: "Business Indentifiers", options: null, id: 4, svg: "features" },
-      { name: "Chat Training", options: null, id: 4, svg: "features" },
+      { name: "Business Tag Trainer", options: null, id: 4, svg: "features" },
+      { name: "Business Indentifiers", options: null, id: 5, svg: "features" },
+      { name: "Chat Training", options: null, id: 6, svg: "features" },
     ],
   },
   {
@@ -149,18 +150,12 @@ function switchTo(currentRoute?: string | null | undefined) {
     };
   else if (currentRoute?.startsWith("businesses"))
     selectedListItem.value = { subList: "Businesses", option: null, id: 1 };
-  else if (currentRoute?.startsWith("addresses"))
-    selectedListItem.value = { subList: "Addresses", option: null, id: 1 };
-  else if (currentRoute?.startsWith("features"))
-    selectedListItem.value = { subList: "Features", option: null, id: 1 };
-  else if (currentRoute?.startsWith("ads"))
-    selectedListItem.value = { subList: "Ads", option: null, id: 1 };
-  else if (currentRoute?.startsWith("admins"))
-    selectedListItem.value = { subList: "Admins", option: null, id: 1 };
-  else if (currentRoute?.startsWith("customers"))
-    selectedListItem.value = { subList: "Customers", option: null, id: 1 };
-  else if (currentRoute?.startsWith("owners"))
-    selectedListItem.value = { subList: "Owners", option: null, id: 1 };
+  else if (currentRoute?.startsWith("business-tag-trainer"))
+    selectedListItem.value = {
+      subList: "Business Tag Trainer",
+      option: null,
+      id: 4,
+    };
 }
 
 function onChange(event: any) {
@@ -175,22 +170,8 @@ function onChange(event: any) {
     router.push({ name: "tag-identifiers" });
   } else if (selectedListItem.value.subList.endsWith("Businesses")) {
     router.push({ name: "businesses" });
-  } else if (selectedListItem.value.subList.endsWith("Features")) {
-    router.push({ name: "features" });
-  } else if (selectedListItem.value.subList.endsWith("Groups")) {
-    router.push({ name: "groups" });
-  } else if (selectedListItem.value.subList.endsWith("Addresses")) {
-    router.push({ name: "addresses" });
-  } else if (selectedListItem.value.subList.endsWith("Types")) {
-    router.push({ name: "types" });
-  } else if (selectedListItem.value.subList.endsWith("Orders")) {
-    router.push({ name: "orders" });
-  } else if (selectedListItem.value.subList.endsWith("Owners")) {
-    router.push({ name: "owners" });
-  } else if (selectedListItem.value.subList.endsWith("Customers")) {
-    router.push({ name: "customers" });
-  } else if (selectedListItem.value.subList.endsWith("Admins")) {
-    router.push({ name: "admins" });
+  } else if (selectedListItem.value.subList.endsWith("Business Tag Trainer")) {
+    router.push({ name: "business-tag-trainer" });
   } else {
     router.push({ name: "home" });
   }

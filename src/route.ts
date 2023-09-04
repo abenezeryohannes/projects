@@ -3,7 +3,7 @@ import "vue-router";
 //user module
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/admin",
+    path: "/",
     name: "home",
     components: {
       default: () => import("./pages/tags.page.vue"),
@@ -11,12 +11,12 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/admin/auth",
+    path: "/auth",
     name: "auth",
     component: () => import("./pages/auth/signin.page.vue"),
   },
   {
-    path: "/admin/orders",
+    path: "/orders",
     name: "orders",
     components: {
       default: () => import("./pages/orders.page.vue"),
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
-    path: "/admin/tags",
+    path: "/tags",
     name: "tags",
     components: {
       default: () => import("./pages/tags.page.vue"),
@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
-    path: "/admin/businesses",
+    path: "/businesses",
     name: "businesses",
     components: {
       default: () => import("./pages/businesses.page.vue"),
@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
-    path: "/admin/tags/tag-identifiers",
+    path: "/tags/tag-identifiers",
     name: "tag-identifiers",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
@@ -51,10 +51,26 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/admin/tags/tag-identifiers/:id",
+    path: "/tags/tag-identifiers/:id",
     name: "tag-identifiers-detail",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/business/business-tag-trainer",
+    name: "business-tag-trainer",
+    components: {
+      default: () => import("./pages/businesses.tag.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/business/business-tag-trainer/:id",
+    name: "business-tag-trainer-id",
+    components: {
+      default: () => import("./pages/businesses.tag.page.vue"),
       sidebar: () => import("./layouts/home.sidebar.vue"),
     },
   },
