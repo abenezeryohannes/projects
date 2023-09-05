@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
     // beforeEnter: (to, _, next) => {},
   },
   {
-    path: "/tags/tag-identifiers",
+    path: "/tag-identifiers",
     name: "tag-identifiers",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
@@ -51,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/tags/tag-identifiers",
+    path: "/tag-identifiers",
     name: "tag-identifiers-detail",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
@@ -59,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/tags/tag-identifiers/:id",
+    path: "/tag-identifiers/:id",
     name: "tag-identifiers-detail-id",
     components: {
       default: () => import("./pages/tags.identifiers.page.vue"),
@@ -79,6 +79,14 @@ const routes: Array<RouteRecordRaw> = [
     name: "business-tag-trainer-id",
     components: {
       default: () => import("./pages/businesses.tag.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/chat-trainer",
+    name: "chat-trainer",
+    components: {
+      default: () => import("./pages/chat.trainer.page.vue"),
       sidebar: () => import("./layouts/home.sidebar.vue"),
     },
   },

@@ -4,7 +4,7 @@
       <route-indicator />
     </div>
 
-    <div class="flex pt-3">
+    <div class="md:flex pt-3">
       <div class="relative mb-16 lg:w-6/12 md:w-5/12 sm-6/12 7/12">
         <search-table-form
           @on-change="
@@ -51,7 +51,7 @@
                 <action-fab :loading="loading" action='add' @on-action="$router.push({ name: 'add_contract' })" />
             </div> -->
       </div>
-      <div class="w-full px-20">
+      <div class="w-full md:px-20">
         <tag-identifier />
       </div>
     </div>

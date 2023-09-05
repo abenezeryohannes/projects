@@ -72,16 +72,16 @@ const dropdownList = ref<any>([
     name: "Businesses",
     subList: [
       { name: "Businesses", options: null, id: 1, svg: "order" },
-      { name: "Tags", options: null, id: 2, svg: "tag" },
+      { name: "Business Tag Trainer", options: null, id: 4, svg: "ad" },
     ],
   },
   {
     name: "AiTraining",
     subList: [
+      { name: "Tags", options: null, id: 2, svg: "tag" },
       { name: "Tag Identifiers", options: null, id: 3, svg: "tagidentifier" },
-      { name: "Business Tag Trainer", options: null, id: 4, svg: "ad" },
       // { name: "Business Indentifiers", options: null, id: 5, svg: "features" },
-      // { name: "Chat Training", options: null, id: 6, svg: "chattraining" },
+      { name: "Chat Trainer", options: null, id: 6, svg: "chattraining" },
     ],
   },
   // {
@@ -156,6 +156,12 @@ function switchTo(currentRoute?: string | null | undefined) {
       option: null,
       id: 4,
     };
+  else if (currentRoute?.startsWith("chat-trainer"))
+    selectedListItem.value = {
+      subList: "Chat Trainer",
+      option: null,
+      id: 6,
+    };
 }
 
 function onChange(event: any) {
@@ -172,6 +178,8 @@ function onChange(event: any) {
     router.push({ name: "businesses" });
   } else if (selectedListItem.value.subList.endsWith("Business Tag Trainer")) {
     router.push({ name: "business-tag-trainer" });
+  } else if (selectedListItem.value.subList.endsWith("Chat Trainer")) {
+    router.push({ name: "chat-trainer" });
   } else {
     router.push({ name: "home" });
   }

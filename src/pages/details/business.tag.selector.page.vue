@@ -1,6 +1,6 @@
 <template>
   <div class="relative w-full flex flex-wrap h-screen mt-12">
-    <div class="" v-if="$route.params.id != null">
+    <div class="" v-if="$route.params.id != null && selectedTags.length > 0">
       <p class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg">
         {{ "selected tags" }}
       </p>
@@ -8,7 +8,7 @@
         :editing="false"
         :can_add="false"
         :deletable="false"
-        :value="tags"
+        :value="selectedTags"
         @on-change="onChange"
         @on-add="onAdd"
         @on-delete="onDelete"

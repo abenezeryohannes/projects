@@ -12,7 +12,7 @@
       <div
         class="modal-container px-5 pt-5 pb-3 absolute top-1/2 md:left-1/4 md:right-1/4 left-10 right-10 transform -translate-x-3/2 -translate-y-3/2 z-50 rounded-lg shadow-lg bg-background-light dark:bg-background-deepdark"
       >
-        <div class="flex text-left">
+        <div class="text-left">
           <div class="pl-5">
             <div class="mr-14">
               <div class="font-semibold text-lg">

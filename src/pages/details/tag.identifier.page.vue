@@ -1,28 +1,36 @@
 <template>
-  <div class="relative flex w-full h-screen mt-12">
-    <tagInputForm
-      v-if="$route.params.id != null"
-      class=""
-      :editing="editing ? true : false"
-      :can_add="editing ? true : false"
-      :deletable="editing ? true : false"
-      :value="tags"
-      @on-change="onChange"
-      @on-add="onAdd"
-      @on-delete="onDelete"
-      :height="100"
-    />
+  <div class="relative w-full h-screen mt-12">
+    <p
+      v-if="tags.length > 0"
+      class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg"
+    >
+      {{ "Tag Identifiers" }}
+    </p>
+    <div class="flex w-full pl-3">
+      <tagInputForm
+        v-if="$route.params.id != null"
+        class=""
+        :editing="editing ? true : false"
+        :can_add="editing ? true : false"
+        :deletable="editing ? true : false"
+        :value="tags"
+        @on-change="onChange"
+        @on-add="onAdd"
+        @on-delete="onDelete"
+        :height="100"
+      />
 
-    <edit-fab
-      v-if="$route.params.id != null"
-      class="fixed md:right-10 right-10 bottom-10"
-      :editing="editing"
-      :errors="errors"
-      :loading="loading"
-      @edit="edit"
-      @save="save"
-      @cancel="cancel"
-    />
+      <edit-fab
+        v-if="$route.params.id != null"
+        class="fixed md:right-10 right-10 bottom-10"
+        :editing="editing"
+        :errors="errors"
+        :loading="loading"
+        @edit="edit"
+        @save="save"
+        @cancel="cancel"
+      />
+    </div>
   </div>
 </template>
 
