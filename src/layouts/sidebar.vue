@@ -45,7 +45,11 @@
           </div>
           <div class="font-bold my-auto text-left">
             <p class="text-base truncate ...">
-              {{ t(route.path.split("/")[1]) }}
+              {{
+                route.path.split("/").length > 2
+                  ? route.path.split("/")[1]
+                  : "Linko AI"
+              }}
             </p>
           </div>
         </div>
