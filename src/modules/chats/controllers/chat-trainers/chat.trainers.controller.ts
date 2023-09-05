@@ -20,7 +20,40 @@ export class ChatTrainersController {
   @Get()
   async findAll(@Request() request) {
     try {
-      const result = await this.service.findAll(request);
+      const [result, count] = await this.service.findAll(request);
+      return WrapperDto.paginate(result, count, request.query);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN)
+  @Get('commands')
+  async findCommands(@Request() request) {
+    try {
+      const result = await this.service.findCommandAll(request);
+      return WrapperDto.paginateHalf(result, request.query);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN)
+  @Get('intents')
+  async findIntents(@Request() request) {
+    try {
+      const result = await this.service.findIntentAll(request);
+      return WrapperDto.paginateHalf(result, request.query);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN)
+  @Post('intents/delete')
+  async deleteIntents(@Request() request) {
+    try {
+      const result = await this.service.deleteIntent(request);
       return WrapperDto.paginateHalf(result, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);

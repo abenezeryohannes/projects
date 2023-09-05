@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, ILike, MoreThan } from 'typeorm';
+import { DataSource, ILike, Like, MoreThan } from 'typeorm';
 import { ChatTrainer } from '../../entities/chat.trainer.entity';
 import { NlpManager } from 'node-nlp';
 import { DomainManager } from '@nlpjs/nlu';
@@ -13,39 +13,101 @@ import { Company } from '../../../../companies/domain/entities/company.entity';
 export class ChatTrainersService {
   constructor(readonly dataSource: DataSource) {}
 
-  async findAll(request: any): Promise<any> {
+  async findAll(request: any): Promise<[any[], any]> {
     const search = '%' + (request.query.search ?? '') + '%';
     const limit = request.query.limit ?? 25;
     const page = request.query.page ?? 1;
     const id = request.query.id ?? -1;
+    const intent = request.query.intent ?? null;
+    const command = request.query.command ?? null;
+    const whereClause = [
+      {
+        utterance: ILike(search),
+        intent: '%%',
+      },
+      {
+        type: ILike(search),
+        intent: '%%',
+      },
+      {
+        type: ILike(search),
+        intent: '%%',
+      },
+      {
+        slot: ILike(search),
+        intent: '%%',
+      },
+      {
+        name: ILike(search),
+        intent: '%%',
+      },
+      {
+        command: ILike(search),
+        intent: '%%',
+      },
+    ];
+
+    if (intent != null) {
+      whereClause.forEach((w) => {
+        w.intent = intent;
+      });
+    }
+
+    if (command != null) {
+      whereClause.forEach((w) => {
+        w['command'] = command;
+      });
+    }
+
+    if (id > 0) {
+      whereClause.forEach((w) => {
+        w['id'] = MoreThan(id);
+      });
+    }
+
     const [chats, count] = await this.dataSource
       .getRepository(ChatTrainer)
-      .find({
-        where:
-          id > 0
-            ? [
-                { utterance: ILike(search), id: MoreThan(id) },
-                { intent: ILike(search), id: MoreThan(id) },
-                { type: ILike(search), id: MoreThan(id) },
-                { slot: ILike(search), id: MoreThan(id) },
-                { name: ILike(search), id: MoreThan(id) },
-                { command: ILike(search), id: MoreThan(id) },
-              ]
-            : [
-                { utterance: ILike(search) },
-                { intent: ILike(search) },
-                { type: ILike(search) },
-                { slot: ILike(search) },
-                { name: ILike(search) },
-                { command: ILike(search) },
-              ],
+      .findAndCount({
+        where: whereClause,
         take: limit,
         skip: id > 0 ? 0 : limit * (page - 1),
+        order: { id: 'desc' },
       });
-    return {
-      data: chats,
-      count: count,
-    };
+    return [chats, count];
+  }
+
+  async findIntentAll(request: any): Promise<any[]> {
+    const search = '%' + (request.query.search ?? '') + '%';
+    const limit = request.query.limit ?? 25;
+    const page = request.query.page ?? 1;
+    const id = request.query.id ?? -1;
+    return await this.dataSource
+      .getRepository(ChatTrainer)
+      .createQueryBuilder('chat_trainer')
+      .select('DISTINCT(chat_trainer.intent)')
+      .where('chat_trainer.intent like :intent', { intent: search })
+      .andWhere('chat_trainer.id > :id', { id: id })
+      .limit(limit)
+      .skip(id > 0 ? 0 : limit * (page - 1))
+      .orderBy('intent', 'DESC')
+      .getRawMany();
+  }
+
+  async findCommandAll(request: any): Promise<any[]> {
+    const search = '%' + (request.query.search ?? '') + '%';
+    const limit = request.query.limit ?? 25;
+    const page = request.query.page ?? 1;
+    const id = request.query.id ?? -1;
+    return await this.dataSource
+      .getRepository(ChatTrainer)
+      .createQueryBuilder('chat_trainer')
+      .select('DISTINCT(chat_trainer.command)')
+      .where('chat_trainer.command like :command', { command: search })
+      .andWhere('chat_trainer.id > :id', { id: id })
+      .limit(limit)
+      .skip(id > 0 ? 0 : limit * (page - 1))
+      .orderBy('command', 'DESC')
+      .getRawMany();
   }
 
   async add(request: any, body: CreateChatTrainerDto): Promise<ChatTrainer[]> {
@@ -64,6 +126,14 @@ export class ChatTrainersService {
     }
 
     return await Promise.all(ops);
+  }
+
+  async deleteIntent(request: any): Promise<any> {
+    const intent = request.query.intent ?? null;
+    if (intent == null) return true;
+    return await this.dataSource.getRepository(ChatTrainer).delete({
+      intent: intent,
+    });
   }
 
   async addAll(
