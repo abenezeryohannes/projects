@@ -14,6 +14,12 @@ import { join } from 'path';
 
 @Injectable()
 export class ChatsService {
+  add(request: any) {
+    throw new Error('Method not implemented.');
+  }
+  edit(request: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(readonly dataSource: DataSource) {}
 
   async delete(request: any, id: number): Promise<any> {
@@ -47,10 +53,23 @@ export class ChatsService {
       where: [{ receiver: user }, { sender: user }],
       relations: ['sender', 'receiver'],
     });
-
-    return await this.dataSource.getRepository(Chat).delete({
-      id: In(chats.map((c) => c.id)),
-    });
+    if (
+      request.query.soft == undefined ||
+      request.query.soft == null ||
+      request.query.soft == 'false'
+    ) {
+      return await this.dataSource.getRepository(Chat).delete({
+        id: In(chats.map((c) => c.id)),
+      });
+    } else {
+      return await this.dataSource
+        .createQueryBuilder()
+        .update(Chat)
+        .set({ isActive: false })
+        .where('senderId = :id ', { id: user.id })
+        .orWhere('receiverId = :id ', { id: user.id })
+        .execute();
+    }
   }
 
   async clear(request: any): Promise<any> {
@@ -73,9 +92,22 @@ export class ChatsService {
     if (chats.length > 1 && chats[1].sender == null) {
       toDelete.push(chats[1].id);
     }
-    return await this.dataSource.getRepository(Chat).delete({
-      id: In(toDelete),
-    });
+    if (
+      request.query.soft == undefined ||
+      request.query.soft == null ||
+      request.query.soft == 'false'
+    ) {
+      return await this.dataSource.getRepository(Chat).delete({
+        id: In(toDelete),
+      });
+    } else {
+      return await this.dataSource
+        .createQueryBuilder()
+        .update(Chat)
+        .set({ isActive: false })
+        .whereInIds(toDelete)
+        .execute();
+    }
   }
 
   async getUserFromSocket(socket: Socket) {
@@ -123,12 +155,16 @@ export class ChatsService {
     const limit = request.query.limit ?? 25;
     const page = request.query.page ?? 1;
     const id = request.query.id ?? -1;
+    const isActive = request.query.isActive ?? -1;
 
     const user = await this.dataSource
       .getRepository(User)
-      .findOne({ where: { id: request.user.id } });
+      .findOne({ where: { id: request.user.id, isActive: true } });
 
-    const sqlQuery = [{ sender: user }, { receiver: user }];
+    const sqlQuery = [
+      { sender: user, isActive: (isActive ?? 'true') == 'true' },
+      { receiver: user, isActive: (isActive ?? 'true') == 'true' },
+    ];
 
     const [chats, count] = await this.dataSource
       .getRepository(Chat)
@@ -136,8 +172,16 @@ export class ChatsService {
         where:
           id > 0
             ? [
-                { sender: user, id: LessThan(id) },
-                { receiver: user, id: LessThan(id) },
+                {
+                  sender: user,
+                  id: LessThan(id),
+                  isActive: (isActive ?? 'true') == 'true',
+                },
+                {
+                  receiver: user,
+                  id: LessThan(id),
+                  isActive: (isActive ?? 'true') == 'true',
+                },
               ]
             : sqlQuery,
         take: limit,

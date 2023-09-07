@@ -8,6 +8,7 @@ import { Tag } from '../modules/companies/domain/entities/tag.entity';
 import { ChatTrainer } from '../modules/chats/domain/entities/chat.trainer.entity';
 import { TagIdentifier } from '../modules/companies/domain/entities/tag.identifier.entity';
 import { CompanyIdentifier } from '../modules/companies/domain/entities/company.identifier.entity';
+import { Suggestion } from '../modules/chats/domain/entities/suggestion.entity';
 
 dotenv.config({ path: '.env' });
 
@@ -32,6 +33,7 @@ export const config = {
     ChatTrainer,
     TagIdentifier,
     CompanyIdentifier,
+    Suggestion,
   ],
   migrations: ['./src/database/migrations/*{.ts,.js}'],
   synchronize: true,
