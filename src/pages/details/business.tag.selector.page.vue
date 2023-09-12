@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full flex flex-wrap h-screen mt-12">
+  <div class="relative w-full ml-10 flex flex-wrap h-screen mt-1">
     <div class="" v-if="$route.params.id != null && selectedTags.length > 0">
       <p class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg">
         {{ "selected tags" }}
@@ -21,7 +21,7 @@
       v-if="$route.params.id != null"
       v-for="type in tagTypes"
       :key="type"
-      class="my-5"
+      class=""
     >
       <div class="capitalize w-full">
         <p class="font-bold flex justify-start py-3">{{ type }}</p>
@@ -37,14 +37,14 @@
                 selectedTags.length > 0 &&
                 selectedTags.filter((t) => t.id == tag.id).length > 0
               "
-              class="rounded-full px-3 py-2 m-2 bg-accent-light dark:bg-accent-dark cursor-pointer"
+              class="rounded-full text-white shadow-md px-3 py-2 m-1 bg-accent-light dark:bg-accent-dark cursor-pointer"
               @click="onTagClicked(tag)"
             >
               <p class=" ">{{ tag.name }}</p>
             </div>
             <div
               v-else
-              class="rounded-full px-3 py-2 m-2 bg-background-light dark:bg-background-dark cursor-pointer"
+              class="rounded-full shadow-md px-3 py-2 m-1 bg-background-light dark:bg-background-dark cursor-pointer"
               @click="onTagClicked(tag)"
             >
               <p class=" ">{{ tag.name }}</p>

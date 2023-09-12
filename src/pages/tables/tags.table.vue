@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="w-full text-xs">
+    <div class="w-full text-xs overflow-x-auto px-1">
       <div v-if="view == 'table'">
         <my-table
           @on-select="onSelect"
@@ -27,7 +27,8 @@
           @bulk-action="onBulkAction"
           @on-limit-change="emit('on-limit-change', $event)"
           @on-item-click="emit('on-item-click', $event)"
-          item="court"
+          item="tag"
+          :headers="headers"
           :clickable="clickable"
           :loading="loading"
           :response="response"
@@ -101,11 +102,11 @@ const headers = ref<any[]>([
     editable: true,
   },
   {
-    label: "Is Determinant",
+    label: "Determinant",
     name: "canDetermine",
     width: "2",
     option: { positive: "yes", negative: "no" },
-    sortable: false,
+    sortable: true,
     type: "toggle",
     cls: "justify-start",
     editable: true,

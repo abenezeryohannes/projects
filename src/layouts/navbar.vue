@@ -9,10 +9,12 @@
     </div>
 
     <section
-      class="flex flex-grow overflow-hidden"
+      class="flex"
       :class="[
         { 'col-span-13': !home },
         { 'col-span-16': route.path.includes('/print/') || !slots['sidebar'] },
+        { 'lg:w-10/12 md:w-11/12 w-12/12 ': showNavbar },
+        { 'md:w-full': !showNavbar },
       ]"
     >
       <div
@@ -185,9 +187,7 @@
           id="loading-screen"
           class="w-full h-full fixed block top-0 left-0 bg-white dark:bg-background-dark opacity-50 z-50"
         >
-          <span
-            class="text-green-500 top-1/3 my-0 mx-auto block relative w-0 h-0"
-          >
+          <span class="top-1/3 my-0 mx-auto block relative w-0 h-0">
             <div class="custom_loader w-20 h-20" />
           </span>
         </div>

@@ -17,9 +17,8 @@
         />
       </section>
     </sidebar>
-    <div class="absolute left-0 top-0 bottom-0 z-40">
+    <div v-if="showAbsolute" class="absolute left-0 top-0 bottom-0 z-40">
       <sidebar
-        v-if="showAbsolute"
         title="Linko"
         screen="lg"
         icon_link="icon/app_logo.png"

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="w-full">
+    <div class="w-full resize-none">
       <div class=" " v-for="(body, index) in tableData" :key="index">
         <table-row
           @on-action="

@@ -4,9 +4,29 @@
       <route-indicator />
     </div>
 
-    <div class="md:flex pt-3">
-      <div class="relative mb-16 lg:w-6/12 md:w-5/12 sm-6/12 7/12">
-        <search-table-form
+    <add-intent @on-change="load()" ref="addIntentModel" />
+
+    <div class="pt-3">
+      <div class="mb-2 relative">
+        <!-- <div class="flex justify-end items-center">
+          <div
+            :class="[
+              {
+                'flex mb-3 bg-background-light dark:bg-background-deepdark hover:bg-accent-light hover:text-white dark:hover:bg-accent-dark mr-3 cursor-pointer rounded-xl shadow-lg px-5 py-3 font-bold': true,
+              },
+            ]"
+            @click="addIntentModel.open()"
+          >
+            <v-icon
+              cls="dark:text-gray-200  p-0 mr-2"
+              :size="4"
+              fill="text-gray-600"
+              icon="add"
+            />
+            Add Intent
+          </div>
+        </div> -->
+        <!-- <search-table-form
           @on-change="
             search = $event;
             load();
@@ -21,10 +41,10 @@
           :page="page"
           placeholder="Search..."
           :response="response"
-        />
+        /> -->
 
         <chat-trainer-table
-          :view="view"
+          view="grid"
           :response="response"
           :list="list"
           :clickable="true"
@@ -46,7 +66,7 @@
           @update-list="load()"
         />
 
-        <div
+        <!-- <div
           v-show="scroll < 100 || scroll == null"
           class="fixed transform ease-in-out z-20 duration-1000 right-10 bottom-10"
         >
@@ -55,9 +75,9 @@
             action="add"
             @on-action="$router.push({ name: 'add_contract' })"
           />
-        </div>
+        </div> -->
       </div>
-      <div class="w-full md:px-20">
+      <div class="mx-5">
         <chat-trainer-detail-page />
       </div>
     </div>
@@ -67,8 +87,8 @@
 <script setup lang="ts">
 import errorHandlerUtil from "../data/util/error.handler.util";
 import RequestHandler from "../data/util/request.handler";
-import SearchTableForm from "../components/forms/search.table.form.vue";
-import actionFab from "../components/common/action.fab.vue";
+// import SearchTableForm from "../components/forms/search.table.form.vue";
+// import actionFab from "../components/common/action.fab.vue";
 import chatTrainerTable from "./tables/chat.trainer.table.vue";
 import RouteIndicator from "../components/common/route.indicator.vue";
 import { useRouter } from "vue-router";
@@ -77,9 +97,9 @@ import { useToast } from "vue-toastification";
 import { WrapperDto } from "../domain/wrapper.dto";
 import ChatTrainerDetailPage from "./details/chat.trainer.detail.page.vue";
 import { ChatTrainer } from "../domain/chat/entity/chat.trainer.entity";
-
+import AddIntent from "./modals/add.intent.vue";
 let scroll = ref<number>(0);
-let loading = ref<boolean>(false);
+// let loading = ref<boolean>(false);
 let loading_table = ref<boolean>(true);
 let page = ref<number>(1);
 
@@ -91,6 +111,7 @@ let response = ref<WrapperDto<ChatTrainer>>(
     datas: [],
   } as WrapperDto<ChatTrainer>)
 );
+let addIntentModel = ref<any>();
 
 let list = ref<ChatTrainer[]>([]);
 let search = ref<string | null>(null);
@@ -98,13 +119,13 @@ let sort_by = ref<string | null>(null);
 let limit = ref<number | null>(null);
 // let enabled = ref<boolean>(useRoute().query?.enabled == "true");
 let sort = ref<string | null>(null);
-let view = ref<string | null>(localStorage.getItem("view_type"));
+let view = ref<string | null>(localStorage.getItem("view_type_chat_trainer"));
 const router = useRouter();
 
 watch(
   () => view.value,
   (val, _) => {
-    if (val != null) localStorage.setItem("view_type", val!);
+    if (val != null) localStorage.setItem("view_type_chat_trainer", val!);
   }
 );
 
@@ -122,11 +143,14 @@ function handleScroll() {
 }
 
 function onItemClick(event: any) {
-  console.log("-----clicked----", event);
-  router.push({
-    name: "chat-trainer",
-    query: { intent: list.value[event.index].intent },
-  });
+  // console.log("-----clicked----", event);
+  if (event.index < 0) {
+    addIntentModel.value.open();
+  } else
+    router.push({
+      name: "chat-trainer",
+      query: { intent: list.value[event.index].intent },
+    });
 }
 // function changeRoleType() {
 //   load();

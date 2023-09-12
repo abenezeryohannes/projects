@@ -2,8 +2,8 @@
   <section>
     <modal ref="modal" @on-change="onModalResponse" />
 
-    <div class="w-full">
-      <div class="">
+    <div class="w-full resize-none">
+      <div class="resize-none">
         <table-header
           :headers_cls="headers_cls"
           :response="response"
@@ -20,7 +20,7 @@
         />
       </div>
 
-      <div class="rounded">
+      <div class="rounded resize-none">
         <!-- Loader when no data and loading is true -->
         <div
           v-if="loading && (list == null || list.length == 0)"
@@ -55,7 +55,7 @@
       </div>
 
       <!-- pagination -->
-      <div class="mt-5 pb-10 px-5 font-semibold text-xs">
+      <div class="mt-5 resize-none pb-10 px-5 font-semibold text-xs">
         <pagination
           v-if="
             response != undefined &&

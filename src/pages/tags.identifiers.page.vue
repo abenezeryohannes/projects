@@ -5,7 +5,7 @@
     </div>
 
     <div class="md:flex pt-3">
-      <div class="relative mb-16 lg:w-6/12 md:w-5/12 sm-6/12 7/12">
+      <div class="relative mb-16 lg:w-6/12 md:w-5/12 overflow-y-auto h-full">
         <search-table-form
           @on-change="
             search = $event;
@@ -92,13 +92,13 @@ let sort_by = ref<string | null>(null);
 let limit = ref<number | null>(null);
 // let enabled = ref<boolean>(useRoute().query?.enabled == "true");
 let sort = ref<string | null>(null);
-let view = ref<string | null>(localStorage.getItem("view_type"));
+let view = ref<string | null>(localStorage.getItem("view_type_tag_identifier"));
 const router = useRouter();
 
 watch(
   () => view.value,
   (val, _) => {
-    if (val != null) localStorage.setItem("view_type", val!);
+    if (val != null) localStorage.setItem("view_type_tag_identifier", val!);
   }
 );
 

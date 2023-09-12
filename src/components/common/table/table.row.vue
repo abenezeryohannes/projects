@@ -5,14 +5,16 @@
         'cursor-pointer hover:shadow-sm hover:bg-accentlight-light dark:hover:bg-accentlight-dark':
           clickable,
       }"
-      class="w-full grid grid-cols-16 gap-x-2"
+      class="resize-none w-full grid grid-cols-16 gap-x-2"
     >
       <div
         v-for="(header, header_index) in headers"
         :key="header_index"
         :class="['col-span-' + headers[header_index].width]"
       >
-        <div class="w-full h-full my-auto flex text-gray-700 dark:text-white">
+        <div
+          class="resize-none w-full h-full my-auto flex text-gray-700 dark:text-white"
+        >
           <!-- Check box area -->
           <div
             v-if="header.name === '#bulk#'"
@@ -117,7 +119,10 @@
             <text-form
               v-else-if="header.type === 'text'"
               @on-change="temp_data[header.name] = $event"
-              :class="[{ 'overflow-clip': header.name === 'email_address' }]"
+              :class="[
+                { 'overflow-clip': header.name === 'email_address' },
+                { 'w-full': true },
+              ]"
               :value="value(data, header)"
               :error="parseError(header.name)"
               :type="header.type"

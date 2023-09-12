@@ -2,11 +2,11 @@
   <modal class="w-5/12" ref="Modal" :show="show" @on-show="show = $event">
     <template v-slot:header>
       <p class="text-xl font-bold text-left capitalize">
-        {{ t("New Tag") }}
+        {{ "New Tag" }}
       </p>
     </template>
 
-    <section class="">
+    <section class="flex w-full pl-3">
       <div class=" ">
         <add-tag-forms
           class=" "
@@ -40,11 +40,8 @@ import errorHandlerUtil from "../../data/util/error.handler.util";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import RequestHandler from "../../data/util/request.handler";
-import { useI18n } from "../../i18n";
 // import { WrapperDto } from "../../domain/wrapper.dto";
 import { Tag } from "../../domain/company/entity/tag.entity";
-
-const { t } = useI18n();
 
 // const route = useRoute();
 const editing = ref<boolean>(false);

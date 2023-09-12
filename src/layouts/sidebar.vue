@@ -1,6 +1,6 @@
 <template>
   <section
-    class="h-screen capitalize dark:text-white text-gray-700 font-semibold"
+    class="h-screen border-gray-100 dark:border-background-dark border-r-2 capitalize dark:text-white text-gray-700 font-semibold"
     :class="{
       ' absolute w-12 h-11 bg-transparent': screen == 'sm',
       'bg-sidebar-light dark:bg-sidebar-dark': screen != 'sm',
@@ -78,14 +78,14 @@
 import vIcon from "../components/icons/v-icon.vue";
 import webImage from "../components/common/web-image.vue";
 import Avatarwithtext from "../components/common/avatarwithtext.vue";
-import { useI18n } from "../i18n";
+// import { useI18n } from "../i18n";
 import { useStore } from "../store";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
 
-const { t } = useI18n();
+// const { t } = useI18n();
 
 const store = useStore();
 

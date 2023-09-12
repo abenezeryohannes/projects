@@ -51,7 +51,7 @@
                 <action-fab :loading="loading" action='add' @on-action="$router.push({ name: 'add_contract' })" />
             </div> -->
       </div>
-      <div class="md:w-5/12 md:pl-10">
+      <div class="md:pl-10 pr-10 md:pr-2">
         <business-tag-selector-page />
       </div>
     </div>
@@ -92,13 +92,13 @@ let sort_by = ref<string | null>(null);
 let limit = ref<number | null>(null);
 // let enabled = ref<boolean>(useRoute().query?.enabled == "true");
 let sort = ref<string | null>(null);
-let view = ref<string | null>(localStorage.getItem("view_type"));
+let view = ref<string | null>(localStorage.getItem("view_type_business_tag"));
 const router = useRouter();
 
 watch(
   () => view.value,
   (val, _) => {
-    if (val != null) localStorage.setItem("view_type", val!);
+    if (val != null) localStorage.setItem("view_type_business_tag", val!);
   }
 );
 

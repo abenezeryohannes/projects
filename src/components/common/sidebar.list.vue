@@ -24,7 +24,7 @@
         :key="index + topindex"
       >
         <div
-          class="flex flex-row text-left cursor-pointer"
+          class="flex md:mr-2 md:rounded-lg flex-row text-left cursor-pointer hover:bg-card-light dark:hover:bg-card-dark"
           @click="
             subList.options != null
               ? drop(subList)
@@ -34,7 +34,7 @@
             { 'mt-1': index > 0 },
             { 'mt-2': index == 0 },
             {
-              ' bg-accentlight-light dark:bg-accentlight-dark':
+              ' bg-card-light dark:bg-card-dark':
                 ((list.name == selectedListItem.list ||
                   selectedListItem.list == null) &&
                   subList.options == null &&
@@ -67,8 +67,8 @@
           />
 
           <div
-            class="pl-5 my-auto lg:pl-4"
-            :class="{ 'py-2 px-2': screen == 'md', 'py-0 ': screen != 'md' }"
+            class="pl-5 my-auto lg:pl-4 py-3"
+            :class="{ 'py-3 px-3': screen == 'md', 'py-2 ': screen != 'md' }"
           >
             <web-image
               v-show="subList.link != null"
@@ -104,7 +104,7 @@
           </div>
 
           <p
-            class="dark:text-white text-gray-700 capitalize text-xs my-2 text-left"
+            class="dark:text-white text-gray-700 capitalize text-xs font-bold my-4 text-left"
             :class="[
               {
                 'capitalize  text-primary-light text-xs ':

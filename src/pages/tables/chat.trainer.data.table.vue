@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="w-full text-xs">
+    <div class="w-full text-xs overflow-x-auto px-2">
       <div v-if="view == 'table'">
         <my-table
           @on-select="onSelect"
@@ -27,7 +27,9 @@
           @bulk-action="onBulkAction"
           @on-limit-change="emit('on-limit-change', $event)"
           @on-item-click="emit('on-item-click', $event)"
-          item="court"
+          item="chat-trainer-data"
+          :headers="headers"
+          cols="grid grid-cols-1 gap-x-8 gap-y-1 overflow-y-auto h-full"
           :clickable="clickable"
           :loading="loading"
           :response="response"
@@ -64,7 +66,7 @@ const props = defineProps<{
 const bulkActions = ref<any>([
   {
     name: "Delete",
-    url: "companies/delete_all",
+    url: "chat-trainers/utterances/delete_all",
     title: "Are you sure?",
     description: "Do you Want to delete this data?",
   },
@@ -222,7 +224,7 @@ async function onAction(x: {
   switch (x.action.toLowerCase()) {
     case "delete":
       try {
-        await new RequestHandler().post("companies/delete", {
+        await new RequestHandler().post("chat-trainers/utterances/delete", {
           id: props.list![x.index].id,
         });
         emit("update-list");
@@ -235,23 +237,10 @@ async function onAction(x: {
         // console.log("request", x.body);
         // console.log("files", x.files[0]);
 
-        const file =
-          x.files != undefined && x.files != null && x.files.length > 0
-            ? [{ name: "banner", file: x.files[0].file }]
-            : null;
-
-        console.log("file", file);
-        var response =
-          file == null
-            ? await new RequestHandler().post(
-                "companies/" + props.list![x.index].id + "/edit",
-                x.body
-              )
-            : await new RequestHandler().postForm(
-                "companies/" + props.list![x.index].id + "/edit",
-                x.body,
-                file
-              );
+        var response = await new RequestHandler().post(
+          "chat-trainers/utterances/" + props.list![x.index].id + "/edit",
+          x.body
+        );
         console.log("response", response);
         if (response.message != null) {
           errors.value[x.index] = {

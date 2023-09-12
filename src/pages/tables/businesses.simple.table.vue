@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="w-full text-xs">
+    <div class="w-full text-xs overflow-x-auto px-1">
       <div v-if="view == 'table'">
         <my-table
           @on-select="onSelect"
@@ -27,7 +27,9 @@
           @bulk-action="onBulkAction"
           @on-limit-change="emit('on-limit-change', $event)"
           @on-item-click="emit('on-item-click', $event)"
-          item="court"
+          item="business-tab"
+          cols="grid grid-cols-1 gap-x-8 gap-y-1 overflow-y-auto h-full"
+          :headers="headers"
           :clickable="clickable"
           :loading="loading"
           :response="response"

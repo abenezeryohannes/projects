@@ -2,7 +2,7 @@
   <section>
     <div
       v-if="selecting"
-      class="px-5 mb-3 shadow-lg py-1 flex bg-primaryDark-light dark:bg-primaryDark-dark rounded-md"
+      class="resize-none px-5 mb-3 shadow-lg py-1 flex bg-primaryDark-light dark:bg-primaryDark-dark rounded-md"
     >
       <p class="mr-6 my-auto text-white">
         {{ t("items_selected", { var: selected.length }) }}
@@ -42,7 +42,7 @@
     </div>
 
     <div
-      class="w-full grid grid-cols-16 gap-x-2 mb-2"
+      class="resize-none w-full grid grid-cols-16 gap-x-2 mb-2"
       :class="[
         {
           'dark:bg-background-darkish rounded-md text-gray-700 dark:text-white  shadow-lg mb-3 bg-background-light':
@@ -56,7 +56,7 @@
         :key="header.name"
         :class="['col-span-' + header.width]"
       >
-        <div class="h-full w-full flex">
+        <div class="resize-none h-full w-full flex">
           <div
             v-if="header.name === '#bulk#'"
             class="w-full h-full flex items-center justify-center"
@@ -70,14 +70,14 @@
 
           <div
             v-else-if="header.name === '#actions#'"
-            class="w-full h-full flex items-center justify-center"
+            class="resize-none truncate w-full h-full flex items-center justify-center"
           >
             <p class="font-bold capitalize">{{ t(header.label) }}</p>
           </div>
 
           <div
             v-else
-            class="my-auto flex w-full h-full py-2 items-center"
+            class="resize-none my-auto flex w-full h-full py-2 items-center"
             @click="sort(header)"
             :class="[{ 'cursor-pointer': header.sortable }, header.cls]"
           >

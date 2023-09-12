@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <div class="w-full text-xs">
+  <section class="">
+    <div class="text-xs overflow-x-auto px-1">
       <div v-if="view == 'table'">
         <my-table
           @on-select="onSelect"
@@ -27,7 +27,9 @@
           @bulk-action="onBulkAction"
           @on-limit-change="emit('on-limit-change', $event)"
           @on-item-click="emit('on-item-click', $event)"
-          item="court"
+          item="chat-trainer-tabs"
+          cols="flex gap-x-0 w-screen"
+          :headers="headers"
           :clickable="clickable"
           :loading="loading"
           :response="response"
@@ -49,12 +51,12 @@ import myTable from "../../components/common/table/table.vue";
 import errorHandlerUtil from "../../data/util/error.handler.util";
 import RequestHandler from "../../data/util/request.handler";
 import { WrapperDto } from "../../domain/wrapper.dto";
-import { Company } from "../../domain/company/entity/company.entity";
+import { ChatTrainer } from "../../domain/chat/entity/chat.trainer.entity";
 // import { useI18n } from "../../i18n";
 // import { dd } from "../../util";
 const props = defineProps<{
-  list: Company[];
-  response?: WrapperDto<Company>;
+  list: ChatTrainer[];
+  response?: WrapperDto<ChatTrainer>;
   view?: string | null;
   loading?: boolean;
   clickable?: boolean;
@@ -71,100 +73,25 @@ const bulkActions = ref<any>([
 ]);
 const headers = ref<any[]>([
   { name: "#bulk#", width: "1", sortable: false },
-  //   {
-  //     label: "banner",
-  //     name: "banner",
-  //     width: "4",
-  //     sortable: true,
-  //     type: "image",
-  //     cls: "justify-center",
-  //     editable: true,
-  //   },
   {
     label: "intents",
     name: "intent",
-    width: "8",
+    width: "10",
     sortable: true,
     type: "text",
     editable: true,
     cls: "justify-start",
   },
-  // {
-  //   label: "Arabic Name",
-  //   name: "arabicName",
-  //   width: "2",
-  //   sortable: true,
-  //   type: "text",
-  //   editable: true,
-  //   cls: "justify-start",
-  // },
-  // {
-  //   label: "Phone",
-  //   name: "phoneNumber",
-  //   width: "2",
-  //   sortable: false,
-  //   type: "text",
-  //   cls: "justify-start",
-  //   editable: true,
-  // },
-
-  // {
-  //   label: "Deliver Time",
-  //   name: "deliveryTime",
-  //   width: "2",
-  //   sortable: false,
-  //   type: "text",
-  //   cls: "justify-start",
-  //   editable: true,
-  // },
-  // {
-  //   label: "Fee",
-  //   name: "deliveryFee",
-  //   width: "1",
-  //   sortable: true,
-  //   type: "text",
-  //   cls: "justify-start",
-  //   editable: true,
-  // },
-
-  // {
-  //   label: "Badge",
-  //   name: "badge",
-  //   width: "1",
-  //   sortable: false,
-  //   type: "text",
-  //   cls: "justify-start",
-  //   editable: true,
-  // },
-  // {
-  //   label: "Color",
-  //   name: "badgeColor",
-  //   width: "1",
-  //   sortable: false,
-  //   type: "color",
-  //   cls: "justify-start",
-  //   editable: true,
-  // },
-  // {
-  //   label: "Active",
-  //   name: "isActive",
-  //   width: "1",
-  //   sortable: true,
-  //   type: "toggle",
-  //   option: { positive: "active", negative: "in-active" },
-  //   editable: true,
-  //   cls: "justify-center",
-  // },
-  //   {
-  //     label: "action",
-  //     name: "#actions#",
-  //     width: "1",
-  //     sortable: false,
-  //     actions: ["edit", "delete"],
-  //   },
+  {
+    label: "action",
+    name: "#actions#",
+    width: "1",
+    sortable: false,
+    actions: ["edit", "delete"],
+  },
 ]);
-const tableData = ref<Company[]>([]);
-const gridData = ref<Company[]>([]);
+const tableData = ref<ChatTrainer[]>([]);
+const gridData = ref<ChatTrainer[]>([]);
 const errors = ref<any[]>([]);
 // const search = ref<string | null>(null);
 // const sort_by = ref<string | null>(null);
@@ -281,7 +208,7 @@ function onSelect(selected: any) {
   console.log("on-select", selected, "on-select-end");
 }
 
-function mapTableData(listPar: Company[]) {
+function mapTableData(listPar: ChatTrainer[]) {
   tableData.value = [];
   listPar.forEach((element) => {
     let index = tableData.value.length;
@@ -290,8 +217,8 @@ function mapTableData(listPar: Company[]) {
   });
 }
 
-function mapGridData(listPar: Company[]) {
-  gridData.value = [];
+function mapGridData(listPar: ChatTrainer[]) {
+  gridData.value = [null];
   listPar.forEach((element) => {
     let index = gridData.value.length;
     gridData.value[index] = element;
@@ -299,7 +226,7 @@ function mapGridData(listPar: Company[]) {
   });
 }
 
-function map(newValue: Company[]) {
+function map(newValue: ChatTrainer[]) {
   props.view == "table" ? mapTableData(newValue) : mapGridData(newValue);
 }
 </script>

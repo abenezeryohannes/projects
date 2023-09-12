@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full h-screen mt-12">
     <p
-      v-if="tags.length > 0"
+      v-if="tags.length > 0 && $route.params.id != null"
       class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg"
     >
       {{ "Tag Identifiers" }}
@@ -14,6 +14,7 @@
         :can_add="editing ? true : false"
         :deletable="editing ? true : false"
         :value="tags"
+        cls-list="max-h-96 overflow-y-auto"
         @on-change="onChange"
         @on-add="onAdd"
         @on-delete="onDelete"

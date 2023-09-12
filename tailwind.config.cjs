@@ -20,6 +20,11 @@ module.exports = {
           dark: '#F44336',
           lightish: '#def2f2'
         },
+        card: {
+          light: '#FFEBEE',
+          dark: '#3b3b3b',
+          lightish: '#f1f3fd'
+        },
         accentlight: {
           light: '#f1f3fd',
           dark: '#3b3b3b',

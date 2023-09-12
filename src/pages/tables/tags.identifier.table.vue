@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="w-full text-xs">
+    <div class="px-2 overflow-x-auto px-1">
       <div v-if="view == 'table'">
         <my-table
           @on-select="onSelect"
@@ -27,9 +27,11 @@
           @bulk-action="onBulkAction"
           @on-limit-change="emit('on-limit-change', $event)"
           @on-item-click="emit('on-item-click', $event)"
-          item="court"
+          item="mini-tag"
+          cols="grid grid-cols-1 gap-x-8 gap-y-1 overflow-y-auto h-full"
           :clickable="clickable"
           :loading="loading"
+          :headers="headers"
           :response="response"
           :list="gridData"
           :errors="errors"
@@ -89,6 +91,13 @@ const headers = ref<any[]>([
     editable: false,
     cls: "justify-center",
   },
+  // {
+  //   label: "action",
+  //   name: "#actions#",
+  //   width: "1",
+  //   sortable: false,
+  //   actions: ["edit", "delete"],
+  // },
 ]);
 const tableData = ref<any[]>([]);
 const gridData = ref<any[]>([]);

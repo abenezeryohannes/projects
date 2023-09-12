@@ -1,10 +1,11 @@
 <template>
   <section ref="root" class="relative w-full select-none">
     <div
-      class="flex flex-wrap gap-y-1 w-full rounded-lg pb-1"
+      class="flex flex-wrap gap-y-1 rounded-lg pb-1"
       :class="[
-        { '  border-accent-light dark:border-accent-dark': focused },
+        { 'border-accent-light dark:border-accent-dark': focused },
         { 'border-b-2': editing },
+        clsList,
       ]"
     >
       <div class="my-auto" v-for="(tag, index) in value" :key="index">
@@ -45,17 +46,18 @@
           </span>
         </div>
       </div>
-      <div v-show="editing" class="flex min-w-10">
+      <div v-show="editing" class="flex min-w-10 w-full">
         <v-icon
           icon="arrow-right"
           fill="gray-300"
           cls="dark:text-gray-500 my-auto hidden"
           :size="5"
         />
-        <input
-          type="text"
+        <textarea
+          :rows="rows ?? 5"
           ref="input-field"
           name="field"
+          :width="200"
           v-on:keyup.enter="onEnter"
           @focus="
             focused = true;
@@ -63,7 +65,7 @@
           "
           @blur="focused = false"
           @keydown.delete="input.length === 0 ? onDelete(null) : doNothing()"
-          class="appearance-none bg-transparent dark:text-white rounded min-w-min py-2 inline text-gray-700 focus:outline-none font-semibold pl-1 pr-1"
+          class="appearance-none bg-transparent dark:text-white rounded min-w-min w-full py-2 inline text-gray-700 focus:outline-none font-semibold pl-1 pr-1"
           autocomplete="off"
           :class="['h-' + (height == null) ? 10 : height]"
           v-model="input"
@@ -122,6 +124,7 @@ import { onMounted, onUnmounted, ref, watch, computed } from "vue";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import { useI18n } from "../../i18n";
+// import TextForm from "./text.form.vue";
 
 const props = defineProps<{
   value?: any;
@@ -131,6 +134,7 @@ const props = defineProps<{
   height?: number;
   error?: any;
   cls?: any;
+  clsList?: any;
   errors?: any[];
   name?: string;
   editing: boolean;
@@ -141,9 +145,11 @@ const props = defineProps<{
   link?: string;
   options?: any[];
   property?: any;
+  rows?: number | null;
   drop_on_focus?: boolean;
   option_name?: string;
   can_add?: boolean;
+  label?: string;
   text_alignments?: string;
   custom_value?: any;
 }>();
@@ -202,14 +208,29 @@ function doNothing() {}
 
 function onEnter() {
   console.log("on-add", duplicate(input.value));
-  if (duplicate(input.value)) return;
+  if (duplicate(trimN(input.value))) return;
   // if (!props.custom_value || duplicate(input.value)) return;
   //console.log('on-add', input.value);
   if (props.max == null || props.max > props.value?.length) {
-    emit("on-add", input.value);
+    emit("on-add", trimN(input.value));
     input.value = "";
   } //console.log('max error');
   else input.value = "";
+}
+function trimN(text: String): String {
+  let resp: String = text;
+  // while (resp.includes("\n")) {
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  resp.replace("\n", "");
+  // }
+  return resp;
 }
 
 function onDelete(index: any) {

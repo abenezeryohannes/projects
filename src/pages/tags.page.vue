@@ -6,7 +6,7 @@
 
     <add-tag @on-change="load()" ref="addTagModel" />
 
-    <div class="relative mb-16 lg:w-10/12">
+    <div class="relative shadow-md pt-3 md:px-5 px-3 mb-16 lg:w-10/12">
       <search-table-form
         @on-change="
           search = $event;
@@ -96,13 +96,13 @@ let sort_by = ref<string | null>(null);
 let limit = ref<number | null>(null);
 // let enabled = ref<boolean>(useRoute().query?.enabled == "true");
 let sort = ref<string | null>(null);
-let view = ref<string | null>(localStorage.getItem("view_type"));
+let view = ref<string | null>(localStorage.getItem("view_type_tag"));
 const router = useRouter();
 
 watch(
   () => view.value,
   (val, _) => {
-    if (val != null) localStorage.setItem("view_type", val!);
+    if (val != null) localStorage.setItem("view_type_tag", val!);
   }
 );
 
