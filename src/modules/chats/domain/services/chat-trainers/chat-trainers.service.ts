@@ -8,10 +8,58 @@ import { resolve, join } from 'path';
 import { CreateChatTrainerDto } from '../../dto/create.chat.trainer.dto';
 import { Tag } from '../../../../companies/domain/entities/tag.entity';
 import { Company } from '../../../../companies/domain/entities/company.entity';
+import { EditChatTrainerDto } from '../../dto/edit.chat.trainer.dto';
 
 @Injectable()
 export class ChatTrainersService {
   constructor(readonly dataSource: DataSource) {}
+
+  async editUtterance(id: number, dto: EditChatTrainerDto): Promise<any> {
+    let trainer = await this.dataSource.getRepository(ChatTrainer).findOne({
+      where: { id: id },
+    });
+
+    // if (dto.command != null && dto.command != undefined) {
+    //   trainer.command = dto.command;
+    // }
+
+    // if (dto.intent != null && dto.intent != undefined) {
+    //   trainer.intent = dto.intent;
+    // }
+
+    // if (dto.language != null && dto.language != undefined) {
+    //   trainer.language = dto.language;
+    // }
+
+    // if (dto.name != null && dto.name != undefined) {
+    //   trainer.name = dto.name;
+    // }
+
+    // if (dto.slot != null && dto.slot != undefined) {
+    //   trainer.slot = dto.slot;
+    // }
+
+    // if (dto.type != null && dto.type != undefined) {
+    //   trainer.type = dto.type;
+    // }
+    if (dto.utterance != null && dto.utterance != undefined) {
+      trainer.utterance = dto.utterance;
+    }
+    trainer = await this.dataSource.getRepository(ChatTrainer).save(trainer);
+    return trainer;
+  }
+
+  async deleteAllUtterances(ids: number[]): Promise<any> {
+    const ops = [];
+    ids.forEach((id) => ops.push(this.deleteUtterance(id)));
+    return await Promise.all(ops);
+  }
+
+  async deleteUtterance(id: number): Promise<any> {
+    return await this.dataSource.getRepository(ChatTrainer).delete({
+      id: id,
+    });
+  }
 
   async findAll(request: any): Promise<[any[], any]> {
     const search = '%' + (request.query.search ?? '') + '%';
@@ -20,13 +68,10 @@ export class ChatTrainersService {
     const id = request.query.id ?? -1;
     const intent = request.query.intent ?? null;
     const command = request.query.command ?? null;
+    const language = request.query.language ?? null;
     const whereClause = [
       {
         utterance: ILike(search),
-        intent: '%%',
-      },
-      {
-        type: ILike(search),
         intent: '%%',
       },
       {
@@ -41,10 +86,6 @@ export class ChatTrainersService {
         name: ILike(search),
         intent: '%%',
       },
-      {
-        command: ILike(search),
-        intent: '%%',
-      },
     ];
 
     if (intent != null) {
@@ -56,6 +97,12 @@ export class ChatTrainersService {
     if (command != null) {
       whereClause.forEach((w) => {
         w['command'] = command;
+      });
+    }
+
+    if (language != null) {
+      whereClause.forEach((w) => {
+        w['language'] = language;
       });
     }
 
@@ -76,12 +123,12 @@ export class ChatTrainersService {
     return [chats, count];
   }
 
-  async findIntentAll(request: any): Promise<any[]> {
+  async findIntentAll(request: any): Promise<[any[], number]> {
     const search = '%' + (request.query.search ?? '') + '%';
     const limit = request.query.limit ?? 25;
     const page = request.query.page ?? 1;
     const id = request.query.id ?? -1;
-    return await this.dataSource
+    const result = await this.dataSource
       .getRepository(ChatTrainer)
       .createQueryBuilder('chat_trainer')
       .select('DISTINCT(chat_trainer.intent)')
@@ -91,6 +138,11 @@ export class ChatTrainersService {
       .skip(id > 0 ? 0 : limit * (page - 1))
       .orderBy('intent', 'DESC')
       .getRawMany();
+
+    const count = await this.dataSource.query(
+      'SELECT COUNT(DISTINCT(chat_trainer.intent)) as result FROM linkoai.chat_trainer;',
+    );
+    return [result, count[0].result];
   }
 
   async findCommandAll(request: any): Promise<any[]> {

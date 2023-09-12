@@ -12,6 +12,7 @@ export class CreateChatTrainerDto {
   intent: string;
 
   slot: string;
+
   name: string;
 
   constructor(readonly body: any) {
@@ -26,6 +27,11 @@ export class CreateChatTrainerDto {
     if (body.type != null || body.type != undefined) this.type = body.type;
     if (body.slot != null || body.slot != undefined) this.slot = body.slot;
     if (body.name != null || body.name != undefined) this.name = body.name;
+
+    if (body.utterances != null || body.utterances != undefined) {
+      if (Array.isArray(body.utterances))
+        this.utterance = JSON.parse(body.utterances);
+    }
 
     if (body.utterance != null || body.utterance != undefined) {
       if (typeof body.utterance == 'string') this.utterance = [body.utterance];

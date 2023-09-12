@@ -24,16 +24,20 @@ export class TagsService {
       case 'type':
         sort_by = { type: sort };
         break;
+      case 'isActive':
+        sort_by = { isActive: sort };
+        break;
       case 'name':
         sort_by = { name: sort };
         break;
       case 'training':
         sort_by = { training: sort };
+        break;
       case 'desc':
         sort_by = { desc: sort };
-      case 'isDeterminant':
-        sort_by = { isDeterminant: sort };
         break;
+      case 'canDetermine':
+        sort_by = { canDetermine: sort };
         break;
       default:
         sort_by = { id: sort };

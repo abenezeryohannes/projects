@@ -83,6 +83,7 @@ export class CompanyDto {
     entity.isActive = dto.isActive;
     entity.badge = dto.badge;
     entity.badgeColor = dto.badgeColor;
+    if (entity.arabicName == null) entity.arabicName = entity.name;
     return entity;
   }
 }

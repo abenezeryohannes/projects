@@ -65,9 +65,9 @@ export class TagIdentifierService {
     }
 
     const ops = [];
-    const obj = { tagId: Number, utterance: String };
     if (body.clear) await this.deleteAllByTag(body.tagId);
     body.utterances.forEach((utterance) => {
+      const obj = { tagId: Number, utterance: String };
       obj.tagId = body.tagId;
       obj.utterance = utterance;
       ops.push(this.add(obj));
@@ -82,6 +82,7 @@ export class TagIdentifierService {
       .findOneBy({ id: tagId });
     return await this.dataSource.getRepository(TagIdentifier).find({
       where: { tag: tag },
+      order: { id: 'DESC' },
     });
   }
 }

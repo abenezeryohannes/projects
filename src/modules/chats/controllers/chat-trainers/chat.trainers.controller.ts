@@ -42,8 +42,8 @@ export class ChatTrainersController {
   @Get('intents')
   async findIntents(@Request() request) {
     try {
-      const result = await this.service.findIntentAll(request);
-      return WrapperDto.paginateHalf(result, request.query);
+      const [result, count] = await this.service.findIntentAll(request);
+      return WrapperDto.paginate(result, Number(count), request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }
@@ -114,6 +114,43 @@ export class ChatTrainersController {
     try {
       const result = await this.service.train();
       return WrapperDto.successfullCreated(result);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  //utterances
+
+  @Roles(ROLE.ADMIN)
+  @Post('utterances/:id/edit')
+  async editUtterance(@Request() request, @Param('id') id: number) {
+    try {
+      const result = await this.service.editUtterance(id, request.body);
+      return WrapperDto.successfull(result);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN)
+  @Post('utterances/delete')
+  async deleteUtterance(@Request() request) {
+    try {
+      const result = await this.service.deleteUtterance(request.body.id);
+      return WrapperDto.successfull(result);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
+  @Roles(ROLE.ADMIN)
+  @Post('utterances/delete_all')
+  async deleteAll(@Request() request) {
+    try {
+      const result = await this.service.deleteAllUtterances(
+        JSON.parse(request.body.ids),
+      );
+      return WrapperDto.successfull(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }
