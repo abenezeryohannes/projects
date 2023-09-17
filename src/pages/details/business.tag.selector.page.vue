@@ -1,6 +1,9 @@
 <template>
-  <div class="relative w-full ml-10 flex flex-wrap h-screen mt-1">
-    <div class="" v-if="$route.params.id != null && selectedTags.length > 0">
+  <div class="relative w-full ml-10 h-screen mt-1">
+    <div
+      class="mb-10"
+      v-if="$route.params.id != null && selectedTags.length > 0"
+    >
       <p class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg">
         {{ "selected tags" }}
       </p>
@@ -17,14 +20,11 @@
       />
     </div>
 
-    <div
-      v-if="$route.params.id != null"
-      v-for="type in tagTypes"
-      :key="type"
-      class=""
-    >
-      <div class="capitalize w-full">
-        <p class="font-bold flex justify-start py-3">{{ type }}</p>
+    <div v-if="$route.params.id != null" v-for="type in tagTypes" :key="type">
+      <div class="capitalize w-full mb-6">
+        <p class="font-extrabold text-base flex justify-start py-3">
+          {{ type }}
+        </p>
         <div class="flex flex-wrap justify-start">
           <div
             class=""

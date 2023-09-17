@@ -6,7 +6,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "home",
     components: {
-      default: () => import("./pages/tags.page.vue"),
+      default: () => import("./pages/dashboard.page.vue"),
       sidebar: () => import("./layouts/home.sidebar.vue"),
     },
   },
@@ -87,6 +87,54 @@ const routes: Array<RouteRecordRaw> = [
     name: "chat-trainer",
     components: {
       default: () => import("./pages/chat.trainer.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/suggestions",
+    name: "suggestions",
+    components: {
+      default: () => import("./pages/suggestions.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/chat_documents",
+    name: "chat_documents",
+    components: {
+      default: () => import("./pages/chat.documents.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/admins",
+    name: "admins",
+    components: {
+      default: () => import("./pages/admins.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/users",
+    name: "users",
+    components: {
+      default: () => import("./pages/users.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/chats",
+    name: "chats",
+    components: {
+      default: () => import("./pages/chats.page.vue"),
+      sidebar: () => import("./layouts/home.sidebar.vue"),
+    },
+  },
+  {
+    path: "/notifications",
+    name: "notifications",
+    components: {
+      default: () => import("./pages/notifications.page.vue"),
       sidebar: () => import("./layouts/home.sidebar.vue"),
     },
   },

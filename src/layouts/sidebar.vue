@@ -1,6 +1,6 @@
 <template>
   <section
-    class="h-screen border-gray-100 dark:border-background-dark border-r-2 capitalize dark:text-white text-gray-700 font-semibold"
+    class="h-screen select-none border-gray-100 dark:border-background-dark border-r-2 capitalize dark:text-white text-gray-700 font-semibold"
     :class="{
       ' absolute w-12 h-11 bg-transparent': screen == 'sm',
       'bg-sidebar-light dark:bg-sidebar-dark': screen != 'sm',
@@ -38,13 +38,13 @@
               class=""
               :link="icon_link"
               :height="7"
-              rounded="shadow-none rounded-lg "
+              rounded="shadow-none rounded-full "
               :width="7"
               :padding="0"
             />
           </div>
-          <div class="font-bold my-auto text-left">
-            <p class="text-base truncate ...">
+          <div class="font-extrabold my-auto text-left">
+            <p class="text-lg truncate ...">
               {{
                 route.path.split("/").length > 2
                   ? route.path.split("/")[1]

@@ -104,10 +104,10 @@
           </div>
 
           <p
-            class="dark:text-white text-gray-700 capitalize text-xs font-bold my-4 text-left"
+            class="dark:text-gray-300 text-gray-500 capitalize text-sm font-semibold my-4 text-left"
             :class="[
               {
-                'capitalize  text-primary-light text-xs ':
+                'capitalize  text-primary-light text-sm ':
                   ((list.name == selectedListItem.list ||
                     selectedListItem.list == null) &&
                     subList.options == null &&
@@ -205,7 +205,7 @@ let dropdown = ref<any>({});
 
 watch(
   () => props.dropdownList,
-  (now, prev) => {
+  (_, __) => {
     prepareDrop();
   }
 );

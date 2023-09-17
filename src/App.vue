@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="bg-background-lightish select-none dark:bg-background-dark h-screen w-screen"
+    class="bg-background-light select-none dark:bg-background-dark h-screen w-screen"
   >
     <navbar v-if="user != null">
       <router-view> </router-view>

@@ -15,7 +15,6 @@ const app = createApp(App);
 const options: PluginOptions = {
   // You can set your default options here
 };
-
 app
   .use(store, key)
   .use(i18n)

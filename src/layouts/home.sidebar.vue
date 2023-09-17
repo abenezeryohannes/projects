@@ -63,14 +63,15 @@ const showType = computed(() => {
 const selectedListItem = ref<any>({ subList: "add", option: null, id: 0 });
 
 const dropdownList = ref<any>([
-  // {
-  //   name: "main",
-  //   subList: [{ name: "Dashboard", options: null, id: 0, svg: "dashboard" }],
-  // },
+  {
+    name: "main",
+    subList: [{ name: "Dashboard", options: null, id: 0, svg: "dashboard" }],
+  },
   {
     name: "Businesses",
     subList: [
       { name: "Businesses", options: null, id: 1, svg: "order" },
+      { name: "Suggestions", options: null, id: 1, svg: "suggestion" },
       { name: "Business Tag Trainer", options: null, id: 4, svg: "ad" },
     ],
   },
@@ -83,17 +84,21 @@ const dropdownList = ref<any>([
       { name: "Chat Trainer", options: null, id: 6, svg: "chattraining" },
     ],
   },
-  // {
-  //   name: "chats",
-  //   subList: [{ name: "Chats", options: null, id: 7, svg: "chat" }],
-  // },
-  // {
-  //   name: "Users",
-  //   subList: [
-  //     { name: "Admins", options: null, id: 8, svg: "admin" },
-  //     { name: "Customers", options: null, id: 10, svg: "users" },
-  //   ],
-  // },
+  {
+    name: "chats",
+    subList: [
+      // { name: "Chats", options: null, id: 7, svg: "chat" },
+      { name: "Chat Documents", options: null, id: 11, svg: "chat" },
+    ],
+  },
+  {
+    name: "Users",
+    subList: [
+      { name: "Admins", options: null, id: 8, svg: "admin" },
+      { name: "Users", options: null, id: 10, svg: "users" },
+      // { name: "Notifications", options: null, id: 10, svg: "notification" },
+    ],
+  },
 ]);
 
 onMounted(() => {
@@ -136,11 +141,27 @@ function switchTo(currentRoute?: string | null | undefined) {
     currentRoute == "home" ||
     currentRoute == ""
   ) {
-    selectedListItem.value = { subList: "dashboard", option: null, id: 0 };
+    selectedListItem.value = { subList: "Dashboard", option: null, id: 0 };
   } else if (currentRoute?.startsWith("dashboard"))
     selectedListItem.value = { subList: "Dashboard", option: null, id: 1 };
   else if (currentRoute?.startsWith("tags"))
     selectedListItem.value = { subList: "Tags", option: null, id: 2 };
+  else if (currentRoute?.startsWith("admins"))
+    selectedListItem.value = { subList: "Admins", option: null, id: 8 };
+  else if (currentRoute?.startsWith("users"))
+    selectedListItem.value = { subList: "Users", option: null, id: 10 };
+  else if (currentRoute?.startsWith("suggestions"))
+    selectedListItem.value = { subList: "Suggestions", option: null, id: 2 };
+  else if (currentRoute?.startsWith("notifications"))
+    selectedListItem.value = { subList: "Notifications", option: null, id: 11 };
+  else if (currentRoute?.startsWith("chat_documents"))
+    selectedListItem.value = {
+      subList: "Chat Documents",
+      option: null,
+      id: 11,
+    };
+  else if (currentRoute?.startsWith("chats"))
+    selectedListItem.value = { subList: "Chats", option: null, id: 7 };
   else if (currentRoute?.startsWith("tag-identifiers"))
     selectedListItem.value = {
       subList: "Tag Identifiers",
@@ -171,14 +192,26 @@ function onChange(event: any) {
     router.push({ name: "home" });
   } else if (selectedListItem.value.subList.endsWith("Tags")) {
     router.push({ name: "tags" });
+  } else if (selectedListItem.value.subList.endsWith("Suggestions")) {
+    router.push({ name: "suggestions" });
+  } else if (selectedListItem.value.subList.endsWith("Admins")) {
+    router.push({ name: "admins" });
+  } else if (selectedListItem.value.subList.endsWith("Users")) {
+    router.push({ name: "users" });
   } else if (selectedListItem.value.subList.endsWith("Tag Identifiers")) {
     router.push({ name: "tag-identifiers" });
   } else if (selectedListItem.value.subList.endsWith("Businesses")) {
     router.push({ name: "businesses" });
+  } else if (selectedListItem.value.subList.endsWith("Chat Documents")) {
+    router.push({ name: "chat_documents" });
+  } else if (selectedListItem.value.subList.endsWith("Chats")) {
+    router.push({ name: "chats" });
   } else if (selectedListItem.value.subList.endsWith("Business Tag Trainer")) {
     router.push({ name: "business-tag-trainer" });
   } else if (selectedListItem.value.subList.endsWith("Chat Trainer")) {
     router.push({ name: "chat-trainer" });
+  } else if (selectedListItem.value.subList.endsWith("Notifications")) {
+    router.push({ name: "notifications" });
   } else {
     router.push({ name: "home" });
   }

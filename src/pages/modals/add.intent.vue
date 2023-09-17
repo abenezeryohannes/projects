@@ -108,7 +108,7 @@ async function save() {
     );
     console.log(response.status, response);
     emit("on-change");
-    // close();
+    close();
   } catch (e) {
     errorHandlerUtil.handle(e, toast, router);
   } finally {

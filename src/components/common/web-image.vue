@@ -41,6 +41,19 @@
         { 'cursor-pointer': clickable },
       ]"
     />
+    <img
+      @click="clicked"
+      v-else-if="props.local"
+      v-lazy="props.local"
+      width="500"
+      height="600"
+      :class="[
+        ' w-full h-full ',
+        scale,
+        rounded,
+        { 'cursor-pointer': clickable },
+      ]"
+    />
 
     <div
       v-else
@@ -63,6 +76,7 @@ const props = withDefaults(
     local_image_file?: File;
     scale?: string;
     height?: number;
+    local?: string;
     width?: number;
     padding?: number;
   }>(),

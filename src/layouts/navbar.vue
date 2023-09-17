@@ -24,10 +24,10 @@
           v-show="!route.path.includes('/print/') || slots['sidebar']"
           :class="[
             {
-              '  bg-background-lightish shadow-none pt-1 dark:bg-background-dark ':
+              '  bg-background-light shadow-none pt-1 dark:bg-background-dark ':
                 !home,
             },
-            { ' bg-background-white dark:bg-background-deepdark  ': home },
+            { ' bg-background-light dark:bg-background-deepdark  ': home },
           ]"
           class="flex w-full flex-row justify-between navbar dark:text-white text-gray-700 shadow py-auto"
         >
@@ -108,14 +108,14 @@
             <ul
               id="mobile-menu"
               v-if="showNavbar"
-              class="flex-col absolute md:relative top-3 z-40 md:top-0 rounded-lg shadow-lg bg-background-light dark:bg-background-deepdark md:dark:bg-background-dark md:bg-background-lightish w-full md:shadow-none md:rounded-none right-5 md:right-0 pl-5 pr-8 py-5 md:px-0 md:py-0 md:flex-row flex mt-4 md:mt-0 md:text-sm gap-y-3 items-start md:font-medium"
+              class="flex-col absolute md:relative top-3 z-40 md:top-0 rounded-lg shadow-lg bg-background-light dark:bg-background-deepdark md:dark:bg-background-dark md:bg-background-light w-full md:shadow-none md:rounded-none right-5 md:right-0 pl-5 pr-8 py-5 md:px-0 md:py-0 md:flex-row flex mt-4 md:mt-0 md:text-sm gap-y-3 items-start md:font-medium"
             >
               <li class="my-auto w-full hidden md:flex">
-                <search-menu class="" :height="8" />
+                <!-- <search-menu class="" :height="8" /> -->
               </li>
 
               <li
-                class="flex flex-row md:ml-5 my-auto px-2 md:px-3 rounded-full cursor-pointer md:dark:hover:bg-background-darkish md:py-2 md:dark:hover:bg-opacity-50 md:hover:bg-background-lightish"
+                class="flex flex-row md:ml-5 my-auto px-2 md:px-3 rounded-full cursor-pointer md:dark:hover:bg-background-darkish md:py-2 md:dark:hover:bg-opacity-50 md:hover:bg-background-light"
                 @click="showProfile"
               >
                 <!--                                 <icon-wrapper :link=user.avatar :padding=0 :size=6 />-->
@@ -143,7 +143,7 @@
                 @click="switchTheme"
               >
                 <div
-                  class="shadow rounded-full bg-background-lightish dark:bg-background-darkish h-10 w-10"
+                  class="shadow rounded-full bg-background-light dark:bg-background-darkish h-10 w-10"
                 >
                   <input
                     id="mode-nav-item"

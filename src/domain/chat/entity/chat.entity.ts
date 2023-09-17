@@ -3,7 +3,6 @@ import { User } from "../../user/entity/user.entity";
 export class Chat {
   id?: number;
 
-  
   data?: string;
 
   type?: string;

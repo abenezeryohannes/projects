@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="px-2 overflow-x-auto px-1">
+    <div class="px-2 overflow-x-auto">
       <div v-if="view == 'table'">
         <my-table
           @on-select="onSelect"

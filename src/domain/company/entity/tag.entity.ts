@@ -13,6 +13,8 @@ export class Tag {
 
   color?: string;
 
+  searchCount?: number;
+
   canDetermine?: boolean;
 
   isActive?: boolean;
@@ -31,6 +33,7 @@ export class Tag {
     color?: string;
     canDetermine?: boolean;
     isActive?: boolean;
+    searchCount?: number;
     companies?: Company[];
     user?: User;
     tagIdentifiers?: TagIdentifier[];
@@ -39,6 +42,7 @@ export class Tag {
     this.name = data?.name;
     this.type = data?.type;
     this.desc = data?.desc;
+    this.searchCount = data?.searchCount;
     this.color = data?.color;
     this.canDetermine = data?.canDetermine;
     this.isActive = data?.isActive;

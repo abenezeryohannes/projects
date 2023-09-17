@@ -6,7 +6,7 @@
 
     <add-company @on-change="load()" ref="addCompanyModel" />
 
-    <div class="relative p-3 shadow-md pt-3 px-3">
+    <div class="relative p-3 pt-3 px-3">
       <search-table-form
         @on-change="
           search = $event;

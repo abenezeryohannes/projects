@@ -4,7 +4,7 @@
       <route-indicator />
     </div>
 
-    <div class="relative mb-16">
+    <div class="relative mb-16 w-10/12">
       <search-table-form
         @on-change="
           search = $event;
@@ -58,7 +58,7 @@ import errorHandlerUtil from "../data/util/error.handler.util";
 import RequestHandler from "../data/util/request.handler";
 import SearchTableForm from "../components/forms/search.table.form.vue";
 // import actionFab from '../components/common/action.fab.vue';
-import adminsTable from "./tables/admins.table.vue";
+import adminsTable from "./tables/users.table.vue";
 import RouteIndicator from "../components/common/route.indicator.vue";
 import { useRouter } from "vue-router";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
@@ -118,8 +118,9 @@ async function load() {
   loading_table.value = true;
   // console.log('loading .... role_type', this.role_type, this.enabled);
   try {
-    var res = await new RequestHandler().get("users/findAllAdmins", {
+    var res = await new RequestHandler().get("users/findAll", {
       search: search.value,
+      role: "ADMIN",
       sort: sort.value,
       sort_by: sort_by.value,
       page: page.value,
@@ -127,7 +128,7 @@ async function load() {
     });
 
     response.value = res.data;
-    list.value = response.value.data;
+    list.value = response.value.datas;
   } catch (e) {
     errorHandlerUtil.handle(e, useToast(), useRouter());
   } finally {

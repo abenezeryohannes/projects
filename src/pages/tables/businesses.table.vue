@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="w-full text-xs overflow-x-auto px-1">
+    <div class="w-full text-xs overflow-x-auto">
       <div v-if="view == 'table'">
         <my-table
           @on-select="onSelect"
@@ -84,7 +84,7 @@ const headers = ref<any[]>([
   {
     label: "name",
     name: "name",
-    width: "3",
+    width: "2",
     sortable: true,
     type: "text",
     editable: true,
@@ -99,29 +99,29 @@ const headers = ref<any[]>([
     editable: true,
     cls: "justify-start",
   },
-  // {
-  //   label: "Link",
-  //   name: "url",
-  //   width: "1",
-  //   sortable: true,
-  //   type: "text",
-  //   editable: true,
-  //   cls: "justify-start  overflow-clip pr-5",
-  // },
+  {
+    label: "Link",
+    name: "url",
+    width: "2",
+    sortable: true,
+    type: "text",
+    editable: true,
+    cls: "justify-start truncate mr-2 overflow-clip pr-5",
+  },
   {
     label: "Phone",
     name: "phoneNumber",
     width: "2",
     sortable: false,
     type: "text",
-    cls: "justify-start",
+    cls: "justify-center text-center",
     editable: true,
   },
 
   {
     label: "Deliver Time",
     name: "deliveryTime",
-    width: "2",
+    width: "1",
     sortable: false,
     type: "text",
     cls: "justify-start",
@@ -161,7 +161,7 @@ const headers = ref<any[]>([
     width: "1",
     sortable: true,
     type: "toggle",
-    option: { positive: "active", negative: "in-active" },
+    option: { positive: "yes", negative: "no" },
     editable: true,
     cls: "justify-center",
   },
@@ -296,7 +296,6 @@ function mapTableData(listPar: Company[]) {
   listPar.forEach((element) => {
     let index = tableData.value.length;
     tableData.value[index] = element;
-    // tableData.value[index].banner = constants.MEDIA_LINK + element.banner;
   });
 }
 
@@ -305,7 +304,6 @@ function mapGridData(listPar: Company[]) {
   listPar.forEach((element) => {
     let index = gridData.value.length;
     gridData.value[index] = element;
-    // gridData.value[index].banner = constants.MEDIA_LINK + element.banner;
   });
 }
 

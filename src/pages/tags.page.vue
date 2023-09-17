@@ -6,7 +6,7 @@
 
     <add-tag @on-change="load()" ref="addTagModel" />
 
-    <div class="relative shadow-md pt-3 md:px-5 px-3 mb-16 lg:w-10/12">
+    <div class="relative pt-3 md:px-5 px-3 mb-16">
       <search-table-form
         @on-change="
           search = $event;

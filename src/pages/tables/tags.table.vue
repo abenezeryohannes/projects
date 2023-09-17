@@ -75,14 +75,23 @@ const headers = ref<any[]>([
   {
     label: "name",
     name: "name",
-    width: "3",
+    width: "2",
     sortable: true,
     type: "text",
     editable: true,
     cls: "justify-start",
   },
   {
-    label: "type",
+    label: "Arabic Name",
+    name: "arabicName",
+    width: "2",
+    sortable: true,
+    type: "text",
+    editable: true,
+    cls: "justify-start",
+  },
+  {
+    label: "Type",
     name: "type",
     width: "2",
     sortable: true,
@@ -93,13 +102,22 @@ const headers = ref<any[]>([
     editable: true,
   },
   {
-    label: "description",
+    label: "Description",
     name: "desc",
-    width: "3",
+    width: "2",
     sortable: false,
     type: "text",
     cls: "justify-start",
     editable: true,
+  },
+  {
+    label: "Search Count",
+    name: "searchCount",
+    width: "1",
+    sortable: false,
+    type: "text",
+    cls: "justify-center text-center",
+    editable: false,
   },
   {
     label: "Determinant",
@@ -108,7 +126,7 @@ const headers = ref<any[]>([
     option: { positive: "yes", negative: "no" },
     sortable: true,
     type: "toggle",
-    cls: "justify-start",
+    cls: "justify-center",
     editable: true,
   },
   {
@@ -117,18 +135,18 @@ const headers = ref<any[]>([
     width: "2",
     sortable: true,
     type: "number",
-    cls: "justify-start",
+    cls: "justify-center",
     editable: false,
   },
   {
     label: "Active",
     name: "isActive",
-    width: "2",
+    width: "1",
     sortable: true,
     type: "toggle",
     option: { positive: "active", negative: "in-active" },
     editable: true,
-    cls: "justify-start",
+    cls: "justify-center",
   },
   //   {
   //     label: "status",
@@ -251,38 +269,19 @@ function onSelect(selected: any) {
   console.log("on-select", selected, "on-select-end");
 }
 
-function mapTableData(listPar: any[]) {
+function mapTableData(listPar: Tag[]) {
   tableData.value = [];
   listPar.forEach((element) => {
-    // console.log("checking desc: ", element);
-    tableData.value[tableData.value.length] = {
-      id: element.id,
-      name: element.name,
-      type: element.type,
-      color: element.color,
-      training: element.training,
-      canDetermine: element.canDetermine,
-      isActive: element.isActive,
-      userId: element.userId,
-      desc: element.desc,
-    };
+    let index = tableData.value.length;
+    tableData.value[index] = element;
   });
 }
 
-function mapGridData(listPar: any[]) {
+function mapGridData(listPar: Tag[]) {
   gridData.value = [];
   listPar.forEach((element) => {
-    gridData.value[gridData.value.length] = {
-      id: element.id,
-      name: element.name,
-      type: element.type,
-      color: element.color,
-      training: element.training,
-      canDetermine: element.canDetermine,
-      isActive: element.isActive,
-      userId: element.userId,
-      desc: element.desc,
-    };
+    let index = gridData.value.length;
+    gridData.value[index] = element;
   });
 }
 

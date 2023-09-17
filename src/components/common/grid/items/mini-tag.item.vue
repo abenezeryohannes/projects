@@ -13,7 +13,7 @@
         },
       ]"
       @click="onClick"
-      class="relative py-5 px-5 flex mx-2 mb-1 rounded-2xl shadow-md"
+      class="relative py-5 px-5 flex mx-2 mb-1 rounded-2xl shadow"
     >
       <!-- <div
           class="static col-span-6 bg-background-lightish dark:bg-background-darkish"
@@ -50,7 +50,7 @@
           <p class="mb-1 mt-1 truncate mr-10">Add New</p>
         </div>
         <div class="flex justify-evenly" v-else>
-          <p class="mb-1 mt-1 truncate mr-10">
+          <p class="mb-1 mt-1 font-medium truncate mr-10">
             {{ data.name }}
           </p>
           <p class="mb-1 mt-1 truncate mr-10">

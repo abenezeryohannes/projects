@@ -6,18 +6,21 @@
           'hover:bg-accent-light dark:bg-accentlight-dark bg-background-light dark:hover:bg-accent-dark hover:text-white': true,
         },
         {
-          ' hover:bg-accent-light dark:hover:bg-accent-darkbg-gray-200 bg-gray-200 dark:bg-gray-600':
+          ' hober:bg-background-light dark:hover:bg-accentlight-dark  text-gray-300 dark:text-gray-400':
             !data.isActive,
         },
       ]"
       @click="onClick"
-      class="relative cursor-pointer rounded-2xl shadow-md"
+      class="relative cursor-pointer rounded-xl shadow-md"
     >
-      <div class="bg-background-lightish dark:bg-background-darkish">
+      <div
+        class="bg-background-lightish rounded-t-lg h-64 dark:bg-background-darkish"
+      >
         <web-image
           class="w-full h-64"
           rounded="rounded-t-lg"
           :width="2999"
+          :height="64"
           scale="object-cover"
           :link="data.banner"
           :padding="0"
@@ -47,7 +50,16 @@
 
             <p
               v-if="data.badge != null && (data.badge as String).length > 0"
-              class="mt-1 px-3 text-white py-1 shadow-lg rounded-2xl bg-accent-light dark:bg-accent-dark"
+              class="mt-1 px-3 py-1 shadow-lg rounded-2xl"
+              :class="[
+                {
+                  'bg-accent-light dark:bg-accent-dark text-white':
+                    data.isActive,
+                },
+                {
+                  'text-gray-400': !data.isActive,
+                },
+              ]"
             >
               {{ data.badge }}
             </p>
@@ -65,13 +77,29 @@
         <div class="flex text-sm gap-x-2 mt-2 text-white">
           <p
             v-if="data.deliveryTime != null"
-            class="mt-1 px-3 py-1 text-xs shadow-lg rounded-2xl bg-accent-light dark:bg-accent-dark"
+            class="mt-1 px-3 py-1 text-xs shadow-lg rounded-2xl"
+            :class="[
+              {
+                'bg-accent-light dark:bg-accent-dark text-white': data.isActive,
+              },
+              {
+                ' text-gray-400 ': !data.isActive,
+              },
+            ]"
           >
             {{ data.deliveryTime }}
           </p>
           <p
             v-if="data.deliveryFee != null"
-            class="mt-1 px-3 py-1 text-xs shadow-lg rounded-2xl bg-accent-light dark:bg-accent-dark"
+            class="mt-1 px-3 py-1 text-xs shadow-lg rounded-2xl"
+            :class="[
+              {
+                'bg-accent-light dark:bg-accent-dark text-white': data.isActive,
+              },
+              {
+                ' text-gray-400': !data.isActive,
+              },
+            ]"
           >
             {{ data.deliveryFee }}
           </p>

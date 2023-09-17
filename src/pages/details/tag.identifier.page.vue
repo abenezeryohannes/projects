@@ -1,12 +1,56 @@
 <template>
   <div class="relative w-full h-screen mt-12">
-    <p
-      v-if="tags.length > 0 && $route.params.id != null"
-      class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg"
-    >
-      {{ "Tag Identifiers" }}
-    </p>
-    <div class="flex w-full pl-3">
+    <div class="w-full pl-3">
+      <div class="flex justify-end w-full mb-3" v-if="$route.params.id != null">
+        <div
+          :class="[
+            {
+              'flex hover:bg-accent-light hover:text-white dark:hover:bg-accent-dark  mr-3 cursor-pointer rounded-xl shadow-lg px-5 py-3 font-bold': true,
+            },
+            {
+              'bg-accent-light dark:bg-accent-dark text-white':
+                language == 'ar',
+            },
+            {
+              'dark:bg-background-deepdark': language != 'ar',
+            },
+          ]"
+          @click="
+            language = 'ar';
+            load();
+          "
+        >
+          Arabic
+        </div>
+        <div
+          :class="[
+            {
+              'flex hover:bg-accent-light hover:text-white dark:hover:bg-accent-dark mr-3 cursor-pointer rounded-xl shadow-lg px-5 py-3 font-bold': true,
+            },
+            {
+              'bg-accent-light dark:bg-accent-dark text-white':
+                language == 'en',
+            },
+            {
+              'dark:bg-background-deepdark': language != 'en',
+            },
+          ]"
+          @click="
+            language = 'en';
+            load();
+          "
+        >
+          English
+        </div>
+      </div>
+
+      <p
+        v-if="tags.length > 0 && $route.params.id != null"
+        class="font-bold capitalize flex justify-start pb-5 pl-3 text-lg"
+      >
+        {{ "Tag Identifiers" }}
+      </p>
+
       <tagInputForm
         v-if="$route.params.id != null"
         class=""
@@ -47,6 +91,7 @@ import { TagIdentifier } from "../../domain/company/entity/tag.identifier.entity
 import EditFab from "../../components/common/edit.fab.vue";
 import { onBeforeRouteLeave } from "vue-router";
 
+let language = ref<String>("en");
 let loading = ref<Boolean>(false);
 let response = ref<any>(null);
 let error = ref<any>(null);
@@ -105,6 +150,7 @@ async function save() {
       await new httpClient().post(`tag-identifiers/addAll`, {
         tagId: route.params.id,
         utterances: tags.value,
+        language: language.value,
         clear: true,
       })
     ).data as WrapperDto<TagIdentifier>;
@@ -131,6 +177,7 @@ async function load() {
     var res = (
       await new httpClient().get(`tag-identifiers/${route.params.id}`, {
         id: route.params.id,
+        language: language.value,
       })
     ).data as WrapperDto<TagIdentifier>;
     console.log("response: ", res);

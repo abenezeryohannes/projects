@@ -5,7 +5,7 @@
     </div>
 
     <div class="md:flex block pt-3">
-      <div class="relative mb-16 lg:w-4/12 md:w-5/12">
+      <div class="relative mb-16 lg:w-4/12 md:w-6/12">
         <search-table-form
           @on-change="
             search = $event;
@@ -51,7 +51,7 @@
                 <action-fab :loading="loading" action='add' @on-action="$router.push({ name: 'add_contract' })" />
             </div> -->
       </div>
-      <div class="md:pl-10 pr-10 md:pr-2">
+      <div class="md:pl-10 pr-10 md:pr-2 lg:w-8/12 md:w-6/12">
         <business-tag-selector-page />
       </div>
     </div>
@@ -62,7 +62,6 @@
 import errorHandlerUtil from "../data/util/error.handler.util";
 import RequestHandler from "../data/util/request.handler";
 import SearchTableForm from "../components/forms/search.table.form.vue";
-// import actionFab from "../components/common/action.fab.vue";
 import businessSimpleTable from "./tables/businesses.simple.table.vue";
 import RouteIndicator from "../components/common/route.indicator.vue";
 import { useRouter } from "vue-router";

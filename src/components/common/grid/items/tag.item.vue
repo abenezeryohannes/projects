@@ -11,7 +11,7 @@
         },
       ]"
       @click="onClick"
-      class="relative py-3 cursor-pointer px-5 flex rounded-2xl shadow-md"
+      class="relative py-3 cursor-pointer px-5 flex rounded-2xl shadow"
     >
       <div
         v-if="hasCol('#actions#') && data != null"
