@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+} from '@nestjs/common';
 import { Roles } from '../../../../auth/domain/guards/roles.decorator';
 import { ROLE } from '../../../../auth/domain/entities/roles';
 import { WrapperDto } from '../../../../core/dto/wrapper.dto';
@@ -14,7 +22,10 @@ export class SuggestionController {
   @Get()
   async findAll(@Request() request) {
     try {
-      const [result, count] = await this.service.findAll(request.query);
+      const [result, count] = await this.service.findAll(
+        request,
+        request.query,
+      );
       return WrapperDto.paginate(result, count, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
@@ -35,7 +46,7 @@ export class SuggestionController {
   }
 
   @Roles(ROLE.ADMIN)
-  @Get('id:/edit')
+  @Post(':id/edit')
   async edit(@Request() request, @Param('id') id: number) {
     try {
       const suggestionDTO = new SuggestionDTO(request.body);
@@ -48,7 +59,7 @@ export class SuggestionController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Delete('delete')
+  @Post('delete')
   async delete(@Request() request, @Body() body) {
     try {
       const result = await this.service.delete(body.id);
@@ -59,7 +70,7 @@ export class SuggestionController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Delete('deleteAll')
+  @Post('delete_all')
   async deleteAll(@Request() request) {
     try {
       const result = await this.service.deleteAll(

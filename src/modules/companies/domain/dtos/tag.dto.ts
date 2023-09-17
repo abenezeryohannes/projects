@@ -4,6 +4,8 @@ import { TagIdentifier } from '../entities/tag.identifier.entity';
 export class TagDto {
   name: string;
 
+  arabicName: string;
+
   type: string;
 
   desc: string;
@@ -23,12 +25,14 @@ export class TagDto {
     if (data.isActive != null) this.isActive = data.isActive;
     if (data.desc != null) this.desc = data.desc;
     if (data.name != null) this.name = data.name;
+    if (data.arabicName != null) this.arabicName = data.arabicName;
     if (data.identifiers != null) this.identifiers = data.identifiers;
   }
 
   static from(entity: Tag): TagDto {
     const dto = new TagDto(null);
     dto.name = entity.name;
+    dto.arabicName = entity.arabicName;
     dto.type = entity.type;
     dto.desc = entity.desc;
     dto.isActive = entity.isActive;

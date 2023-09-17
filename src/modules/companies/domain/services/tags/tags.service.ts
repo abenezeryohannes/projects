@@ -46,16 +46,6 @@ export class TagsService {
     const [data, count] = await this.dataSource
       .getRepository(Tag)
       .findAndCount({
-        select: [
-          'id',
-          'name',
-          'type',
-          'training',
-          'canDetermine',
-          'color',
-          'isActive',
-          'desc',
-        ],
         where: [
           { name: Like('%' + search + '%') },
           { type: Like('%' + search + '%') },
@@ -120,6 +110,10 @@ export class TagsService {
       tag.name = tagDto.name;
     }
 
+    if (tagDto.arabicName != null && tagDto.arabicName != undefined) {
+      tag.arabicName = tagDto.arabicName;
+    }
+
     if (tagDto.canDetermine != null && tagDto.canDetermine != undefined) {
       tag.canDetermine = tagDto.canDetermine;
     }
@@ -144,7 +138,7 @@ export class TagsService {
       tagId: tag.id,
       utterances: tagDto.identifiers,
     };
-    await this.identifierService.deleteAllByTag(tag.id);
+    //await this.identifierService.deleteAllByTag(tag.id, null);
     await this.identifierService.addAll(par);
     //
 
@@ -152,7 +146,7 @@ export class TagsService {
   }
 
   async delete(id: number): Promise<any> {
-    await this.identifierService.deleteAllByTag(id);
+    await this.identifierService.deleteAllByTag(id, null);
     return await this.dataSource.getRepository(Tag).delete({
       id: id,
     });

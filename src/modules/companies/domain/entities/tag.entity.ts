@@ -19,11 +19,17 @@ export class Tag {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  arabicName: string;
+
   @Column({ default: 'industry' })
   type: string;
 
-  @Column({ length: 15600 })
+  @Column({ nullable: true })
   desc: string;
+
+  @Column({ default: 0 })
+  searchCount: number;
 
   @Column()
   color: string;

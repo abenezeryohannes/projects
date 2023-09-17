@@ -43,6 +43,7 @@ export class CompanyDto {
     if (data.deliveryTime != null) this.deliveryTime = data.deliveryTime;
     if (data.deliveryFee != null) this.deliveryFee = data.deliveryFee;
     if (data.isActive != null) this.isActive = data.isActive;
+    else data.isActive = false;
     if (data.badge != null) this.badge = data.badge;
     if (data.badgeColor != null) this.badgeColor = data.badgeColor;
     if (data.tags != null)

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Like } from 'typeorm';
+import { DataSource, In, Like } from 'typeorm';
 import { Suggestion } from '../../entities/suggestion.entity';
 import { SuggestionDTO } from '../../dto/suggestion.dto';
 
@@ -7,7 +7,7 @@ import { SuggestionDTO } from '../../dto/suggestion.dto';
 export class SuggestionService {
   constructor(readonly dataSource: DataSource) {}
 
-  async findAll(query: any): Promise<[Suggestion[], number]> {
+  async findAll(request: any, query: any): Promise<[Suggestion[], number]> {
     const limit = Number(query.limit ?? '25');
     const page = Number(query.page ?? '1');
     const search = query.search ?? '';
@@ -30,8 +30,14 @@ export class SuggestionService {
       .getRepository(Suggestion)
       .findAndCount({
         where: [
-          { title: Like('%' + search + '%') },
-          { text: Like('%' + search + '%') },
+          {
+            title: Like('%' + search + '%'),
+            isActive: request.user.role != 'ADMIN' ? true : In([true, false]),
+          },
+          {
+            text: Like('%' + search + '%'),
+            isActive: request.user.role != 'ADMIN' ? true : In([true, false]),
+          },
         ],
         order: sort_by,
         take: limit,

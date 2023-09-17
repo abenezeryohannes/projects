@@ -6,6 +6,8 @@ import { ChatTrainersController } from './controllers/chat-trainers/chat.trainer
 import { ChatTrainersService } from './domain/services/chat-trainers/chat-trainers.service';
 import { SuggestionController } from './controllers/suggestion/suggestion.controller';
 import { SuggestionService } from './domain/services/suggestion/suggestion.service';
+import { ChatdocumentsController } from './controllers/chatdocuments/chatdocuments.controller';
+import { ChatdocumentsService } from './domain/services/chatdocuments/chatdocuments.service';
 
 @Module({
   providers: [
@@ -13,7 +15,13 @@ import { SuggestionService } from './domain/services/suggestion/suggestion.servi
     ChatsService,
     ChatTrainersService,
     SuggestionService,
+    ChatdocumentsService,
   ],
-  controllers: [ChatsController, ChatTrainersController, SuggestionController],
+  controllers: [
+    ChatsController,
+    ChatTrainersController,
+    SuggestionController,
+    ChatdocumentsController,
+  ],
 })
 export class ChatsModule {}

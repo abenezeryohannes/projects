@@ -20,7 +20,7 @@ export class TagIdentifierController {
   @Get(':tagId')
   async findAll(@Request() request, @Param('tagId') tagId: number) {
     try {
-      const result = await this.service.findAll(tagId);
+      const result = await this.service.findAll(request, tagId);
       return WrapperDto.paginateHalf(result, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
@@ -75,7 +75,7 @@ export class TagIdentifierController {
   @Post('deleteByTag/:tagId')
   async deleteByTag(@Request() request, @Param('tagId') tagId: number) {
     try {
-      const result = await this.service.deleteAllByTag(tagId);
+      const result = await this.service.deleteAllByTag(tagId, null);
       return WrapperDto.successfullCreated(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);

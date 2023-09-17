@@ -272,33 +272,60 @@ export class ChatTrainersService {
         tags[i].name,
         ['en'],
         [
-          ...tags[i].tagIdentifiers.map((ti) => ti.utterance),
+          ...tags[i].tagIdentifiers
+            .filter((f) => f.language != 'ar')
+            .map((ti) => ti.utterance),
           tags[i].name.toLowerCase(),
         ],
       );
+      if (tags[i].arabicName != null && tags[i].arabicName.trim().length > 0)
+        manager.addNamedEntityText(
+          tags[i].arabicName,
+          tags[i].arabicName,
+          ['ar'],
+          [
+            ...tags[i].tagIdentifiers
+              .filter((f) => f.language == 'ar')
+              .map((ti) => ti.utterance),
+            tags[i].arabicName.toLowerCase(),
+          ],
+        );
     }
 
     //train about companies entity
-    const companies = await this.dataSource
-      .getRepository(Company)
-      .find({ relations: ['companyIdentifiers'] });
-    for (let i = 0; i < companies.length; i++) {
-      // for (let j = 0; j < tags[i].companies.length; j++) {
-      manager.addNamedEntityText(
-        companies[i].name,
-        companies[i].name,
-        ['en'],
-        [
-          ...companies[i].companyIdentifiers.map((ci) => ci.utterance),
-          companies[i].name.toLowerCase(),
-        ],
-      );
-    }
+    // const companies = await this.dataSource
+    //   .getRepository(Company)
+    //   .find({ relations: ['companyIdentifiers'] });
+    // for (let i = 0; i < companies.length; i++) {
+    //   // for (let j = 0; j < tags[i].companies.length; j++) {
+    //   manager.addNamedEntityText(
+    //     companies[i].name,
+    //     companies[i].name,
+    //     ['en'],
+    //     [
+    //       ...companies[i].companyIdentifiers
+    //         .filter((f) => f.language != 'ar')
+    //         .map((ci) => ci.utterance),
+    //       companies[i].name.toLowerCase(),
+    //     ],
+    //   );
+    //   manager.addNamedEntityText(
+    //     companies[i].arabicName,
+    //     companies[i].arabicName,
+    //     ['ar'],
+    //     [
+    //       ...companies[i].companyIdentifiers
+    //         .filter((f) => f.language == 'ar')
+    //         .map((ci) => ci.utterance),
+    //       companies[i].name.toLowerCase(),
+    //     ],
+    //   );
+    // }
 
     ///
     // Train with chatTrainer datas
     ///
-    manager.addAfterLastCondition('en', 'name', ['is', "I'm"]);
+    // manager.addAfterLastCondition('en', 'name', ['is', "I'm"]);
     const trainers = await this.dataSource.getRepository(ChatTrainer).find();
     for (let i = 0; i < trainers.length; i++) {
       if (trainers[i].command.toLowerCase().includes('document')) {
@@ -340,7 +367,11 @@ export class ChatTrainersService {
           );
       } else if (trainers[i].command.toLowerCase().includes('domain')) {
         if (trainers[i].name != null)
-          manager.assignDomain('en', trainers[i].intent, trainers[i].name);
+          manager.assignDomain(
+            trainers[i].language,
+            trainers[i].intent,
+            trainers[i].name,
+          );
       }
     }
     await manager.train();

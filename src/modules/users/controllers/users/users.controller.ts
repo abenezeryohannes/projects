@@ -25,6 +25,20 @@ import { validateOrReject } from 'class-validator';
 export class UsersController {
   constructor(private userService: UsersService) {}
 
+  @Roles(ROLE.ADMIN)
+  @Get('findAll')
+  async findAllUsers(@Request() request) {
+    try {
+      const [result, count] = await this.userService.findAll(
+        request,
+        request.query,
+      );
+      return WrapperDto.paginate(result, count, request.query);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
   @Roles(ROLE.ADMIN, ROLE.USER)
   @Get()
   async get(@Request() request) {
@@ -62,22 +76,22 @@ export class UsersController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Get(':id')
-  async find(@Request() request, @Param('id') id: number) {
+  @Get('online')
+  async online(@Request() request) {
     try {
-      const result = await this.userService.findOne(id);
+      const result = await this.userService.online(request);
       return WrapperDto.successfullCreated(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }
   }
 
-  @Roles(ROLE.ADMIN)
-  @Get('findAll')
-  async findAllUsers(@Request() request) {
+  @Roles(ROLE.ADMIN, ROLE.USER)
+  @Get(':id')
+  async find(@Request() request, @Param('id') id: number) {
     try {
-      const result = await this.userService.findAll(request);
-      return WrapperDto.paginateHalf(result, request.query);
+      const result = await this.userService.findOne(id);
+      return WrapperDto.successfullCreated(result);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);
     }

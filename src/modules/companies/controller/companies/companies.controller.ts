@@ -89,7 +89,7 @@ export class CompaniesController {
   @Get()
   async findAll(@Request() request) {
     try {
-      const [data, count] = await this.service.findAll(request.query);
+      const [data, count] = await this.service.findAll(request, request.query);
       return WrapperDto.paginate(data, count, request.query);
     } catch (error) {
       return WrapperDto.figureOutTheError(error);

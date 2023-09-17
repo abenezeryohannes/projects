@@ -6,6 +6,9 @@ export class TagIdentifier {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ default: 'en' })
+  language: string;
+
   @Column()
   utterance?: string;
 

@@ -6,6 +6,9 @@ export class CompanyIdentifier {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ default: 'en' })
+  language: string;
+
   @Column()
   utterance?: string;
 

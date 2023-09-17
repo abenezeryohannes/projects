@@ -9,6 +9,9 @@ import { ChatTrainer } from '../modules/chats/domain/entities/chat.trainer.entit
 import { TagIdentifier } from '../modules/companies/domain/entities/tag.identifier.entity';
 import { CompanyIdentifier } from '../modules/companies/domain/entities/company.identifier.entity';
 import { Suggestion } from '../modules/chats/domain/entities/suggestion.entity';
+import { ChatDocument } from '../modules/chats/domain/entities/chat.document.entity';
+import { Session } from '../modules/users/domain/entities/session.entity';
+import { Notification } from '../modules/notifications/domain/entities/notification.entity';
 
 dotenv.config({ path: '.env' });
 
@@ -26,14 +29,17 @@ export const config = {
   entities: [
     User,
     Token,
+    Notification,
     Tag,
     Company,
     Favorite,
     Chat,
     ChatTrainer,
+    ChatDocument,
     TagIdentifier,
     CompanyIdentifier,
     Suggestion,
+    Session,
   ],
   migrations: ['./src/database/migrations/*{.ts,.js}'],
   synchronize: true,

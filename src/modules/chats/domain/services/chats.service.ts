@@ -1,5 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, In, LessThan, MoreThan, MoreThanOrEqual } from 'typeorm';
+import {
+  DataSource,
+  In,
+  IsNull,
+  LessThan,
+  MoreThan,
+  MoreThanOrEqual,
+} from 'typeorm';
 import { Socket } from 'socket.io';
 import { WsException } from '@nestjs/websockets';
 import { Chat } from '../entities/chat.entity';
@@ -11,6 +18,7 @@ import * as fs from 'fs';
 import { Tag } from '../../../companies/domain/entities/tag.entity';
 import { Company } from '../../../companies/domain/entities/company.entity';
 import { join } from 'path';
+import { ChatDocument } from '../entities/chat.document.entity';
 
 @Injectable()
 export class ChatsService {
@@ -148,6 +156,13 @@ export class ChatsService {
     chat.type = createChatDto.type;
     chat.sender = user;
     chat = await this.dataSource.getRepository(Chat).save(chat);
+    //document chat;
+    const chatDoc = new ChatDocument();
+    chatDoc.sender = user;
+    chatDoc.isActive = true;
+    chatDoc.text = createChatDto.data;
+    await this.dataSource.getRepository(ChatDocument).save(chatDoc);
+    //
     return chat;
   }
 
@@ -197,6 +212,44 @@ export class ChatsService {
       count: count,
     };
   }
+
+  // async findAllUnDocumented(request: any): Promise<any> {
+  //   const limit = request.query.limit ?? 25;
+  //   const page = request.query.page ?? 1;
+  //   const id = request.query.id ?? -1;
+
+  //   const user = await this.dataSource
+  //     .getRepository(User)
+  //     .findOne({ where: { id: request.user.id, isActive: true } });
+
+  //   const sqlQuery = [{ receiver: IsNull(), isDocumented: false }];
+
+  //   const [chats, count] = await this.dataSource
+  //     .getRepository(Chat)
+  //     .findAndCount({
+  //       where:
+  //         id > 0
+  //           ? [
+  //               {
+  //                 receiver: IsNull(),
+  //                 id: LessThan(id),
+  //                 isDocumented: false,
+  //               },
+  //             ]
+  //           : sqlQuery,
+  //       take: limit,
+  //       relations: ['sender', 'receiver'],
+  //       order: {
+  //         id: 'DESC',
+  //       },
+  //       skip: id > 0 ? 0 : limit * (page - 1),
+  //     });
+
+  //   return {
+  //     data: chats,
+  //     count: count,
+  //   };
+  // }
 
   async respondToClient(receivedChat: Chat): Promise<Chat> {
     const chat = new Chat();
@@ -274,9 +327,9 @@ export class ChatsService {
   async parseTagFromEntities(entities: any[]): Promise<Tag[]> {
     if (entities.length == 0) return [];
     const entitiesName = entities.map((e) => e['entity']);
-    return await this.dataSource
-      .getRepository(Tag)
-      .find({ where: { name: In(entitiesName) } });
+    return await this.dataSource.getRepository(Tag).find({
+      where: [{ name: In(entitiesName) }, { arabicName: In(entitiesName) }],
+    });
   }
 
   getTagIds(tags: Tag[]) {
@@ -292,6 +345,15 @@ export class ChatsService {
   }
 
   async getBusinessesFromTags(tags: Tag[], context: any): Promise<any | null> {
+    //
+    await this.dataSource
+      .createQueryBuilder()
+      .update(Tag)
+      .set({
+        searchCount: () => 'searchCount + 1',
+      })
+      .where('id in (:ids)', { ids: tags.map((c) => c.id) })
+      .execute();
     //
     const sql_query =
       'SELECT companyID as id FROM company_tag_id where tagID in ' +
@@ -322,7 +384,7 @@ export class ChatsService {
     const [comps, count] = await this.dataSource
       .getRepository(Company)
       .findAndCount({
-        where: { id: In(companyIDs) },
+        where: { id: In(companyIDs), isActive: true },
         // relations: ['favoritesof'],
         // take: limit,
         select: ['id'],
@@ -330,11 +392,21 @@ export class ChatsService {
       });
     if (comps == null || count == null || comps.length == 0 || count == 0)
       return null;
-    else
+    else {
+      await this.dataSource
+        .createQueryBuilder()
+        .update(Company)
+        .set({
+          found: () => 'found + 1',
+        })
+        .where('id in (:ids)', { ids: comps.map((c) => c.id) })
+        .execute();
+
       return {
         datas: comps.length > 0 ? comps.map((c) => c.id) : comps,
         count: count,
       };
+    }
   }
 
   async processAIResponse(

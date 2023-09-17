@@ -20,6 +20,9 @@ export class Chat {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: false })
+  isDocumented: boolean;
+
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

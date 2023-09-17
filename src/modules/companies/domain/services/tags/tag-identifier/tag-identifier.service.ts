@@ -13,15 +13,21 @@ export class TagIdentifierService {
       .delete({ id: In(body.ids) });
   }
 
-  async deleteAllByTag(tagId: number): Promise<any> {
+  async deleteAllByTag(tagId: number, lang: string | null): Promise<any> {
     const tag = await this.dataSource
       .getRepository(Tag)
       .findOneBy({ id: tagId });
     tag.training = 0;
     await this.dataSource.getRepository(Tag).save(tag);
-    return await this.dataSource
-      .getRepository(TagIdentifier)
-      .delete({ tag: tag });
+    if (lang == null) {
+      return await this.dataSource
+        .getRepository(TagIdentifier)
+        .delete({ tag: tag });
+    } else {
+      return await this.dataSource
+        .getRepository(TagIdentifier)
+        .delete({ language: lang, tag: tag });
+    }
   }
 
   async delete(id: number): Promise<any> {
@@ -30,23 +36,37 @@ export class TagIdentifierService {
       .delete({ id: id });
   }
 
-  async add(body: any): Promise<TagIdentifier> {
+  async add(body: {
+    tagId: number;
+    utterance: string;
+    language: string;
+  }): Promise<TagIdentifier> {
     const tagIdentifier = new TagIdentifier();
-    tagIdentifier.tag = await this.dataSource
-      .getRepository(Tag)
-      .findOneBy({ id: body.tagId });
-    if (tagIdentifier.tag == null) {
-      throw Error('No tag with id: ' + body.tagId);
-    }
-    tagIdentifier.utterance = body.utterance;
+    tagIdentifier.utterance = (body.utterance as string).replaceAll('\n', '');
+    tagIdentifier.language = body.language;
+
+    let newIdentifier = await this.dataSource
+      .getRepository(TagIdentifier)
+      .create(tagIdentifier);
+
+    newIdentifier = await this.dataSource
+      .getRepository(TagIdentifier)
+      .save(newIdentifier);
 
     const tag = await this.dataSource
       .getRepository(Tag)
-      .findOneBy({ id: body.tagId });
+      .findOne({ where: { id: body.tagId } });
     tag.training = tag.training + 1;
+    // tag.tagIdentifiers.push(newIdentifier);
     await this.dataSource.getRepository(Tag).save(tag);
 
-    return this.dataSource.getRepository(TagIdentifier).save(tagIdentifier);
+    await this.dataSource
+      .createQueryBuilder()
+      .relation(Tag, 'tagIdentifiers')
+      .of(tag.id)
+      .add(newIdentifier.id);
+
+    return newIdentifier;
   }
 
   async addAll(body: any): Promise<any> {
@@ -65,23 +85,29 @@ export class TagIdentifierService {
     }
 
     const ops = [];
-    if (body.clear) await this.deleteAllByTag(body.tagId);
+    if (body.clear) await this.deleteAllByTag(body.tagId, body.language);
     body.utterances.forEach((utterance) => {
-      const obj = { tagId: Number, utterance: String };
-      obj.tagId = body.tagId;
-      obj.utterance = utterance;
-      ops.push(this.add(obj));
+      if (utterance != null && (utterance as string).trim().length > 0) {
+        ops.push(
+          this.add({
+            tagId: body.tagId,
+            utterance: utterance,
+            language: body.language,
+          }),
+        );
+      }
     });
 
     return await Promise.all(ops);
   }
 
-  async findAll(tagId: number): Promise<TagIdentifier[]> {
+  async findAll(request: any, tagId: number): Promise<TagIdentifier[]> {
+    const lang = request.query.language ?? 'en';
     const tag = await this.dataSource
       .getRepository(Tag)
       .findOneBy({ id: tagId });
     return await this.dataSource.getRepository(TagIdentifier).find({
-      where: { tag: tag },
+      where: { tag: tag, language: lang },
       order: { id: 'DESC' },
     });
   }

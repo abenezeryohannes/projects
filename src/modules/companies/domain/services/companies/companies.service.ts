@@ -4,12 +4,13 @@ import { DataSource, In, Like } from 'typeorm';
 import { Company } from '../../entities/company.entity';
 import { join } from 'path';
 import { Tag } from '../../entities/tag.entity';
+import { TagIdentifier } from '../../entities/tag.identifier.entity';
 
 @Injectable()
 export class CompaniesService {
   constructor(readonly dataSource: DataSource) {}
 
-  async findAll(query: any): Promise<[Company[], number]> {
+  async findAll(request: any, query: any): Promise<[Company[], number]> {
     const limit = Number(query.limit ?? '25');
     const page = Number(query.page ?? '1');
     const search = query.search ?? '';
@@ -50,9 +51,18 @@ export class CompaniesService {
       .getRepository(Company)
       .findAndCount({
         where: [
-          { name: Like('%' + search + '%') },
-          { deliveryFee: Like('%' + search + '%') },
-          { deliveryTime: Like('%' + search + '%') },
+          {
+            name: Like('%' + search + '%'),
+            isActive: request.user.role != 'ADMIN' ? true : In([true, false]),
+          },
+          {
+            deliveryFee: Like('%' + search + '%'),
+            isActive: request.user.role != 'ADMIN' ? true : In([true, false]),
+          },
+          {
+            deliveryTime: Like('%' + search + '%'),
+            isActive: request.user.role != 'ADMIN' ? true : In([true, false]),
+          },
         ],
         order: sort_by,
         take: limit,
@@ -165,6 +175,7 @@ export class CompaniesService {
 
     if (companyDto.isActive != null && companyDto.isActive != undefined) {
       company.isActive = companyDto.isActive;
+      this.train(company);
     }
 
     if (
@@ -192,12 +203,13 @@ export class CompaniesService {
     let company: Company = CompanyDto.toEntity(companyDto);
 
     company.userId = request.user.id;
-    company.isActive = false;
+    company.isActive = companyDto.isActive;
 
     if (request.file != null)
       company.banner = join('public', request.file.filename);
 
     company = await this.dataSource.getRepository(Company).save(company);
+    this.train(company);
     // tags
     // get already saved tags
     if (
@@ -223,5 +235,37 @@ export class CompaniesService {
       return await this.dataSource.getRepository(Company).save(company);
     }
     return company;
+  }
+
+  async train(company: Company) {
+    if (company.isActive) {
+      let tag = new Tag();
+      tag.arabicName = company.name;
+      tag.name = company.name;
+      tag.desc = `Tag for ${company.name}`;
+      tag.type = 'Business Name';
+      tag.canDetermine = true;
+      tag = await this.dataSource.getRepository(Tag).save(tag);
+      let tagIdentifier = new TagIdentifier();
+      tagIdentifier.language = 'en';
+      tagIdentifier.tag = tag;
+      tagIdentifier.utterance = company.name;
+      tagIdentifier = await this.dataSource
+        .getRepository(TagIdentifier)
+        .save(tagIdentifier);
+      let tagIdentifier2 = new TagIdentifier();
+      tagIdentifier2.language = 'ar';
+      tagIdentifier2.tag = tag;
+      tagIdentifier2.utterance = company.name;
+      tagIdentifier2 = await this.dataSource
+        .getRepository(TagIdentifier)
+        .save(tagIdentifier2);
+    } else {
+      const tag = await this.dataSource
+        .getRepository(Tag)
+        .findOne({ where: { name: company.name } });
+      await this.dataSource.getRepository(TagIdentifier).delete({ tag: tag });
+      await this.dataSource.getRepository(Tag).delete({ name: tag.name });
+    }
   }
 }

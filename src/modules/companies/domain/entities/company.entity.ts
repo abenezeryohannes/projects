@@ -47,6 +47,12 @@ export class Company {
   @Column({ default: 0 })
   liked: number;
 
+  @Column({ default: 0 })
+  found: number;
+
+  @Column({ default: 0 })
+  clicked: number;
+
   @Column({ default: true })
   isActive: boolean;
 
@@ -76,5 +82,6 @@ export class Company {
   @OneToMany(() => CompanyIdentifier, (identifier) => identifier.company)
   companyIdentifiers: CompanyIdentifier[];
 
-  //companyIdentifiers
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }
