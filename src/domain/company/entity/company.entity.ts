@@ -6,6 +6,7 @@ import { Tag } from "./tag.entity";
 export class Company {
   id?: number;
   name?: string;
+  arabicName?: string;
   userId?: number;
   banner?: string;
   url?: string;

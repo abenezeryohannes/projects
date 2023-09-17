@@ -59,8 +59,8 @@
         <div
           class="absolute text-left inset-x-[15%] bottom-5 hidden py-5 text-white md:block"
         >
-          <h5 class="text-xl">First slide label</h5>
-          <p>Some representative placeholder content for the first slide.</p>
+          <h5 class="text-xl">{{ list[0].name }}</h5>
+          <p>{{ list[0].arabicName }}</p>
         </div>
       </div>
       <!--Second item-->
@@ -78,8 +78,8 @@
         <div
           class="absolute text-left inset-x-[15%] bottom-5 hidden py-5 text-white md:block"
         >
-          <h5 class="text-xl">Second slide label</h5>
-          <p>Some representative placeholder content for the second slide.</p>
+          <h5 class="text-xl">{{ list[1].name }}</h5>
+          <p>{{ list[1].arabicName }}</p>
         </div>
       </div>
       <!--Third item-->
@@ -97,8 +97,8 @@
         <div
           class="absolute text-left inset-x-[15%] bottom-5 hidden py-5 text-white md:block"
         >
-          <h5 class="text-xl">Third slide label</h5>
-          <p>Some representative placeholder content for the third slide.</p>
+          <h5 class="text-xl">{{ list[2].name }}</h5>
+          <p>{{ list[2].arabicName }}</p>
         </div>
       </div>
     </div>
