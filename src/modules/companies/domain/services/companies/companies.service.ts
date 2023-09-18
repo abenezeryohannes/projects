@@ -245,6 +245,7 @@ export class CompaniesService {
       tag.desc = `Tag for ${company.name}`;
       tag.type = 'Business Name';
       tag.canDetermine = true;
+      tag.color = '#FFFFFF';
       tag = await this.dataSource.getRepository(Tag).save(tag);
       let tagIdentifier = new TagIdentifier();
       tagIdentifier.language = 'en';
