@@ -199,6 +199,23 @@ export class CompaniesService {
     return company;
   }
 
+  async click(request: any): Promise<Company> {
+    const id = Number(request.body.id ?? '-1');
+    if (id < 1) {
+      throw new Error('Sorry, No Business id provided!');
+    }
+    const company = await this.dataSource
+      .getRepository(Company)
+      .findOne({ where: { id: id } });
+
+    if (company == null) throw new Error('Sorry, Business not found to edit!');
+
+    company.clicked = company.clicked + 1;
+    await this.dataSource.getRepository(Company).save(company);
+
+    return company;
+  }
+
   async add(request: any, companyDto: CompanyDto): Promise<Company> {
     let company: Company = CompanyDto.toEntity(companyDto);
 

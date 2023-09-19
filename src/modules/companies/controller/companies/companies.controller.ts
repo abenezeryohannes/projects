@@ -117,6 +117,18 @@ export class CompaniesController {
       return WrapperDto.figureOutTheError(error);
     }
   }
+
+  @Roles(ROLE.USER)
+  @Post('click')
+  async click(@Request() request) {
+    try {
+      const result = await this.service.click(request);
+      return WrapperDto.successfull(result);
+    } catch (error) {
+      return WrapperDto.figureOutTheError(error);
+    }
+  }
+
   @Roles(ROLE.ADMIN)
   @Post('delete')
   async delete(@Request() request) {

@@ -76,7 +76,7 @@ export class UsersController {
   }
 
   @Roles(ROLE.ADMIN, ROLE.USER)
-  @Get('online')
+  @Post('online')
   async online(@Request() request) {
     try {
       const result = await this.userService.online(request);
