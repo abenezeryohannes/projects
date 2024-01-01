@@ -6,12 +6,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rnginfra/src/core/domain/entities/visitation.entity.dart';
 import 'package:share_screenshot_widget/share_screenshot_widget.dart';
-import 'package:social_share/social_share.dart';
 
 import 'package:flutter/services.dart';
 import 'package:rnginfra/src/core/widgets/big.text.button.dart';
-
-import '../../../../../core/utils/utils.dart';
 
 class VisitorAddedDialog extends StatefulWidget {
   const VisitorAddedDialog({super.key, this.visitation});

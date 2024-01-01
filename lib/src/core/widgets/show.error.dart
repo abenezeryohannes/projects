@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rnginfra/src/core/widgets/big.text.button.dart';
 
 import '../errors/failure.dart';
 
@@ -96,6 +97,22 @@ class _ShowErrorState extends State<ShowError> {
                   color: Colors.redAccent,
                   fontWeight: FontWeight.bold,
                   fontSize: 12)),
+          if (widget.onRetry != null)
+            BigTextButton(
+              onClick: () {
+                widget.onRetry!();
+              },
+              text: 'Retry',
+              cornerRadius: 20,
+              backgroudColor: Theme.of(context).colorScheme.background,
+              textColor: Theme.of(context).colorScheme.secondary,
+              borderColor: Theme.of(context).colorScheme.secondary,
+              borderWidth: 2,
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 30),
+              horizontalMargin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * (3 / 12),
+                  vertical: 16),
+            )
         ],
       );
     }

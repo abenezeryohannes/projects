@@ -2,28 +2,28 @@ flavors:
   residents:
     app:
       name: "RNG management"
-      icon: "assets/icon/logo.png"
+      icon: "assets/icon/logo.jpg"
 
     android:
-      applicationId: "com.technikh.rnginfra.residents"  
-      # firebase:
-      #   config: "./lib/firebase/visitors/google-services.json"
-      
+      applicationId: "com.technikh.rnginfra.residents"
+      firebase:
+        config: "./lib/firebase/residents/google-services.json"
+
     ios:
-      bundleId: "com.technikh.rnginfra.residents"  
-      # firebase:
-      #   config: "./lib/firebase/visitors/GoogleService-Info.plist"
+      bundleId: "com.technikh.rnginfra.residents"
+      firebase:
+        config: "./lib/firebase/residents/GoogleService-Info.plist"
 
     # macos:
-    #   bundleId: "com.technikh.rnginfra.visitors"  
-      # firebase:
-      #   config: "./lib/firebase/visitors/GoogleService-Info.plist"
-  
+    #   bundleId: "com.technikh.rnginfra.visitors"
+    # firebase:
+    #   config: "./lib/firebase/visitors/GoogleService-Info.plist"
+
   guards:
     app:
-      name: "RNG security" 
-      icon: "assets/icon/logo.png"
-  
+      name: "RNG security"
+      icon: "assets/icon/logo.jpg"
+
     android:
       applicationId: "com.technikh.rnginfra.guards"
       firebase:
@@ -34,5 +34,5 @@ flavors:
         config: "./lib/firebase/guards/GoogleService-Info.plist"
     # macos:
     #   bundleId: "com.technikh.rnginfra.guards"
-      # firebase:
-      #   config: "./lib/firebase/guards/GoogleService-Info.plist"
+    # firebase:
+    #   config: "./lib/firebase/guards/GoogleService-Info.plist"

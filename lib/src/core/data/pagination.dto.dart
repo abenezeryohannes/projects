@@ -6,6 +6,9 @@ import 'package:rnginfra/src/core/domain/entities/guest.visitation.entity.dart';
 import 'package:rnginfra/src/core/domain/entities/resident.entity.dart';
 import 'package:rnginfra/src/core/domain/entities/visitation.entity.dart';
 import 'package:rnginfra/src/guards/activity/domain/entities/staff.attendance.entity.dart';
+import 'package:rnginfra/src/residents/visitors/domain/entities/category.entity.dart';
+import 'package:rnginfra/src/residents/visitors/domain/entities/comment.entity.dart';
+import 'package:rnginfra/src/residents/visitors/domain/entities/complaint.entity.dart';
 
 import '../../guards/patroll/domain/entitites/patroll.entity.dart';
 
@@ -78,6 +81,18 @@ class _Converter<T> implements JsonConverter<T, Object> {
         json.containsKey('field_staff_entry') &&
         json.containsKey('field_staff_exit')) {
       return StaffAttendanceEntity.fromJson(json) as T;
+    } else if (json is Map<String, dynamic> &&
+        json.containsKey('parent_target_id') &&
+        json.containsKey('tid')) {
+      return CategoryEntity.fromJson(json) as T;
+    } else if (json is Map<String, dynamic> &&
+        json.containsKey('subject') &&
+        json.containsKey('comment_body')) {
+      return CommentEntity.fromJSONList(json) as T;
+    } else if (json is Map<String, dynamic> &&
+        json.containsKey('field_complaint_category') &&
+        json.containsKey('body')) {
+      return ComplaintEntity.parseJSONFROMLIST(json) as T;
     }
     return json as T;
   }
@@ -100,6 +115,18 @@ class _Converter<T> implements JsonConverter<T, Object> {
       return (object).toJson();
     }
     if (object is ResidentEntity) {
+      return (object).toJson();
+    }
+
+    if (object is CommentEntity) {
+      return (object).toJson();
+    }
+
+    if (object is CategoryEntity) {
+      return (object).toJson();
+    }
+
+    if (object is ComplaintEntity) {
       return (object).toJson();
     }
     // if (object is GuestVisitationEntity) {

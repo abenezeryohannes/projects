@@ -174,7 +174,7 @@ class _ImageFormState extends State<ImageForm> {
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) => _error(error),
       );
-    } else if (url.startsWith('/data')) {
+    } else if (File(url).existsSync()) {
       return Image.file(
         File(url),
         width: widget.width,

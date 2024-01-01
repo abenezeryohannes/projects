@@ -1,13 +1,12 @@
 name: rnginfra
 description: A new Flutter project.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
-
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
   flutter:
@@ -25,7 +24,7 @@ dependencies:
   shared_preferences: ^2.1.2
   mockito: ^5.4.2
   dio: ^5.2.1+1
-  json_annotation: ^4.8.1 
+  json_annotation: ^4.8.1
   webview_flutter: ^4.2.2
   image_picker: ^1.0.0
   dots_indicator: ^3.0.0
@@ -41,11 +40,11 @@ dependencies:
   dismissible_page: ^1.0.2
   # pull_to_refresh: ^2.0.0
   pull_to_refresh_plus: ^2.0.3
-  fast_cached_network_image: ^1.2.0 
-  expandable_page_view: ^1.0.17 
+  fast_cached_network_image: ^1.2.0
+  expandable_page_view: ^1.0.17
   qr_code_scanner: ^1.0.1
   intl: ^0.18.0
-  
+
   cupertino_icons: ^1.0.2
   country_selector_widget: ^0.1.1
   adaptive_theme: ^3.3.0
@@ -54,7 +53,7 @@ dependencies:
   sticky_and_expandable_list: ^1.1.2
   pull_to_refresh: ^2.0.0
   flutter_date_pickers: ^0.4.2
-  animated_bottom_navigation_bar: ^1.2.0 
+  animated_bottom_navigation_bar: ^1.2.0
   animated_floating_buttons: ^0.0.1
   infinite_scroll_pagination: ^3.2.0
   animated_theme_switcher: ^2.0.8
@@ -65,7 +64,9 @@ dependencies:
   social_share: ^2.3.1
   im_stepper: ^1.0.1+1
   share_screenshot_widget: ^0.0.5
-
+  dropdown_button2: ^2.3.9
+  bottom_sheet: ^4.0.0
+  full_screen_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -75,24 +76,20 @@ dev_dependencies:
   json_serializable: ^6.7.0
   injectable_generator: ^2.1.6
 
-  change_app_package_name: ^1.1.0  
-  flutter_flavorizr: ^2.2.1 
+  change_app_package_name: ^1.1.0
+  flutter_flavorizr: ^2.2.1
   flutter_launcher_icons: ^0.13.1
- 
+
   flutter_lints: ^2.0.0
-
-
-
 
 flutter:
   uses-material-design: true
- 
-  assets: 
+
+  assets:
     - assets/img/
     - assets/icon/
     - assets/fixtures/
-    - .env 
-
+    - .env
 
 flutter_native_splash:
   color: "#fafafa"
@@ -108,27 +105,19 @@ flutter_native_splash:
     color: "#fafafa"
     color_dark: "#fafafa"
 
-
-
-
-
-
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/logo.png"
+  image_path: "assets/icon/logo.jpg"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/icon/logo.png"
+    image_path: "assets/icon/logo.jpg"
     background_color: "#f4f4f4"
     theme_color: "#ffffff"
   windows:
     generate: true
-    image_path: "assets/icon/logo.png"
-
-
-
+    image_path: "assets/icon/logo.jpg"
 
   # fonts:
   #   - family: Schyler
@@ -141,4 +130,17 @@ flutter_icons:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  
+#
+#
+
+# flutterfire config \
+#   --project=rng-infradev \
+#   --out=lib/firebase/guards/firebase_options.dart \
+#   --ios-bundle-id=com.technikh.rnginfra.guards \
+#   --android-app-id=com.technikh.rnginfra.guards
+
+# flutterfire config \
+#   --project=rng-infradev \
+#   --out=lib/firebase/residents/firebase_options.dart \
+#   --ios-bundle-id=com.technikh.rnginfra.residents \
+#   --android-app-id=com.technikh.rnginfra.residents

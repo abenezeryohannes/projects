@@ -116,4 +116,9 @@ class Util {
     String t2 = val.substring(val.lastIndexOf(':') + 1);
     return Duration(minutes: int.parse(t2), hours: int.parse(t2));
   }
+
+  static DateTime? parseTimeStamp(String? timeStamp) {
+    if (timeStamp == null || int.tryParse(timeStamp) == null) return null;
+    return DateTime.fromMillisecondsSinceEpoch(int.parse(timeStamp) * 1000);
+  }
 }

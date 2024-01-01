@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
 import '../errors/failure.dart';
@@ -77,6 +78,10 @@ class AppSnackBar {
 
   AppSnackBar.failure(
       {required Failure failure, SnackPosition? position, Duration? duration}) {
+    if (dotenv.env['ENV']!.toLowerCase().startsWith('prod') &&
+        (failure.runtimeType == ClientFailure ||
+            failure.runtimeType == CacheFailure ||
+            failure.runtimeType == Failure)) return;
     Get.snackbar('Error', failure.message ?? 'Unknown',
         duration: duration ?? const Duration(seconds: 3),
         messageText: Text(

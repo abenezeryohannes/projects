@@ -2,24 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>664368582662-ej5flv84939qs1kvlufpj3ogro9d940d.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.664368582662-ej5flv84939qs1kvlufpj3ogro9d940d</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>664368582662-1kqmtkt0eghp9mevkchl520fk5i1c78u.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyApyt76ReGszMMdHxjtiouktyKf5U5ZwuA</string>
+	<string>AIzaSyDJsUBEo3TJKpm7m0ZPm-rJwmT2dqaY0DE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>664368582662</string>
+	<string>1034850505851</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.technikh.rnginfra.guards</string>
+	<string>com.technikh.rnginfra.residents</string>
 	<key>PROJECT_ID</key>
-	<string>coop-d1eaf</string>
+	<string>rng-infradev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>coop-d1eaf.appspot.com</string>
+	<string>rng-infradev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:664368582662:ios:71cd3a693503a8857cf387</string>
-	<key>DATABASE_URL</key>
-	<string>https://coop-d1eaf.firebaseio.com</string>
+	<string>1:1034850505851:ios:866a6b19087de6d96a3ede</string>
 </dict>
 </plist>

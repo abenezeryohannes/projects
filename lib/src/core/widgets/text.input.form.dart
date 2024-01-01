@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
 
 class TextInputForm extends StatefulWidget {
-  const TextInputForm({
-    Key? key,
-    this.label,
-    required this.placeholder,
-    this.error,
-    this.focusNode,
-    this.enabled = true,
-    this.initialValue,
-    required this.onChanged,
-    this.suffixText,
-    this.floatingLabelBehavior = FloatingLabelBehavior.auto,
-    this.maxLines = 1,
-    this.elevation = 0,
-    this.radius = 0,
-    this.validator,
-    this.minLines = 1,
-    this.focusedBorderWidth,
-    this.focusedBorderColor,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.obscureText = false,
-    this.keybardType,
-    this.textInputAction,
-    this.fillColor,
-  }) : super(key: key);
+  TextInputForm(
+      {Key? key,
+      this.label,
+      required this.placeholder,
+      this.error,
+      this.focusNode,
+      this.enabled = true,
+      this.initialValue,
+      required this.onChanged,
+      this.suffixText,
+      this.floatingLabelBehavior = FloatingLabelBehavior.auto,
+      this.maxLines = 1,
+      this.elevation = 0,
+      this.radius = 0,
+      this.validator,
+      this.controller,
+      this.minLines = 1,
+      this.focusedBorderWidth,
+      this.focusedBorderColor,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.obscureText = false,
+      this.keybardType,
+      this.textInputAction,
+      this.fillColor,
+      this.contentPadding,
+      this.textAlign})
+      : super(key: key);
 
   final Color? fillColor;
   final String? label;
   final int maxLines;
+  final EdgeInsets? contentPadding;
   final int minLines;
   final bool enabled;
+  final TextAlign? textAlign;
   final bool obscureText;
   final double radius;
   final double elevation;
@@ -49,17 +54,45 @@ class TextInputForm extends StatefulWidget {
   final TextInputAction? textInputAction;
   final double? focusedBorderWidth;
   final Color? focusedBorderColor;
+  final TextEditingController? controller;
+
+  final state = _TextInputFormState();
+  void clear() {
+    state.clear();
+  }
+
+  void setValue(String val) {
+    state.setValue(val);
+  }
 
   @override
-  State<TextInputForm> createState() => _TextInputFormState();
+  State<TextInputForm> createState() => state;
 }
 
 class _TextInputFormState extends State<TextInputForm> {
   String? initialValue;
+  late TextEditingController controller;
   @override
   void initState() {
-    initialValue = widget.initialValue;
+    controller =
+        widget.controller ?? TextEditingController(text: widget.initialValue);
     super.initState();
+  }
+
+  clear() {
+    if (mounted) {
+      setState(() {
+        controller.clear();
+      });
+    }
+  }
+
+  void setValue(String val) {
+    if (mounted) {
+      setState(() {
+        controller.text = val;
+      });
+    }
   }
 
   @override
@@ -81,10 +114,10 @@ class _TextInputFormState extends State<TextInputForm> {
             focusNode: widget.focusNode,
             maxLines: widget.maxLines,
             enabled: widget.enabled,
-            initialValue: initialValue,
+            controller: controller,
             textDirection: TextDirection.ltr,
             validator: widget.validator,
-            textAlign: TextAlign.start,
+            textAlign: widget.textAlign ?? TextAlign.start,
             obscureText: widget.obscureText,
             textInputAction: widget.textInputAction ??
                 (widget.maxLines > 1
@@ -113,7 +146,7 @@ class _TextInputFormState extends State<TextInputForm> {
               hintStyle: Theme.of(context)
                   .textTheme
                   .bodyLarge!
-                  .copyWith(color: Colors.grey.shade400),
+                  .copyWith(color: Colors.grey.shade700),
               enabledBorder: UnderlineInputBorder(
                   borderSide:
                       BorderSide(width: 0.3, color: Colors.grey.shade300),
@@ -124,8 +157,9 @@ class _TextInputFormState extends State<TextInputForm> {
                       BorderSide(width: 0.3, color: Colors.grey.shade300),
                   borderRadius:
                       BorderRadius.all(Radius.circular(widget.radius))),
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: 10, vertical: (widget.maxLines > 1) ? 14 : 0),
+              contentPadding: widget.contentPadding ??
+                  EdgeInsets.symmetric(
+                      horizontal: 10, vertical: (widget.maxLines > 1) ? 14 : 0),
               // errorText:     !validCode ? widget.tr('field_required') : null,
             ),
             onChanged: (val) {

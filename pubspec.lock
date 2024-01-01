@@ -105,6 +105,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  bottom_inset_observer:
+    dependency: transitive
+    description:
+      name: bottom_inset_observer
+      sha256: cbfb01e0e07cc4922052701786d5e607765a6f54e1844f41061abf8744519a7d
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
+  bottom_sheet:
+    dependency: "direct main"
+    description:
+      name: bottom_sheet
+      sha256: "922d43e46e5f3761f5319a08bb06a889f261f98087bcf2a8eceb4203d498bcc3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   build:
     dependency: transitive
     description:
@@ -345,6 +361,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  dropdown_button2:
+    dependency: "direct main"
+    description:
+      name: dropdown_button2
+      sha256: b0fe8d49a030315e9eef6c7ac84ca964250155a6224d491c1365061bc974a9e1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.9"
   easy_stepper:
     dependency: "direct main"
     description:
@@ -629,6 +653,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  full_screen_image:
+    dependency: "direct main"
+    description:
+      name: full_screen_image
+      sha256: "97831b00d07b17c674ba3a4eddcee306dbd0d7c66851f1b67856e12daeb9b3aa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   geolocator:
     dependency: "direct main"
     description:

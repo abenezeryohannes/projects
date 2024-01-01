@@ -71,6 +71,7 @@ class LandingSlideState extends State<LandingSlide> {
                   fontSize: 20,
                   fontWight: FontWeight.bold,
                   backgroudColor: Theme.of(context).colorScheme.secondary,
+                  borderColor: Theme.of(context).colorScheme.secondary,
                   horizontalMargin:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
                   padding: const EdgeInsets.symmetric(vertical: 16),

@@ -1,6 +1,6 @@
 #include "Generated.xcconfig"
 
-FLUTTER_TARGET=lib/main/residents.dart
+FLUTTER_TARGET=lib/main_residents.dart
 ASSET_PREFIX=residents
 BUNDLE_NAME=RNG management
 BUNDLE_DISPLAY_NAME=RNG management

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1034850505851",
+    "project_id": "rng-infradev",
+    "storage_bucket": "rng-infradev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034850505851:android:633eeb6ea6a63fb96a3ede",
+        "android_client_info": {
+          "package_name": "com.technikh.rnginfra.guards"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj5mPfZeGz7mZhfMpRNvt2ekEzXIDurDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034850505851:android:1b8f44e7acfec8b16a3ede",
+        "android_client_info": {
+          "package_name": "com.technikh.rnginfra.residents"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj5mPfZeGz7mZhfMpRNvt2ekEzXIDurDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

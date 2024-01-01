@@ -111,7 +111,7 @@ class _VisitorsActivityPageState extends State<VisitorsActivityPage> {
                                   top: 200.0, left: 30, right: 30),
                               child: ShowError(
                                   failure: NoDataFailure(
-                                      message: NoDataException().message),
+                                      message: "No visitors here yet !!"),
                                   ErrorShowType: ErrorShowType.Vertical),
                             ),
                         firstPageErrorIndicatorBuilder: (context) => Padding(

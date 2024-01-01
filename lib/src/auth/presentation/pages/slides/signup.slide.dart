@@ -212,6 +212,7 @@ class _SignupSlideState extends State<SignupSlide> {
                         },
                         text: 'Next',
                         backgroudColor: Theme.of(context).colorScheme.secondary,
+                        borderColor: Theme.of(context).colorScheme.secondary,
                         fontSize: 20,
                         fontWight: FontWeight.bold,
                         horizontalMargin: const EdgeInsets.symmetric(

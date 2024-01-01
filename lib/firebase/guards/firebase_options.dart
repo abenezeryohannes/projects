@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,47 +49,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCzgEwAUTjQhOPPqb1G8VuXlXCuOZhKjgU',
-    appId: '1:664368582662:web:5e4e64f68c9a89517cf387',
-    messagingSenderId: '664368582662',
-    projectId: 'coop-d1eaf',
-    authDomain: 'coop-d1eaf.firebaseapp.com',
-    databaseURL: 'https://coop-d1eaf.firebaseio.com',
-    storageBucket: 'coop-d1eaf.appspot.com',
-    measurementId: 'G-70WG54S0QL',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDITy9BCiVeB7kxRwomPtKIDelwpdBux7A',
-    appId: '1:664368582662:android:19e1b732233150e07cf387',
-    messagingSenderId: '664368582662',
-    projectId: 'coop-d1eaf',
-    databaseURL: 'https://coop-d1eaf.firebaseio.com',
-    storageBucket: 'coop-d1eaf.appspot.com',
+    apiKey: 'AIzaSyAj5mPfZeGz7mZhfMpRNvt2ekEzXIDurDY',
+    appId: '1:1034850505851:android:633eeb6ea6a63fb96a3ede',
+    messagingSenderId: '1034850505851',
+    projectId: 'rng-infradev',
+    storageBucket: 'rng-infradev.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyApyt76ReGszMMdHxjtiouktyKf5U5ZwuA',
-    appId: '1:664368582662:ios:71cd3a693503a8857cf387',
-    messagingSenderId: '664368582662',
-    projectId: 'coop-d1eaf',
-    databaseURL: 'https://coop-d1eaf.firebaseio.com',
-    storageBucket: 'coop-d1eaf.appspot.com',
-    androidClientId: '664368582662-1kqmtkt0eghp9mevkchl520fk5i1c78u.apps.googleusercontent.com',
-    iosClientId: '664368582662-ej5flv84939qs1kvlufpj3ogro9d940d.apps.googleusercontent.com',
-    iosBundleId: 'com.technikh.rnginfra.guards',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyApyt76ReGszMMdHxjtiouktyKf5U5ZwuA',
-    appId: '1:664368582662:ios:71cd3a693503a8857cf387',
-    messagingSenderId: '664368582662',
-    projectId: 'coop-d1eaf',
-    databaseURL: 'https://coop-d1eaf.firebaseio.com',
-    storageBucket: 'coop-d1eaf.appspot.com',
-    androidClientId: '664368582662-1kqmtkt0eghp9mevkchl520fk5i1c78u.apps.googleusercontent.com',
-    iosClientId: '664368582662-ej5flv84939qs1kvlufpj3ogro9d940d.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDJsUBEo3TJKpm7m0ZPm-rJwmT2dqaY0DE',
+    appId: '1:1034850505851:ios:f8f4db9d665ffba16a3ede',
+    messagingSenderId: '1034850505851',
+    projectId: 'rng-infradev',
+    storageBucket: 'rng-infradev.appspot.com',
     iosBundleId: 'com.technikh.rnginfra.guards',
   );
 }

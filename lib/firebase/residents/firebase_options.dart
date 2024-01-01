@@ -50,23 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDITy9BCiVeB7kxRwomPtKIDelwpdBux7A',
-    appId: '1:664368582662:android:e67e798544c552887cf387',
-    messagingSenderId: '664368582662',
-    projectId: 'coop-d1eaf',
-    databaseURL: 'https://coop-d1eaf.firebaseio.com',
-    storageBucket: 'coop-d1eaf.appspot.com',
+    apiKey: 'AIzaSyAj5mPfZeGz7mZhfMpRNvt2ekEzXIDurDY',
+    appId: '1:1034850505851:android:1b8f44e7acfec8b16a3ede',
+    messagingSenderId: '1034850505851',
+    projectId: 'rng-infradev',
+    storageBucket: 'rng-infradev.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyApyt76ReGszMMdHxjtiouktyKf5U5ZwuA',
-    appId: '1:664368582662:ios:93c6bd4d19e77d067cf387',
-    messagingSenderId: '664368582662',
-    projectId: 'coop-d1eaf',
-    databaseURL: 'https://coop-d1eaf.firebaseio.com',
-    storageBucket: 'coop-d1eaf.appspot.com',
-    androidClientId: '664368582662-1kqmtkt0eghp9mevkchl520fk5i1c78u.apps.googleusercontent.com',
-    iosClientId: '664368582662-a9bsjbk8f84orohoa5ubqd23eeecisvn.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDJsUBEo3TJKpm7m0ZPm-rJwmT2dqaY0DE',
+    appId: '1:1034850505851:ios:866a6b19087de6d96a3ede',
+    messagingSenderId: '1034850505851',
+    projectId: 'rng-infradev',
+    storageBucket: 'rng-infradev.appspot.com',
     iosBundleId: 'com.technikh.rnginfra.residents',
   );
 }

@@ -16,5 +16,5 @@ class NetworkInfoImp implements INetworkInfo {
   Future<bool>? get isConnected => connectionChecker.hasInternetAccess;
 
   // @override
-  // Future<bool>? get isConnected => Future.value(true);
+  // Future<bool>? get isConnected => Future.value(false);
 }
